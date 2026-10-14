@@ -549,8 +549,20 @@
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Päivämäärä avoin.",
-      "url": "",
+      "note": "Opintojakso suoritetaan henkilökohtaisen suunnitelman mukaisesti tai hakemalla viisi osaamismerkkiä: (1) Saavutettavuus opetuksessa ja oppimisessa, (2) Oppimisen tuki, (3) Saavutettava opetusmateriaali, (4) Saavutettava opetusvideo, (5) Opiskeluhuolto ja opiskeluhyvinvointi. Perehdy lähteisiin, laadi osaamisen osoitukset ja hae merkit Open Badge Factoryssa; käytä Open Badge Passportissa rekisteröityä sähköpostia, arvioijana Esa Virkkula. Erityispedagogiikan valinnainen webinaari 19.11.2026 klo 16–20 omana tapahtumanaan. Varsinaisen työn palautuspäivä vahvistamatta.",
+      "url": "https://emateriaalit.oamk.fi/resurssit-25/oppimisen-tuki25/",
+      "custom": false
+    },
+    {
+      "id": "oamk-erityispedagogiikka-webinaari-20261119",
+      "date": "2026-11-19",
+      "title": "Erityispedagogiikan webinaari (Zoom)",
+      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
+      "kind": "lesson",
+      "time": "16.00–20.00",
+      "done": false,
+      "note": "Oma valittu osallistumiskerta. Webinaarissa voi hankkia osaamista oppimisen tuen opintojaksolle. Ei ennakkoilmoittautumista. Avaa Zoom-linkki tästä merkinnästä. Osallistuminen ei korvaa automaattisesti osaamisen osoittamista.",
+      "url": "https://oulu.zoom.us/j/3387196978",
       "custom": false
     }
   ],
