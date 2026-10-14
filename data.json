@@ -393,7 +393,7 @@
       "kind": "end",
       "time": "",
       "done": false,
-      "note": "Alustava päivämäärä, vahvistettava.",
+      "note": "31.7.2027 on aiempi alustava arvio, ei PDF:ssä vahvistettu palautuspäivä. Tarkista virallinen päättymis- ja palautuspäivä opettajalta.",
       "url": "",
       "custom": false
     },
@@ -532,13 +532,13 @@
     {
       "id": "oamkessay",
       "date": "",
-      "title": "Pedagogisen ohjauksen osaamisen osoittaminen",
+      "title": "Pedagogisen ohjauksen osaamisen osoittaminen (A tai B)",
       "course": "Pedagoginen ohjaus yhteisöpedagogeille · 3 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Essee tai ohjauskeskustelu ja analyysi. Päivämäärä avoin.",
-      "url": "",
+      "note": "Valitse yksi: A) oman käyttöteorian essee, vähintään 7–8 sivua (1–2 ohjauksen teoriaa, ihmiskäsitys, toimijuus ja osallisuus, case); TAI B) noin 15 min nauhoitettu ohjauskeskustelu ja 4–5 sivun analyysiraportti, vähintään 3 lähdettä. Huomioi arviointikriteerit ja lähdeviitteet. Palautus: tallenna työ pilveen, jaa katseluoikeus vastuuopettaja Esa Virkkulalle, tee 'Pedagoginen ohjaus 3 op' -osaamismerkkihakemus Open Badge Passportissa ja lisää siihen pilvilinkki (https://openbadgefactory.com/c/earnablebadge/TE78UOa5CR0a2WJ/apply). Arviointi hyväksytty / täydennettävä / hylätty. PDF ei sisällä virallista palautuspäivää.",
+      "url": "https://drive.google.com/file/d/17GnszsiTfANV3e0bC-DErQmDGm-O5Dg1/view?usp=drive_link",
       "custom": false
     },
     {
@@ -554,5 +554,5 @@
       "custom": false
     }
   ],
-  "updated": "2026-10-13"
+  "updated": "2026-10-14"
 }
