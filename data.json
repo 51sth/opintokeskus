@@ -52,12 +52,12 @@
     {
       "id": "kunnan1",
       "date": "2026-10-26",
-      "title": "Etäopetus: nuorisotyön perusteet",
+      "title": "ONLINE-etäopetus: nuorisoala, nuorisotyö ja nuorisotilatyö",
       "course": "Kunnan nuorisotyö · 5 op",
       "kind": "lesson",
-      "time": "8.00–10.00",
+      "time": "8.00–9.30",
       "done": false,
-      "note": "Tunti tallennetaan. Tehtävä 1.",
+      "note": "Opettaja Maria: opetuksessa käydään läpi aihetta erityisesti tehtävien 1–2 näkökulmasta. Tehtäviin 1–2 kannattaa tutustua etukäteen, jotta niitä voi aloittaa opetuksessa. Ennakkoon tutustuminen ei ole pakollinen, ja tehtävät saa tehdä omaan tahtiin. Opetuksesta tulee tallenne.",
       "url": "",
       "custom": false
     },
@@ -566,5 +566,5 @@
       "custom": false
     }
   ],
-  "updated": "2026-10-14"
+  "updated": "2026-10-15"
 }
