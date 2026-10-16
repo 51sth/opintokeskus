@@ -38,30 +38,6 @@
       "custom": false
     },
     {
-      "id": "kh35",
-      "date": "2026-10-20",
-      "title": "Tehtävät 3–5",
-      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
-      "kind": "task",
-      "time": "",
-      "done": true,
-      "note": "Tehdyiksi merkitty oman ilmoituksesi mukaan; ei automaattisesti arvioitu.",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "kunnan1",
-      "date": "2026-10-26",
-      "title": "ONLINE-etäopetus: nuorisoala, nuorisotyö ja nuorisotilatyö",
-      "course": "Kunnan nuorisotyö · 5 op",
-      "kind": "lesson",
-      "time": "8.00–9.30",
-      "done": false,
-      "note": "Opettaja: Maria Känsäkoski, lehtori (kasvatus- ja yhteiskuntatieteet), Centria-ammattikorkeakoulu, Kokkola. Aiheina nuorisoala, nuorisotyö, nuorisotilatyö ja tehtävä 1. Opetuksessa käydään aihetta läpi erityisesti tehtävien 1–2 näkökulmasta. Tehtäviin 1–2 kannattaa tutustua etukäteen, jolloin tehtävää ehtii aloittaa opetuksessa. Tehtävät saa tehdä omaan tahtiin. Opetuksesta tulee tallenne. Teams-osallistumislinkki on myös Itslearningin kurssin kotipesässä ja 15.10.2026 lähetetyssä opettajan sähköpostissa.",
-      "url": "https://teams.microsoft.com/meet/3556619359263482?p=KsxcTL3qMoeuFJfPu8",
-      "custom": false
-    },
-    {
       "id": "comm-tips-youth-work-20261016",
       "date": "2026-10-19",
       "title": "Communication Skills – lue Tips for online youth work",
@@ -86,6 +62,42 @@
       "custom": false
     },
     {
+      "id": "repetera-zoom-20261019",
+      "date": "2026-10-19",
+      "title": "Repetera svenska – etäopetus (Zoom)",
+      "course": "Repetera svenska · 3 op",
+      "kind": "lesson",
+      "time": "",
+      "done": false,
+      "note": "Opettaja Jenny Jansson. Käydään läpi opintojakson rakenne ja aloitusmateriaaleja, erityisesti substantiivien ja verbien kielioppia. Kellonaikaa ei ilmoitettu 13.10.2026 viestissä; varmista se Itslearningistä. Zoom-linkki löytyy Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kh35",
+      "date": "2026-10-20",
+      "title": "Tehtävät 3–5",
+      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": true,
+      "note": "Tehdyiksi merkitty oman ilmoituksesi mukaan; ei automaattisesti arvioitu.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kirjoitustyopaja-teams-20261026",
+      "date": "2026-10-26",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "10.00–11.30",
+      "done": false,
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "homework",
       "date": "2026-10-26",
       "title": "Homework for the next classes",
@@ -94,6 +106,30 @@
       "time": "12.00",
       "done": false,
       "note": "Palautettava viimeistään 26.10.2026 klo 12.00 (sulkeutuu määräajan jälkeen). Your Education -materiaalin harjoituksia tehty omaan tiedostoon, mutta palautusta ei vielä kuitattu. Tips for online youth work luetaan maanantaina 19.10. (vain lukeminen ja keskusteluun valmistautuminen, ei palautusta). Neutral language -materiaalin harjoitus 1 tehdään maanantaina 19.10. ja palautetaan. Tekoälyn käyttö on kielletty tämän tehtävän tuotoksessa.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kunnan1",
+      "date": "2026-10-26",
+      "title": "ONLINE-etäopetus: nuorisoala, nuorisotyö ja nuorisotilatyö",
+      "course": "Kunnan nuorisotyö · 5 op",
+      "kind": "lesson",
+      "time": "8.00–9.30",
+      "done": false,
+      "note": "Opettaja: Maria Känsäkoski, lehtori (kasvatus- ja yhteiskuntatieteet), Centria-ammattikorkeakoulu, Kokkola. Aiheina nuorisoala, nuorisotyö, nuorisotilatyö ja tehtävä 1. Opetuksessa käydään aihetta läpi erityisesti tehtävien 1–2 näkökulmasta. Tehtäviin 1–2 kannattaa tutustua etukäteen, jolloin tehtävää ehtii aloittaa opetuksessa. Tehtävät saa tehdä omaan tahtiin. Opetuksesta tulee tallenne. Teams-osallistumislinkki on myös Itslearningin kurssin kotipesässä ja 15.10.2026 lähetetyssä opettajan sähköpostissa.",
+      "url": "https://teams.microsoft.com/meet/3556619359263482?p=KsxcTL3qMoeuFJfPu8",
+      "custom": false
+    },
+    {
+      "id": "kh68",
+      "date": "2026-10-27",
+      "title": "Tehtävät 6–8 (myös numeroilmaukset)",
+      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": true,
+      "note": "Tehdyiksi merkitty oman ilmoituksesi mukaan; hyväksyntää ei oleteta.",
       "url": "",
       "custom": false
     },
@@ -110,14 +146,14 @@
       "custom": false
     },
     {
-      "id": "kh68",
-      "date": "2026-10-27",
-      "title": "Tehtävät 6–8 (myös numeroilmaukset)",
-      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
-      "kind": "task",
-      "time": "",
-      "done": true,
-      "note": "Tehdyiksi merkitty oman ilmoituksesi mukaan; hyväksyntää ei oleteta.",
+      "id": "kirjoitustyopaja-teams-20261102",
+      "date": "2026-11-02",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "10.00–11.30",
+      "done": false,
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
       "url": "",
       "custom": false
     },
@@ -158,14 +194,14 @@
       "custom": false
     },
     {
-      "id": "kh1314",
-      "date": "2026-11-17",
-      "title": "Tehtävät 13–14",
-      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
-      "kind": "task",
-      "time": "",
+      "id": "kirjoitustyopaja-teams-20261116",
+      "date": "2026-11-16",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "12.30–14.00",
       "done": false,
-      "note": "Kurssin työskentelyaikataulu.",
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
       "url": "",
       "custom": false
     },
@@ -178,6 +214,54 @@
       "time": "",
       "done": false,
       "note": "30 min / ryhmä. Oma osallistuminen korkeintaan mahdollista etäseurantaa.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kh1314",
+      "date": "2026-11-17",
+      "title": "Tehtävät 13–14",
+      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Kurssin työskentelyaikataulu.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "repetera-zoom-20261119",
+      "date": "2026-11-19",
+      "title": "Repetera svenska – etäopetus (Zoom)",
+      "course": "Repetera svenska · 3 op",
+      "kind": "lesson",
+      "time": "",
+      "done": false,
+      "note": "Opettaja Jenny Jansson. Aiheina adjektiivit, pronominit ja sanajärjestys sekä kysymyksiä ja mahdollisesti ryhmätyöskentelyä. Kellonaikaa ei ilmoitettu 13.10.2026 viestissä; varmista se Itslearningistä. Zoom-linkki löytyy Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "oamk-erityispedagogiikka-webinaari-20261119",
+      "date": "2026-11-19",
+      "title": "Erityispedagogiikan webinaari (Zoom)",
+      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
+      "kind": "lesson",
+      "time": "16.00–20.00",
+      "done": false,
+      "note": "Oma valittu osallistumiskerta. Webinaarissa voi hankkia osaamista oppimisen tuen opintojaksolle. Ei ennakkoilmoittautumista. Avaa Zoom-linkki tästä merkinnästä. Osallistuminen ei korvaa automaattisesti osaamisen osoittamista.",
+      "url": "https://oulu.zoom.us/j/3387196978",
+      "custom": false
+    },
+    {
+      "id": "kirjoitustyopaja-teams-20261123",
+      "date": "2026-11-23",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "10.00–11.30",
+      "done": false,
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
       "url": "",
       "custom": false
     },
@@ -206,6 +290,18 @@
       "custom": false
     },
     {
+      "id": "kirjoitustyopaja-teams-20261130",
+      "date": "2026-11-30",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "10.00–11.30",
+      "done": false,
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "kh1820",
       "date": "2026-12-01",
       "title": "Tehtävät 18–20",
@@ -214,6 +310,18 @@
       "time": "",
       "done": false,
       "note": "Kurssin työskentelyaikataulu.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kirjoitustyopaja-teams-20261207",
+      "date": "2026-12-07",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "10.00–11.30",
+      "done": false,
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
       "url": "",
       "custom": false
     },
@@ -230,6 +338,18 @@
       "custom": false
     },
     {
+      "id": "kirjoitustyopaja-teams-20261214",
+      "date": "2026-12-14",
+      "title": "Kirjoitustyöpaja – Teams-etäohjaus",
+      "course": "Centrian kirjoittamisen tuki",
+      "kind": "lesson",
+      "time": "10.00–11.30",
+      "done": false,
+      "note": "Vapaaehtoinen kirjoitustyöpaja etäyhteydellä Teamsissa. Vetäjä: Maria Känsäkoski. Apua tehtävien, esseiden ja muiden kirjallisten töiden aloittamiseen ja etenemiseen. Ota oma tietokone mukaan. Liittymislinkki löytyy 15.10.2026 lähetetystä opettajan sähköpostista. Ei opintopisteitä itsessään.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "khfeedback",
       "date": "2026-12-15",
       "title": "Palaute ja mahdolliset täydennykset",
@@ -238,18 +358,6 @@
       "time": "",
       "done": false,
       "note": "Kurssin ilmoitettu aikatauluvaihe.",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "endmov",
-      "date": "2026-12-31",
-      "title": "Kurssin toteutus päättyy (suoritettu)",
-      "course": "Movement and Outdoor Education · 5 op",
-      "kind": "end",
-      "time": "",
-      "done": true,
-      "note": "Kurssi on jo suoritettu.",
       "url": "",
       "custom": false
     },
@@ -290,6 +398,42 @@
       "custom": false
     },
     {
+      "id": "endmov",
+      "date": "2026-12-31",
+      "title": "Kurssin toteutus päättyy (suoritettu)",
+      "course": "Movement and Outdoor Education · 5 op",
+      "kind": "end",
+      "time": "",
+      "done": true,
+      "note": "Kurssi on jo suoritettu.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kunnan2lesson",
+      "date": "2027-02-01",
+      "title": "Etäopetus: nuorisolaki, Ohjaamo ja etsivä nuorisotyö",
+      "course": "Kunnan nuorisotyö · 5 op",
+      "kind": "lesson",
+      "time": "12.00–14.00",
+      "done": false,
+      "note": "Tehtävät 2–3. Tunti tallennetaan.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "kunnan3lesson",
+      "date": "2027-03-15",
+      "title": "Etäopetus: vaikuttaminen ja liikkuva nuorisotyö",
+      "course": "Kunnan nuorisotyö · 5 op",
+      "kind": "lesson",
+      "time": "12.00–16.00",
+      "done": false,
+      "note": "Tehtävät 4–5. Tunti tallennetaan.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "endviest",
       "date": "2027-03-31",
       "title": "Kurssin toteutus päättyy",
@@ -322,6 +466,30 @@
       "time": "",
       "done": false,
       "note": "",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "endoamk1",
+      "date": "2027-07-31",
+      "title": "Arvioitu kurssin päättymispäivä",
+      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
+      "kind": "end",
+      "time": "",
+      "done": false,
+      "note": "Alustava päivämäärä, vahvistettava.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "endoamk2",
+      "date": "2027-07-31",
+      "title": "Arvioitu kurssin päättymispäivä",
+      "course": "Pedagoginen ohjaus yhteisöpedagogeille · 3 op",
+      "kind": "end",
+      "time": "",
+      "done": false,
+      "note": "31.7.2027 on aiempi alustava arvio, ei PDF:ssä vahvistettu palautuspäivä. Tarkista virallinen päättymis- ja palautuspäivä opettajalta.",
       "url": "",
       "custom": false
     },
@@ -398,50 +566,14 @@
       "custom": false
     },
     {
-      "id": "endoamk1",
-      "date": "2027-07-31",
-      "title": "Arvioitu kurssin päättymispäivä",
-      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
-      "kind": "end",
+      "id": "kuntask2",
+      "date": "",
+      "title": "Kunnallisen työn esittely (tehtävä 2)",
+      "course": "Kunnan nuorisotyö · 5 op",
+      "kind": "task",
       "time": "",
       "done": false,
-      "note": "Alustava päivämäärä, vahvistettava.",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "endoamk2",
-      "date": "2027-07-31",
-      "title": "Arvioitu kurssin päättymispäivä",
-      "course": "Pedagoginen ohjaus yhteisöpedagogeille · 3 op",
-      "kind": "end",
-      "time": "",
-      "done": false,
-      "note": "31.7.2027 on aiempi alustava arvio, ei PDF:ssä vahvistettu palautuspäivä. Tarkista virallinen päättymis- ja palautuspäivä opettajalta.",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "kunnan2lesson",
-      "date": "2027-02-01",
-      "title": "Etäopetus: nuorisolaki, Ohjaamo ja etsivä nuorisotyö",
-      "course": "Kunnan nuorisotyö · 5 op",
-      "kind": "lesson",
-      "time": "12.00–14.00",
-      "done": false,
-      "note": "Tehtävät 2–3. Tunti tallennetaan.",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "kunnan3lesson",
-      "date": "2027-03-15",
-      "title": "Etäopetus: vaikuttaminen ja liikkuva nuorisotyö",
-      "course": "Kunnan nuorisotyö · 5 op",
-      "kind": "lesson",
-      "time": "12.00–16.00",
-      "done": false,
-      "note": "Tehtävät 4–5. Tunti tallennetaan.",
+      "note": "",
       "url": "",
       "custom": false
     },
@@ -449,18 +581,6 @@
       "id": "essay1",
       "date": "",
       "title": "Leikin merkitys varhaislapsuudessa – essee",
-      "course": "Yhteisöpedagogi kasvattajana · 5 op",
-      "kind": "task",
-      "time": "",
-      "done": false,
-      "note": "Päivämäärä tarkistettava.",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "essay2",
-      "date": "",
-      "title": "Oma sosialisaation ja identiteetin kehitykseni – essee",
       "course": "Yhteisöpedagogi kasvattajana · 5 op",
       "kind": "task",
       "time": "",
@@ -482,18 +602,6 @@
       "custom": false
     },
     {
-      "id": "kh7",
-      "date": "",
-      "title": "Tarkista tehtävän 7 tila",
-      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
-      "kind": "task",
-      "time": "",
-      "done": false,
-      "note": "Tila ei vielä selvinnyt aiemmista kuvista.",
-      "url": "",
-      "custom": false
-    },
-    {
       "id": "kuntask",
       "date": "",
       "title": "Nuorisotilatyö (1A apuohjaus / 1B etänä)",
@@ -506,14 +614,50 @@
       "custom": false
     },
     {
-      "id": "kuntask2",
+      "id": "essay2",
       "date": "",
-      "title": "Kunnallisen työn esittely (tehtävä 2)",
-      "course": "Kunnan nuorisotyö · 5 op",
+      "title": "Oma sosialisaation ja identiteetin kehitykseni – essee",
+      "course": "Yhteisöpedagogi kasvattajana · 5 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "",
+      "note": "Päivämäärä tarkistettava.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "oamklearn",
+      "date": "",
+      "title": "Oppimisen tuen tehtävät ja osaamismerkit",
+      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Opintojakso suoritetaan henkilökohtaisen suunnitelman mukaisesti tai hakemalla viisi osaamismerkkiä: (1) Saavutettavuus opetuksessa ja oppimisessa, (2) Oppimisen tuki, (3) Saavutettava opetusmateriaali, (4) Saavutettava opetusvideo, (5) Opiskeluhuolto ja opiskeluhyvinvointi. Perehdy lähteisiin, laadi osaamisen osoitukset ja hae merkit Open Badge Factoryssa; käytä Open Badge Passportissa rekisteröityä sähköpostia, arvioijana Esa Virkkula. Erityispedagogiikan valinnainen webinaari 19.11.2026 klo 16–20 omana tapahtumanaan. Varsinaisen työn palautuspäivä vahvistamatta.",
+      "url": "https://emateriaalit.oamk.fi/resurssit-25/oppimisen-tuki25/",
+      "custom": false
+    },
+    {
+      "id": "oamkessay",
+      "date": "",
+      "title": "Pedagogisen ohjauksen osaamisen osoittaminen (A tai B)",
+      "course": "Pedagoginen ohjaus yhteisöpedagogeille · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Valitse yksi: A) oman käyttöteorian essee, vähintään 7–8 sivua (1–2 ohjauksen teoriaa, ihmiskäsitys, toimijuus ja osallisuus, case); TAI B) noin 15 min nauhoitettu ohjauskeskustelu ja 4–5 sivun analyysiraportti, vähintään 3 lähdettä. Huomioi arviointikriteerit ja lähdeviitteet. Palautus: tallenna työ pilveen, jaa katseluoikeus vastuuopettaja Esa Virkkulalle, tee 'Pedagoginen ohjaus 3 op' -osaamismerkkihakemus Open Badge Passportissa ja lisää siihen pilvilinkki (https://openbadgefactory.com/c/earnablebadge/TE78UOa5CR0a2WJ/apply). Arviointi hyväksytty / täydennettävä / hylätty. PDF ei sisällä virallista palautuspäivää.",
+      "url": "https://drive.google.com/file/d/17GnszsiTfANV3e0bC-DErQmDGm-O5Dg1/view?usp=drive_link",
+      "custom": false
+    },
+    {
+      "id": "kh7",
+      "date": "",
+      "title": "Tarkista tehtävän 7 tila",
+      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Tila ei vielä selvinnyt aiemmista kuvista.",
       "url": "",
       "custom": false
     },
@@ -521,18 +665,6 @@
       "id": "kuntask3",
       "date": "",
       "title": "Tehtävä 3 – sisältö tarkentuu",
-      "course": "Kunnan nuorisotyö · 5 op",
-      "kind": "task",
-      "time": "",
-      "done": false,
-      "note": "",
-      "url": "",
-      "custom": false
-    },
-    {
-      "id": "kuntask4",
-      "date": "",
-      "title": "Vaikuttaminen (tehtävä 4)",
       "course": "Kunnan nuorisotyö · 5 op",
       "kind": "task",
       "time": "",
@@ -554,39 +686,15 @@
       "custom": false
     },
     {
-      "id": "oamkessay",
+      "id": "kuntask4",
       "date": "",
-      "title": "Pedagogisen ohjauksen osaamisen osoittaminen (A tai B)",
-      "course": "Pedagoginen ohjaus yhteisöpedagogeille · 3 op",
+      "title": "Vaikuttaminen (tehtävä 4)",
+      "course": "Kunnan nuorisotyö · 5 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Valitse yksi: A) oman käyttöteorian essee, vähintään 7–8 sivua (1–2 ohjauksen teoriaa, ihmiskäsitys, toimijuus ja osallisuus, case); TAI B) noin 15 min nauhoitettu ohjauskeskustelu ja 4–5 sivun analyysiraportti, vähintään 3 lähdettä. Huomioi arviointikriteerit ja lähdeviitteet. Palautus: tallenna työ pilveen, jaa katseluoikeus vastuuopettaja Esa Virkkulalle, tee 'Pedagoginen ohjaus 3 op' -osaamismerkkihakemus Open Badge Passportissa ja lisää siihen pilvilinkki (https://openbadgefactory.com/c/earnablebadge/TE78UOa5CR0a2WJ/apply). Arviointi hyväksytty / täydennettävä / hylätty. PDF ei sisällä virallista palautuspäivää.",
-      "url": "https://drive.google.com/file/d/17GnszsiTfANV3e0bC-DErQmDGm-O5Dg1/view?usp=drive_link",
-      "custom": false
-    },
-    {
-      "id": "oamklearn",
-      "date": "",
-      "title": "Oppimisen tuen tehtävät ja osaamismerkit",
-      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
-      "kind": "task",
-      "time": "",
-      "done": false,
-      "note": "Opintojakso suoritetaan henkilökohtaisen suunnitelman mukaisesti tai hakemalla viisi osaamismerkkiä: (1) Saavutettavuus opetuksessa ja oppimisessa, (2) Oppimisen tuki, (3) Saavutettava opetusmateriaali, (4) Saavutettava opetusvideo, (5) Opiskeluhuolto ja opiskeluhyvinvointi. Perehdy lähteisiin, laadi osaamisen osoitukset ja hae merkit Open Badge Factoryssa; käytä Open Badge Passportissa rekisteröityä sähköpostia, arvioijana Esa Virkkula. Erityispedagogiikan valinnainen webinaari 19.11.2026 klo 16–20 omana tapahtumanaan. Varsinaisen työn palautuspäivä vahvistamatta.",
-      "url": "https://emateriaalit.oamk.fi/resurssit-25/oppimisen-tuki25/",
-      "custom": false
-    },
-    {
-      "id": "oamk-erityispedagogiikka-webinaari-20261119",
-      "date": "2026-11-19",
-      "title": "Erityispedagogiikan webinaari (Zoom)",
-      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
-      "kind": "lesson",
-      "time": "16.00–20.00",
-      "done": false,
-      "note": "Oma valittu osallistumiskerta. Webinaarissa voi hankkia osaamista oppimisen tuen opintojaksolle. Ei ennakkoilmoittautumista. Avaa Zoom-linkki tästä merkinnästä. Osallistuminen ei korvaa automaattisesti osaamisen osoittamista.",
-      "url": "https://oulu.zoom.us/j/3387196978",
+      "note": "",
+      "url": "",
       "custom": false
     }
   ],
