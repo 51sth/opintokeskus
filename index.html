@@ -98,6 +98,82 @@
 .item .remove-day{background:transparent;border:1px solid #e6c6ba;border-radius:7px;padding:3px 6px;font-size:17px;line-height:1;color:#a34432;flex-shrink:0}
 .item .remove-day:hover{background:#fff1eb}
 @media(max-width:620px){.unscheduled .note{display:none}}
+
+/* Teemaversio 2 – kurssin identiteetti ja tehtävän tila ovat erillisiä.
+   Pastellinen kurssiväri täyttää palkin, värillinen vasen raita tunnistaa kurssin.
+   Keltainen ja vihreä näkyvät ainoastaan tehtävän tilassa ja päivätason yhteenvedossa. */
+:root{
+ --ui-canvas:#f6f8fc;--ui-text:#243449;--ui-border:#dce5ef;
+ --task-pending:#ffe2a8;--task-pending-text:#674400;
+ --task-done:#c9efd4;--task-done-text:#205638
+}
+body{background:var(--ui-canvas);color:var(--ui-text)}
+.hero{background:linear-gradient(112deg,#eaf2fd,#f3f0fb);border-color:#dbe4f2}
+.weekday{border-color:var(--ui-border);color:#253a52}
+.weekday.has-pending,.weekday.weekend.has-pending{background:#fff7e9;border-color:#eadbbc}
+.weekday.only-done,.weekday.weekend.only-done{background:#eff9f1;border-color:#cfe8d6}
+.weekday.selected,.weekday.selected.has-pending,.weekday.selected.only-done{
+ outline:2px solid #4b88c7;outline-offset:1px
+}
+.daybadge{background:var(--task-pending);color:var(--task-pending-text)}
+.daybadge.done{background:var(--task-done);color:var(--task-done-text)}
+/* Sama kokoleveä väri niin keskeneräisissä kuin valmiissa kurssitehtävissä. */
+.daypreview,.daypreview.task-pending,.daypreview.task-done,
+.daypreview.kind-lesson,.daypreview.kind-end{
+ display:flex;align-items:center;gap:4px;
+ width:100%;min-width:0;max-width:100%;
+ background:var(--course-bg,#e9f0f8)!important;
+ color:#243247!important;border-radius:6px;
+ border:1px solid var(--course-accent,#607a9c);
+ border-left:4px solid var(--course-accent,#607a9c);
+ box-shadow:0 1px 0 #00000006;
+ padding:5px 5px;line-height:1.25;font-size:10px;font-weight:750;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ text-decoration:none
+}
+.daypreview .preview-state{
+ display:inline-flex;flex:0 0 15px;width:15px;height:15px;
+ justify-content:center;align-items:center;
+ padding:0;margin:0;border-radius:5px;
+ background:var(--task-pending);border:1px solid #dfb969;
+ color:var(--task-pending-text);font-size:11px;font-weight:900;line-height:1
+}
+.daypreview .preview-state.state-done{
+ background:var(--task-done);border-color:#82c593;color:var(--task-done-text)
+}
+/* Tiiviissä mobiilinäkymässä kurssipisteiden reunat näyttävät tilan. */
+.coursemarks{gap:6px}
+.coursemark{width:10px;height:10px;flex-basis:10px;border:2px solid white;
+ background:var(--course-accent,#607a9c);border-radius:4px;
+ box-shadow:0 0 0 1.5px #d9a442}
+.coursemark.is-done{box-shadow:0 0 0 1.5px #42a36b}
+/* Yhden päivän kortit ja päiväämättömien tehtävien lista käyttävät samaa väriä. */
+.daydetails .item.task,.unscheduled .item.task,
+.daydetails .item.task.done,.unscheduled .item.task.done{
+ background:var(--course-bg,#e9f0f8)!important;
+ border:1px solid var(--course-accent,#607a9c);
+ border-left:6px solid var(--course-accent,#607a9c);
+ color:#25344a
+}
+.item .meta .pill.course-pill{
+ background:#ffffffc7!important;color:#243449!important;
+ border:1px solid #ffffffb7;
+ border-left:3px solid var(--course-accent,#607a9c);
+ padding:3px 7px
+}
+.item .meta .pill.status-pill{font-weight:850;padding:3px 8px}
+.item .meta .pill.status-pill.pending{
+ background:var(--task-pending)!important;color:var(--task-pending-text)!important
+}
+.item .meta .pill.status-pill.complete{
+ background:var(--task-done)!important;color:var(--task-done-text)!important
+}
+.item.task:not(.done) .check{border-color:#c89b48}
+.item.done .check.checked{background:var(--task-done);border-color:#57a773;color:var(--task-done-text)}
+@media(max-width:620px){
+ .coursemark{width:8px;height:8px;flex-basis:8px}
+ .weekday .coursemarks{gap:4px}
+}
 </style></head><body><div class="app" id="app"></div><script>
 (function(){
 'use strict';
