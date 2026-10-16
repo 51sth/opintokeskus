@@ -27,13 +27,13 @@
     },
     {
       "id": "pair",
-      "date": "2026-10-15",
-      "title": "Paritehtävät Teamsissa",
+      "date": "2026-10-16",
+      "title": "Communication Skills – paritehtävä Maxin kanssa",
       "course": "Communication Skills · 3 op",
-      "kind": "lesson",
-      "time": "10.00",
+      "kind": "task",
+      "time": "9.00",
       "done": false,
-      "note": "1. opetuskerran paritehtävät, yhdessä sovittu toteutus.",
+      "note": "Sama englannin paritehtävä, jonka piti olla 15.10. Aikataulu ja pari muuttuneet: perjantai 16.10. klo 9.00 Maxin kanssa. Merkitään tehdyksi vasta suorituksen jälkeen.",
       "url": "",
       "custom": false
     },
@@ -566,5 +566,5 @@
       "custom": false
     }
   ],
-  "updated": "2026-10-15"
+  "updated": "2026-10-16"
 }
