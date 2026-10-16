@@ -201,6 +201,17 @@ body{background:var(--ui-canvas);color:var(--ui-text)}
 .unscheduled .pool-detail .meta .course-pill{display:none}
 .unscheduled .pool-detail .meta{margin-top:0}
 @media(prefers-reduced-motion:reduce){.unscheduled .pool-chevron{transition:none}}
+/* Tehtävälistat: vain tehtävän otsikko ja kurssi näkyvät, kun rivi on kiinni. */
+.unscheduled .pool-detail .status-pill,
+.unscheduled .pool-detail .itembody > .note{display:none}
+.unscheduled .pool-calendar-hint{font-size:11px;color:#455e7c;font-weight:750;padding:9px 14px 0}
+.unscheduled .pool-notes{border-top:1px solid #25364b21;padding:11px 13px 13px}
+.unscheduled .pool-notes label{display:block;font-size:12px;font-weight:800;color:#344e6d;margin-bottom:6px}
+.unscheduled .pool-notes textarea{display:block;box-sizing:border-box;width:100%;min-height:82px;padding:9px 11px;border:1px solid #b7c9de;border-radius:8px;resize:vertical;background:#fffdfd;color:#25344a;font:inherit;font-size:13px;line-height:1.45}
+.unscheduled .pool-notes textarea:focus{outline:2px solid #5b91cf;outline-offset:1px}
+.unscheduled .pool-note-status{font-size:11px;color:#5c7290;margin-top:6px}
+.unscheduled .pool-notes a{display:inline-block;margin-top:7px;font-size:12px}
+.completed-list{margin-top:12px}
 </style></head><body><div class="app" id="app"></div><script>
 (function(){
 'use strict';
@@ -209,7 +220,7 @@ const KEY='opintokeskus_pysyva_v2';let saved={};try{saved=JSON.parse(localStorag
 let records=Array.isArray(saved.records)?saved.records:START;
 let cloudStatus='Haetaan ajantasaisia tietoja GitHubista…';
 let lastCloudSync='';
-let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,quickAddOpen=false,pickedTaskId='';
+let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,completedOpen=false,quickAddOpen=false,pickedTaskId='';
 const expandedPoolTasks=new Set();
 const host=document.getElementById('app');
 function save(){try{localStorage.setItem(KEY,JSON.stringify({records}))}catch(e){}}
@@ -236,13 +247,23 @@ async function syncFromCloud(){
         x._localDate=true;
         x._originDate=previous._originDate;
       }
+      // Omia muistiinpanoja ei korvata GitHubin minuutin välein päivittyvillä tiedoilla.
+      if(previous&&previous._localNote===true){
+        x.note=String(previous.note||'');
+        x._localNote=true;
+      }
       return x;
     });
     const extras=records.filter(x=>x.custom&&!ids.has(x.id));
     records=[...next,...extras];
     cloudStatus='Ajantasaiset tiedot GitHubista';
     lastCloudSync=new Date().toLocaleTimeString('fi-FI',{hour:'2-digit',minute:'2-digit'});
-    save();render();
+    save();
+    // Älä vie kohdistusta pois muistiinpanokentästä taustapäivityksen aikana.
+    if(document.activeElement?.matches?.('.pool-note-input')){
+      const indicator=host.querySelector('.syncState');
+      if(indicator)indicator.textContent=cloudStatus+' · päivitetty klo '+lastCloudSync;
+    }else render();
   }catch(err){
     cloudStatus='Yhteys ei onnistunut – näytetään selaimeen tallennetut tiedot';
     render();
@@ -319,6 +340,12 @@ function item(e,inPool=false){
 function poolItem(e){
  const color=courseColorStyle(e.course);
  const id=String(e.id);
+ const noteField=`<div class="pool-notes">
+   <label for="pool-note-${enc(id)}">Lisätiedot</label>
+   <textarea id="pool-note-${enc(id)}" class="pool-note-input" data-note-id="${enc(id)}" maxlength="2000" rows="3" placeholder="Kirjoita tehtävään liittyviä lisätietoja…">${enc(e.note||'')}</textarea>
+   <div class="pool-note-status" aria-live="polite">Muutokset tallentuvat automaattisesti tähän selaimeen.</div>
+   ${e.url?`<a href="${enc(e.url)}" target="_blank" rel="noopener noreferrer">Avaa ohje</a>`:''}
+ </div>`;
  return `<details class="pool-entry" data-pool-entry="${enc(id)}" style="${color}" ${expandedPoolTasks.has(id)?'open':''}>
    <summary class="pool-summary">
      <span class="pool-chevron" aria-hidden="true"></span>
@@ -327,7 +354,11 @@ function poolItem(e){
        <span class="pool-summary-course">${enc(e.course)}</span>
      </span>
    </summary>
-   <div class="pool-detail">${item(e,true)}</div>
+   <div class="pool-detail">
+     ${e.date?`<div class="pool-calendar-hint">Kalenterissa: ${formatDate(dateObj(e.date))}</div>`:''}
+     ${item(e,true)}
+     ${noteField}
+   </div>
  </details>`;
 }
 
@@ -401,17 +432,40 @@ function renderWeeks(begin,groups,today){
  return weekRows+detail;
 }
 
-function render(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),begin=dayAdd(dayAdd(today,-((today.getDay()+6)%7)),offset*14),finish=dayAdd(begin,14);const visible=records.filter(e=>e.date&&e.date>=dateStr(begin)&&e.date<dateStr(finish)).sort(sort);const groups={};visible.forEach(e=>(groups[e.date]??=[]).push(e));const undated=records.filter(e=>!e.date).sort((a,b)=>Number(!!a.done)-Number(!!b.done)||(deadlineInfo(a).date||'9999-99-99').localeCompare(deadlineInfo(b).date||'9999-99-99')||a.title.localeCompare(b.title,'fi'));
+function render(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),begin=dayAdd(dayAdd(today,-((today.getDay()+6)%7)),offset*14),finish=dayAdd(begin,14);const visible=records.filter(e=>e.date&&e.date>=dateStr(begin)&&e.date<dateStr(finish)).sort(sort);const groups={};visible.forEach(e=>(groups[e.date]??=[]).push(e));const todoTasks=records.filter(e=>e.kind==='task'&&!e.done).sort((a,b)=>Number(!!a.date)-Number(!!b.date)||(a.date||deadlineInfo(a).date||'9999-99-99').localeCompare(b.date||deadlineInfo(b).date||'9999-99-99')||a.title.localeCompare(b.title,'fi'));
+const doneTasks=records.filter(e=>e.kind==='task'&&e.done).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||a.title.localeCompare(b.title,'fi'));
 host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opintojen hallinta</p><h1 class="brand-art"><img src="data:image/webp;base64,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" alt="Opintokeskus" width="320" height="190"></h1><p>Seuraavan kahden viikon tehtävät, etäopetukset ja kurssien päättymiset yhdessä näkymässä.</p><div class="header-actions"><button class="btn primary" id="addBtn">+ Lisää tehtävä</button><button class="btn" id="importBtn">Tuo varmuuskopio</button><button class="btn" id="exportBtn">Vie varmuuskopio</button><input type="file" id="importFile" accept=".json,application/json" style="display:none"></div><p class="syncState" style="font-size:12px;margin-top:10px">${enc(cloudStatus)}${lastCloudSync?' · päivitetty klo '+enc(lastCloudSync):''}</p></header>
 <div class="addpanel ${formOpen?'show':''}" id="addPanel"><form id="newForm"><div class="addgrid"><div class="field"><label for="newTitle">Tehtävän nimi</label><input id="newTitle" name="title" required placeholder="Esim. palautettava essee"></div><div class="field"><label for="newDate">Päivämäärä</label><input id="newDate" name="date" type="date"></div><div class="field"><label for="newCourse">Kurssi</label><input id="newCourse" name="course" placeholder="Valinnainen"></div><div class="field"><label for="newKind">Tyyppi</label><select id="newKind" name="kind"><option value="task">Tehtävä</option><option value="lesson">Opetus / tapahtuma</option><option value="end">Kurssin päättyminen</option></select></div></div><div class="submitrow"><button class="btn primary" type="submit">Tallenna merkintä</button></div></form></div>
 <div class="range-only"><button type="button" class="dates" id="rangeSelect" title="Valitse kalenterijakso" aria-label="Kalenterijakso ${formatDate(begin)} – ${formatDate(finish)}. Valitse toinen jakso.">${formatDate(begin)} – ${formatDate(finish)}</button><input type="date" id="rangePicker" class="range-picker" aria-label="Valitse kalenterijakson päivä"></div>
 <main class="days">${view==='week'?renderWeeks(begin,groups,today):renderList(visible,groups,today)}</main>
-<details class="unscheduled" ${unscheduledOpen?'open':''}><summary>Päiväämättömät tehtävät (${undated.length})</summary><p class="poolhelp">${pickedTaskId?'<span class="pool-active-help">Tehtävä valittu. Klikkaa haluamaasi kalenteripäivää.</span>':'Avaa tehtävä pienestä kolmiosta. Sen jälkeen voit vetää sen kalenteripäivään tai valita ”Valitse sijoitettavaksi” ja haluamasi viikonpäivän. Näytämme varmistamattomien määräaikojen sijasta kurssin päättymispäivän suuntaa-antavana tietona.'} Kalenterin ×-painike palauttaa tehtävän tähän listaan.</p><div class="unscheduledgrid">${undated.length?undated.map(poolItem).join(''):'<p class="muted">Ei päiväämättömiä tehtäviä.</p>'}</div></details>
+<details class="unscheduled todo-list" data-task-list="todo" ${unscheduledOpen?'open':''}><summary>Tekemättömät tehtävät (${todoTasks.length})</summary>
+<p class="poolhelp">${pickedTaskId?'<span class="pool-active-help">Tehtävä valittu. Klikkaa haluamaasi kalenteripäivää.</span>':'Avaa tehtävä pienestä kolmiosta. Laajennetussa näkymässä voit kirjoittaa lisätietoja, merkitä tehtävän tehdyksi tai sijoittaa sen kalenteriin.'} Kalenteriin jo sijoitetut tehtävät pysyvät myös kalenterissa.</p>
+<div class="unscheduledgrid">${todoTasks.length?todoTasks.map(poolItem).join(''):'<p class="muted">Ei tekemättömiä tehtäviä.</p>'}</div></details>
+<details class="unscheduled completed-list" data-task-list="done" ${completedOpen?'open':''}><summary>Tehdyt tehtävät (${doneTasks.length})</summary>
+<p class="poolhelp">Valmiit tehtävät säilyvät kalenterissa alkuperäisillä päivillään. Voit avata tehtävän lisätiedot kolmiosta tai palauttaa sen tekemättömäksi.</p>
+<div class="unscheduledgrid">${doneTasks.length?doneTasks.map(poolItem).join(''):'<p class="muted">Ei vielä tehtyjä tehtäviä.</p>'}</div></details>
 <p class="foot">Kurssien päättymispäivät eivät välttämättä ole tehtävien viimeisiä palautuspäiviä. Kielenhuollon tehtäväpäivät perustuvat aikaisempaan työskentelyaikatauluun. OAMKin heinäkuun 2027 loppupäivä on alustava. Ei muistutusilmoituksia eikä automaattista Google Kalenteri -synkronointia. Laitteella tekemäsi tehtäväkuittaukset tallentuvat kyseisen selaimen paikalliseen muistiin. Ne eivät vielä synkronoidu puhelimen ja tietokoneen välillä. Vie varmuuskopio ennen selaimen tietojen tyhjentämistä tai laitteenvaihtoa. Tämän julkisen sovelluksen yhteinen tehtävälista haetaan GitHubista. Sen tiedot ovat julkisesti luettavissa. Selaimessa tehtävät omat muutokset säilyvät tässä laitteessa, eivätkä siirry automaattisesti GitHubiin.</p>`;
 host.querySelector('#importBtn').onclick=()=>host.querySelector('#importFile').click();
-host.querySelector('#importFile').onchange=async(ev)=>{const file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>2000000){alert('Tiedosto on liian suuri (enintään 2 Mt).');return;}try{const input=JSON.parse(await file.text());const rr=Array.isArray(input)?input:input.records;if(!Array.isArray(rr)||rr.length>1000)throw new Error('Tiedoston muoto ei kelpaa.');const safe=rr.map((x,i)=>{if(!x||typeof x!=='object'||typeof x.title!=='string')throw new Error('Virheellinen tehtävä.');const kind=['task','lesson','end'].includes(x.kind)?x.kind:'task';const date=typeof x.date==='string'&&(/^\d{4}-\d{2}-\d{2}$/.test(x.date)||x.date==='')?x.date:'';return {id:String(x.id||('import-'+i)).slice(0,100),date,title:x.title.slice(0,300),course:String(x.course||'Oma merkintä').slice(0,200),kind,time:String(x.time||'').slice(0,40),done:!!x.done,note:String(x.note||'').slice(0,1000),url:typeof x.url==='string'&&/^https:\/\//.test(x.url)?x.url:'',custom:!!x.custom}});if(records.length&&!confirm('Korvataanko nykyiset merkinnät tuoduilla tiedoilla?'))return;records=safe;save();offset=0;render();alert('Opintotiedot tuotu onnistuneesti ('+records.length+' merkintää).');}catch(ex){alert('Tuonti epäonnistui: '+ex.message)}};
+host.querySelector('#importFile').onchange=async(ev)=>{const file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>2000000){alert('Tiedosto on liian suuri (enintään 2 Mt).');return;}try{const input=JSON.parse(await file.text());const rr=Array.isArray(input)?input:input.records;if(!Array.isArray(rr)||rr.length>1000)throw new Error('Tiedoston muoto ei kelpaa.');const safe=rr.map((x,i)=>{if(!x||typeof x!=='object'||typeof x.title!=='string')throw new Error('Virheellinen tehtävä.');const kind=['task','lesson','end'].includes(x.kind)?x.kind:'task';const date=typeof x.date==='string'&&(/^\d{4}-\d{2}-\d{2}$/.test(x.date)||x.date==='')?x.date:'';return {id:String(x.id||('import-'+i)).slice(0,100),date,title:x.title.slice(0,300),course:String(x.course||'Oma merkintä').slice(0,200),kind,time:String(x.time||'').slice(0,40),done:!!x.done,note:String(x.note||'').slice(0,2000),url:typeof x.url==='string'&&/^https:\/\//.test(x.url)?x.url:'',custom:!!x.custom}});if(records.length&&!confirm('Korvataanko nykyiset merkinnät tuoduilla tiedoilla?'))return;records=safe;save();offset=0;render();alert('Opintotiedot tuotu onnistuneesti ('+records.length+' merkintää).');}catch(ex){alert('Tuonti epäonnistui: '+ex.message)}};
 host.querySelector('#exportBtn').onclick=()=>{const payload=JSON.stringify({format:'opintokeskus-1',records},null,2);const blob=new Blob([payload],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='opintokeskus-varmuuskopio.json';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1500)};
-host.querySelector('.unscheduled').addEventListener('toggle',e=>{if(e.target===e.currentTarget)unscheduledOpen=e.target.open});
+host.querySelectorAll('.unscheduled').forEach(section=>{
+ section.addEventListener('toggle',e=>{
+   if(e.target!==e.currentTarget)return;
+   if(section.dataset.taskList==='done')completedOpen=section.open;
+   else unscheduledOpen=section.open;
+ });
+});
+host.querySelectorAll('[data-note-id]').forEach(input=>{
+ input.addEventListener('input',()=>{
+   const entry=records.find(x=>String(x.id)===input.dataset.noteId);
+   if(!entry)return;
+   entry.note=input.value.slice(0,2000);
+   if(!entry.custom)entry._localNote=true;
+   save();
+   const hint=input.closest('.pool-notes')?.querySelector('.pool-note-status');
+   if(hint)hint.textContent='Tallennettu tähän selaimeen.';
+ });
+});
 host.querySelectorAll('.pool-entry > summary').forEach(summary=>{
  summary.addEventListener('click',()=>{
    const entry=summary.parentElement;
