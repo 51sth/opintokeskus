@@ -60,7 +60,10 @@
 /* Raahattava tehtäväpankki ja viikonpäivien pudotusalueet */
 .unscheduled{margin:16px 0}
 .poolhelp{font-size:12px;color:#5c7290;line-height:1.5;margin:10px 0}
-.unscheduledgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:290px;overflow-y:auto;align-content:start;padding-right:4px}
+.unscheduledgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;align-content:start}
+.unscheduled .item{background:var(--course-bg,#fff4e5)!important;border:1px solid var(--course-accent,#b58748);border-left:6px solid var(--course-accent,#b58748);border-radius:10px}
+.unscheduled .meta .pill:first-child{background:var(--course-accent,#b58748)!important;color:#fff!important}
+.unscheduled .item.done .itemtitle{color:#3a684c}
 .unscheduled .item{margin:0;padding:9px;min-width:0}
 .unscheduled .note{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .unscheduled .itemtitle{font-size:13px}
@@ -78,7 +81,7 @@
 @media(max-width:620px){.dayplus{font-size:16px}.pool-pick{padding:7px 10px}}
 .item .remove-day{background:transparent;border:1px solid #e6c6ba;border-radius:7px;padding:3px 6px;font-size:17px;line-height:1;color:#a34432;flex-shrink:0}
 .item .remove-day:hover{background:#fff1eb}
-@media(max-width:620px){.unscheduledgrid{grid-template-columns:1fr;max-height:260px}.unscheduled .note{display:none}}
+@media(max-width:620px){.unscheduled .note{display:none}}
 </style></head><body><div class="app" id="app"></div><script>
 (function(){
 'use strict';
@@ -132,6 +135,17 @@ function formatDate(d){return new Intl.DateTimeFormat('fi-FI',{day:'numeric',mon
 function dateHead(d){return new Intl.DateTimeFormat('fi-FI',{weekday:'long',day:'numeric',month:'long'}).format(d)}
 function enc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function sort(a,b){return (a.date||'9999').localeCompare(b.date||'9999')||(a.time||'99').localeCompare(b.time||'99')||a.title.localeCompare(b.title,'fi')}
+function courseColorStyle(course){
+ const palette=[
+ ['#e7f0ff','#3f70b1'],['#e6f5e9','#3f8854'],['#fff0df','#aa6c29'],
+ ['#f2e9fb','#7752aa'],['#e2f4f4','#2f858a'],['#ffe9f0','#ac5273'],
+ ['#ecf2d8','#6e832c'],['#fff3d6','#987621'],['#eae9f8','#6159a4']
+ ];
+ let hash=0;
+ for(const character of String(course||'Oma merkintä'))hash=(hash*31+character.codePointAt(0))>>>0;
+ const [bg,accent]=palette[hash%palette.length];
+ return '--course-bg:'+bg+';--course-accent:'+accent;
+}
 function deadlineInfo(e){
  const explicit=String(e.deadline||'');
  if(/^\d{4}-\d{2}-\d{2}$/.test(explicit)&&dateStr(dateObj(explicit))===explicit)return {date:explicit,confirmed:true};
@@ -151,7 +165,7 @@ function item(e,inPool=false){
 
  const remove=e.kind==='task'&&!inPool&&e.date?`<button type="button" class="remove-day" data-unschedule="${enc(e.id)}" title="Poista kalenterista ja palauta päiväämättömiin" aria-label="Palauta tehtävä ${enc(e.title)} päiväämättömiin">×</button>`:'';
  const deleteOther=e.custom&&e.kind!=='task'?`<button type="button" class="remove" data-delete="${enc(e.id)}" title="Poista oma tapahtumamerkintä">×</button>`:'';
- return `<article class="item ${klass} ${draggable?'drag-source':''}" ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill">${enc(e.course)}</span><span class="pill">${kind}</span>${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
+ return `<article class="item ${klass} ${draggable?'drag-source':''}" ${inPool?`style="${courseColorStyle(e.course)}"`:''} ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill">${enc(e.course)}</span><span class="pill">${kind}</span>${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
 }
 
 function moveTask(id,targetDate){
@@ -186,8 +200,8 @@ function renderWeeks(begin,groups,today){
  const todayStr=dateStr(today);
  const startStr=dateStr(begin);
  const endStr=dateStr(dayAdd(begin,14));
- if(!selectedDate||selectedDate<startStr||selectedDate>=endStr){
-   selectedDate=todayStr>=startStr&&todayStr<endStr?todayStr:startStr;
+ if(selectedDate&&(selectedDate<startStr||selectedDate>=endStr)){
+   selectedDate='';
    quickAddOpen=false;
  }
  const weekRows=[0,7].map(dayOffset=>{
@@ -218,7 +232,7 @@ function renderWeeks(begin,groups,today){
   <div class="field wide"><label for="dayNewCourse">Opintojakso / kurssi (valinnainen)</label><input id="dayNewCourse" name="course" maxlength="200" placeholder="Esim. Communication Skills"></div>
   <div class="field wide"><label for="dayNewNote">Lisätiedot (valinnainen)</label><textarea id="dayNewNote" name="note" maxlength="1000" rows="2" placeholder="Omat muistiinpanot"></textarea></div>
   </div><div class="dayquick-actions"><button type="button" class="btn" id="dayQuickCancel">Peruuta</button><button type="submit" class="btn primary">Tallenna päivälle</button></div></form>`:'';
- const detail=`<section class="daydetails"><div class="daydetails-head"><header>${dateHead(dateObj(selectedDate))}</header><button type="button" class="day-add" id="dayAddBtn" aria-expanded="${quickAddOpen?'true':'false'}" aria-controls="dayQuickForm">${quickAddOpen?'− Sulje lisäys':'+ Lisää tähän päivään'}</button></div>${quickForm}${chosen.length?chosen.map(item).join(''):'<div class="blank">Ei tapahtumia valittuna päivänä.</div>'}</section>`;
+ const detail=selectedDate?`<section class="daydetails"><div class="daydetails-head"><header>${dateHead(dateObj(selectedDate))}</header><button type="button" class="day-add" id="dayAddBtn" aria-expanded="${quickAddOpen?'true':'false'}" aria-controls="dayQuickForm">${quickAddOpen?'− Sulje lisäys':'+ Lisää tähän päivään'}</button></div>${quickForm}${chosen.length?chosen.map(item).join(''):'<div class="blank">Ei tapahtumia valittuna päivänä.</div>'}</section>`:'';
  return weekRows+detail;
 }
 
@@ -269,6 +283,22 @@ periodInput.onchange=()=>{const target=periodInput.value;if(!target||dateStr(dat
 host.querySelector('#addBtn').onclick=()=>{formOpen=!formOpen;render()};host.querySelectorAll('[data-check]').forEach(x=>x.onclick=()=>{let e=records.find(t=>t.id===x.dataset.check);if(e){const oldDone=!!e.done;e.done=!e.done;if(!e.custom){if(e._local){if(e.done===e._originDone){delete e._local;delete e._originDone;}}else{e._local=true;e._originDone=oldDone;}}save();render()}});host.querySelectorAll('[data-unschedule]').forEach(x=>x.onclick=()=>moveTask(x.dataset.unschedule,''));
 host.querySelectorAll('[data-delete]').forEach(x=>x.onclick=()=>{if(!confirm('Poistetaanko tapahtumamerkintä kokonaan?'))return;records=records.filter(t=>t.id!==x.dataset.delete);save();render()});host.querySelector('#newForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),title=String(fd.get('title')||'').trim();if(!title)return;records.push({id:'mine-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:String(fd.get('date')||''),title,course:String(fd.get('course')||'Oma merkintä'),kind:String(fd.get('kind')||'task'),time:'',done:false,note:'',url:'',custom:true});formOpen=false;save();render()};
 }
+// Sivun tyhjää aluetta tai muuta sisältöä klikkaamalla kalenteripäivän valinta poistuu.
+document.addEventListener('click',event=>{
+ if(!selectedDate||!(event.target instanceof Element))return;
+ if(event.target.closest('[data-day],.daydetails'))return;
+ selectedDate='';
+ quickAddOpen=false;
+ // Poista korostus ilman koko sivun uudelleenpiirtoa, jotta muut toiminnot
+ // (esim. tiedoston valinta tai lomakkeen avaus) eivät keskeydy.
+ const selected=host.querySelector('.weekday.selected');
+ if(selected){
+   selected.classList.remove('selected');
+   selected.setAttribute('aria-pressed','false');
+   selected.querySelector('.dayplus')?.remove();
+ }
+ host.querySelector('.daydetails')?.remove();
+});
 render();syncFromCloud();setInterval(syncFromCloud,60000);
 })();
 </script></body></html>
