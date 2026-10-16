@@ -32,7 +32,11 @@
 .daybadge.done{background:#e4f4e8;color:#31714b}
 .daybadge.lesson{background:#f0e8fa;color:#70508e}
 .daybadge.end{background:#eaf4ff;color:#36628a}
-.daypreview{font-size:10px;line-height:1.25;display:block;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#546a82;border-radius:5px;padding:3px 4px}
+.daypreview{font-size:10px;line-height:1.25;display:block;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#546a82;border-radius:5px;padding:3px 4px;border-left:4px solid var(--course-accent,#9eafc0)}
+.coursemarks{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-top:2px;min-height:8px}
+.coursemark{display:inline-block;flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--course-accent,#9eafc0);border:1px solid #00000018}
+.daydetails .item{border-left:6px solid var(--course-accent,#9eafc0)}
+.daydetails .item .meta .pill:first-child{background:var(--course-accent,#9eafc0)!important;color:white!important}
 .daypreview.task-pending{background:#f7dcaf;color:#754b19}
 .daypreview.task-done{background:#cbe8d0;color:#275f3b;text-decoration:line-through}
 .daypreview.kind-lesson{background:#dce7fb;color:#365a84}
@@ -55,7 +59,7 @@
 .nextthree{background:#f7fbff;border:1px solid #dbeaf8;border-radius:13px;padding:11px 13px;margin:10px 0}
 .nextthree strong{display:block;font-size:13px;color:#36577c;margin-bottom:6px}
 .nextthree .nextline{font-size:12px;line-height:1.5;color:#536c87;margin-top:4px}
-@media(max-width:620px){.weekgrid{gap:3px}.weekday{min-height:79px;padding:6px 2px;border-radius:8px;align-items:center;text-align:center}.weekday.selected{padding:5px 1px}.weekday .daylabel{font-size:10px}.weekday .daynum{font-size:16px}.weekday .daybadges{justify-content:center}.daybadge{font-size:10px;padding:1px 3px}.daypreview{display:none}.daydetails{padding:9px}.viewbtn{flex:1}}
+@media(max-width:620px){.weekgrid{gap:3px}.weekday{min-height:79px;padding:6px 2px;border-radius:8px;align-items:center;text-align:center}.weekday.selected{padding:5px 1px}.weekday .daylabel{font-size:10px}.weekday .daynum{font-size:16px}.weekday .daybadges{justify-content:center}.daybadge{font-size:10px;padding:1px 3px}.daypreview{display:none}.coursemarks{justify-content:center}.coursemark{width:7px;height:7px;flex-basis:7px}.daydetails{padding:9px}.viewbtn{flex:1}}
 
 /* Raahattava tehtäväpankki ja viikonpäivien pudotusalueet */
 .unscheduled{margin:16px 0}
@@ -165,7 +169,7 @@ function item(e,inPool=false){
 
  const remove=e.kind==='task'&&!inPool&&e.date?`<button type="button" class="remove-day" data-unschedule="${enc(e.id)}" title="Poista kalenterista ja palauta päiväämättömiin" aria-label="Palauta tehtävä ${enc(e.title)} päiväämättömiin">×</button>`:'';
  const deleteOther=e.custom&&e.kind!=='task'?`<button type="button" class="remove" data-delete="${enc(e.id)}" title="Poista oma tapahtumamerkintä">×</button>`:'';
- return `<article class="item ${klass} ${draggable?'drag-source':''}" ${inPool?`style="${courseColorStyle(e.course)}"`:''} ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill">${enc(e.course)}</span><span class="pill">${kind}</span>${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
+ return `<article class="item ${klass} ${draggable?'drag-source':''}" style="${courseColorStyle(e.course)}" ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill">${enc(e.course)}</span><span class="pill">${kind}</span>${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
 }
 
 function moveTask(id,targetDate){
@@ -215,11 +219,13 @@ function renderWeeks(begin,groups,today){
      const classes=entries.filter(x=>x.kind==='lesson').length;
      const ends=entries.filter(x=>x.kind==='end').length;
      const dayName=['Su','Ma','Ti','Ke','To','Pe','La'][d.getDay()];
-     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" title="${enc(x.title)}">${x.kind==='task'?(x.done?'✓ ':'○ '):''}${enc(x.title)}</span>`).join('');
+     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?(x.done?'✓ ':'○ '):''}${enc(x.title)}</span>`).join('');
+     const courses=[...new Set(entries.filter(x=>x.kind==='task').map(x=>x.course))];
+     const courseMarks=courses.length?`<span class="coursemarks" aria-hidden="true">${courses.map(c=>`<span class="coursemark" style="${courseColorStyle(c)}" title="${enc(c)}"></span>`).join('')}</span>`:'';
      return `<button type="button" class="weekday ${key===selectedDate?'selected':''} ${key===todayStr?'todaymark':''} ${i>4?'weekend':''} ${pending?'has-pending':completed?'only-done':''}" data-day="${key}" aria-label="${enc(dateHead(d))}, ${entries.length} merkintää" aria-pressed="${key===selectedDate?'true':'false'}">
        <span class="daylabel">${dayName}</span><span class="daynum">${d.getDate()}</span>
        <span class="daybadges">${pending?`<span class="daybadge">${pending}</span>`:''}${completed?`<span class="daybadge done">✓${completed}</span>`:''}${classes?`<span class="daybadge lesson">◉${classes}</span>`:''}${ends?`<span class="daybadge end">◈${ends}</span>`:''}</span>
-       ${previews}${key===selectedDate?'<span class="dayplus" aria-hidden="true">+</span>':''}
+       ${courseMarks}${previews}${key===selectedDate?'<span class="dayplus" aria-hidden="true">+</span>':''}
      </button>`;
    }).join('');
    return `<section class="weekgroup"><div class="weekgrid">${cells}</div></section>`;
