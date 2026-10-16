@@ -696,6 +696,24 @@
       "note": "",
       "url": "",
       "custom": false
+    },
+    {
+      "id": "taimi-ry-jooga-viikoittain",
+      "date": "",
+      "title": "Jooga – Taimi ry",
+      "course": "Taimi ry",
+      "kind": "activity",
+      "time": "",
+      "done": false,
+      "note": "Toistuva jooga torstaisin, kunnes toisin sovitaan. Kellonaikaa ei ole vielä merkitty.",
+      "url": "",
+      "custom": false,
+      "recurrence": {
+        "frequency": "weekly",
+        "weekday": 4,
+        "start": "2026-10-22",
+        "until": ""
+      }
     }
   ],
   "updated": "2026-10-16"
