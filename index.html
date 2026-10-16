@@ -22,7 +22,15 @@
 .weekday.selected.has-pending,.weekday.selected.only-done{border-color:#689dd0;box-shadow:inset 0 0 0 1px #689dd0}
 .weekday.has-pending:hover{background:#ffefd7}
 .weekday.only-done:hover{background:#dff0e3}
-.range-only{margin:18px 0 14px}
+.range-only{margin:18px 0 14px;display:flex;align-items:center;flex-wrap:wrap;gap:9px 16px}
+.week-picks{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px}
+.week-pick{display:inline-flex;gap:5px;align-items:center;white-space:nowrap;font-size:12px;color:#365373;font-weight:750;cursor:pointer;user-select:none}
+.week-pick input{accent-color:#365f9b;width:15px;height:15px;margin:0;cursor:pointer}
+.week-pick input:disabled{cursor:not-allowed}
+.week-reset{background:#fff;border:1px solid #cfdfed;border-radius:8px;color:#3d6187;padding:5px 9px;font-size:11px;font-weight:800}
+.week-reset:hover{background:#edf5ff}
+.week-count{font-size:11px;color:#61748c;white-space:nowrap}
+@media(max-width:620px){.range-only .dates{flex-basis:100%}.week-picks{gap:7px 12px}.week-reset{padding:7px 9px}.week-count{font-size:10px}}
 .range-only .dates{font-size:18px;font-weight:850;letter-spacing:-.2px;border:0;padding:0;background:transparent;color:#25364c;text-align:left}
 .range-only .dates:hover{text-decoration:underline;text-underline-offset:3px}
 .range-only .dates:focus-visible{outline:2px solid #3c8bce;outline-offset:4px;border-radius:3px}
@@ -181,7 +189,6 @@ body{background:var(--ui-canvas);color:var(--ui-text)}
  .coursemark{width:8px;height:8px;flex-basis:8px}
  .weekday .coursemarks{gap:4px}
 }
-.hero h1.brand-art{margin:4px 0 8px;line-height:0;font-size:0}.hero h1.brand-art img{display:block;width:min(330px,100%);height:auto;mix-blend-mode:multiply;object-fit:contain}@media(max-width:620px){.hero h1.brand-art img{width:min(270px,100%)}}
 /* Päiväämättömien tehtävien tiivis avattava lista. */
 .unscheduledgrid{gap:7px}
 .unscheduled .pool-entry{min-width:0;overflow:hidden;background:var(--course-bg,#e9f0f8);border:1px solid var(--course-accent,#607a9c);border-left:5px solid var(--course-accent,#607a9c);border-radius:10px}
@@ -222,6 +229,17 @@ let cloudStatus='Haetaan ajantasaisia tietoja GitHubista…';
 let lastCloudSync='';
 let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,completedOpen=false,quickAddOpen=false,pickedTaskId='';
 const expandedPoolTasks=new Set();
+// Viikkonäkymän valinnat ovat vain tämän selaimen asetuksia, eivät opintotietoja.
+const WEEK_VIS_KEY='opintokeskus_nakyvat_viikot_v1';
+let weekVisibility=[true,true,false,false];
+try{
+ const stored=JSON.parse(localStorage.getItem(WEEK_VIS_KEY)||'null');
+ if(Array.isArray(stored)&&stored.length===4&&stored.every(x=>typeof x==='boolean')&&stored.some(Boolean)){
+   weekVisibility=stored;
+ }
+}catch(e){}
+function saveWeekVisibility(){try{localStorage.setItem(WEEK_VIS_KEY,JSON.stringify(weekVisibility))}catch(e){}}
+
 const host=document.getElementById('app');
 function save(){try{localStorage.setItem(KEY,JSON.stringify({records}))}catch(e){}}
 async function syncFromCloud(){
@@ -274,6 +292,24 @@ function dateStr(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0
 function dayAdd(d,n){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+n);return x}
 function formatDate(d){return new Intl.DateTimeFormat('fi-FI',{day:'numeric',month:'numeric',year:'numeric'}).format(d)}
 function isoWeekNumber(d){const u=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));u.setUTCDate(u.getUTCDate()+4-(u.getUTCDay()||7));const first=new Date(Date.UTC(u.getUTCFullYear(),0,1));return Math.ceil((((u-first)/86400000)+1)/7)}
+function anchorBegin(){
+ const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+ return dayAdd(dayAdd(today,-((today.getDay()+6)%7)),offset*14);
+}
+function weekSlotForDate(begin,isoDate){
+ for(let i=0;i<4;i++){
+   if(isoDate>=dateStr(dayAdd(begin,i*7))&&isoDate<dateStr(dayAdd(begin,(i+1)*7)))return i;
+ }
+ return -1;
+}
+function activateWeekForDate(begin,isoDate){
+ const slot=weekSlotForDate(begin,isoDate);
+ if(slot>=0&&!weekVisibility[slot]){
+   weekVisibility[slot]=true;
+   saveWeekVisibility();
+ }
+ return slot;
+}
 function dateHead(d){return new Intl.DateTimeFormat('fi-FI',{weekday:'long',day:'numeric',month:'long'}).format(d)}
 function enc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function sort(a,b){return (a.date||'9999').localeCompare(b.date||'9999')||(a.time||'99').localeCompare(b.time||'99')||a.title.localeCompare(b.title,'fi')}
@@ -376,7 +412,9 @@ function moveTask(id,targetDate){
  if(targetDate){
    const today=new Date(),start=dayAdd(new Date(today.getFullYear(),today.getMonth(),today.getDate()),-((today.getDay()+6)%7));
    const difference=Math.round((Date.UTC(...targetDate.split('-').map(Number).map((v,i)=>i===1?v-1:v))-Date.UTC(start.getFullYear(),start.getMonth(),start.getDate()))/86400000);
-   offset=Math.floor(difference/14);
+   // Kalenterissa jo näkyvään päivään siirtäminen ei saa hypätä toiseen jaksoon.
+   if(weekSlotForDate(anchorBegin(),targetDate)<0)offset=Math.floor(difference/14);
+   activateWeekForDate(anchorBegin(),targetDate);
    selectedDate=targetDate;
    filter='all';view='week';
  }
@@ -392,14 +430,16 @@ function renderList(visible,groups,today){
 }
 function renderWeeks(begin,groups,today){
  const todayStr=dateStr(today);
- const startStr=dateStr(begin);
- const endStr=dateStr(dayAdd(begin,14));
- if(selectedDate&&(selectedDate<startStr||selectedDate>=endStr)){
+ const visibleIndices=[0,1,2,3].filter(i=>weekVisibility[i]);
+ const dateIsVisible=selectedDate&&visibleIndices.some(i=>
+   selectedDate>=dateStr(dayAdd(begin,i*7))&&selectedDate<dateStr(dayAdd(begin,(i+1)*7))
+ );
+ if(selectedDate&&!dateIsVisible){
    selectedDate='';
    quickAddOpen=false;
  }
- const weekRows=[0,7].map(dayOffset=>{
-   const start=dayAdd(begin,dayOffset);
+ const weekRows=visibleIndices.map(i=>{
+   const start=dayAdd(begin,i*7);
    const finish=dayAdd(start,6);
    const cells=Array.from({length:7},(_,i)=>{
      const d=dayAdd(start,i);
@@ -432,11 +472,27 @@ function renderWeeks(begin,groups,today){
  return weekRows+detail;
 }
 
-function render(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),begin=dayAdd(dayAdd(today,-((today.getDay()+6)%7)),offset*14),finish=dayAdd(begin,14);const visible=records.filter(e=>e.date&&e.date>=dateStr(begin)&&e.date<dateStr(finish)).sort(sort);const groups={};visible.forEach(e=>(groups[e.date]??=[]).push(e));const todoTasks=records.filter(e=>e.kind==='task'&&!e.done).sort((a,b)=>Number(!!a.date)-Number(!!b.date)||(a.date||deadlineInfo(a).date||'9999-99-99').localeCompare(b.date||deadlineInfo(b).date||'9999-99-99')||a.title.localeCompare(b.title,'fi'));
+function render(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),begin=anchorBegin();
+const activeIndices=[0,1,2,3].filter(i=>weekVisibility[i]);
+const firstVisibleDay=dayAdd(begin,activeIndices[0]*7),finish=dayAdd(begin,(activeIndices[activeIndices.length-1]+1)*7);
+const visible=records.filter(e=>e.date&&activeIndices.some(i=>e.date>=dateStr(dayAdd(begin,i*7))&&e.date<dateStr(dayAdd(begin,(i+1)*7)))).sort(sort);
+const groups={};visible.forEach(e=>(groups[e.date]??=[]).push(e));
+const selectedWeeks=Array.from({length:4},(_,i)=>({
+ number:isoWeekNumber(dayAdd(begin,i*7)),i,checked:weekVisibility[i]
+}));
+const todoTasks=records.filter(e=>e.kind==='task'&&!e.done).sort((a,b)=>Number(!!a.date)-Number(!!b.date)||(a.date||deadlineInfo(a).date||'9999-99-99').localeCompare(b.date||deadlineInfo(b).date||'9999-99-99')||a.title.localeCompare(b.title,'fi'));
 const doneTasks=records.filter(e=>e.kind==='task'&&e.done).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||a.title.localeCompare(b.title,'fi'));
-host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opintojen hallinta</p><h1 class="brand-art"><img src="data:image/webp;base64,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" alt="Opintokeskus" width="320" height="190"></h1><p>Seuraavan kahden viikon tehtävät, etäopetukset ja kurssien päättymiset yhdessä näkymässä.</p><div class="header-actions"><button class="btn primary" id="addBtn">+ Lisää tehtävä</button><button class="btn" id="importBtn">Tuo varmuuskopio</button><button class="btn" id="exportBtn">Vie varmuuskopio</button><input type="file" id="importFile" accept=".json,application/json" style="display:none"></div><p class="syncState" style="font-size:12px;margin-top:10px">${enc(cloudStatus)}${lastCloudSync?' · päivitetty klo '+enc(lastCloudSync):''}</p></header>
+host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opintojen hallinta</p><h1>Opintokeskus</h1><p>Seuraavan kahden viikon tehtävät, etäopetukset ja kurssien päättymiset yhdessä näkymässä.</p><div class="header-actions"><button class="btn primary" id="addBtn">+ Lisää tehtävä</button><button class="btn" id="importBtn">Tuo varmuuskopio</button><button class="btn" id="exportBtn">Vie varmuuskopio</button><input type="file" id="importFile" accept=".json,application/json" style="display:none"></div><p class="syncState" style="font-size:12px;margin-top:10px">${enc(cloudStatus)}${lastCloudSync?' · päivitetty klo '+enc(lastCloudSync):''}</p></header>
 <div class="addpanel ${formOpen?'show':''}" id="addPanel"><form id="newForm"><div class="addgrid"><div class="field"><label for="newTitle">Tehtävän nimi</label><input id="newTitle" name="title" required placeholder="Esim. palautettava essee"></div><div class="field"><label for="newDate">Päivämäärä</label><input id="newDate" name="date" type="date"></div><div class="field"><label for="newCourse">Kurssi</label><input id="newCourse" name="course" placeholder="Valinnainen"></div><div class="field"><label for="newKind">Tyyppi</label><select id="newKind" name="kind"><option value="task">Tehtävä</option><option value="lesson">Opetus / tapahtuma</option><option value="end">Kurssin päättyminen</option></select></div></div><div class="submitrow"><button class="btn primary" type="submit">Tallenna merkintä</button></div></form></div>
-<div class="range-only"><button type="button" class="dates" id="rangeSelect" title="Valitse kalenterijakso" aria-label="Kalenterijakso ${formatDate(begin)} – ${formatDate(finish)}. Valitse toinen jakso.">${formatDate(begin)} – ${formatDate(finish)}</button><input type="date" id="rangePicker" class="range-picker" aria-label="Valitse kalenterijakson päivä"></div>
+<div class="range-only">
+  <button type="button" class="dates" id="rangeSelect" title="Valitse kalenterijakso" aria-label="Kalenterijakso ${formatDate(firstVisibleDay)} – ${formatDate(finish)}. Valitse toinen jakso.">${formatDate(firstVisibleDay)} – ${formatDate(finish)}</button>
+  <div class="week-picks" role="group" aria-label="Näytä tai piilota kalenteriviikot">
+    ${selectedWeeks.map(w=>`<label class="week-pick" title="Näytä tai piilota viikko ${w.number}"><input type="checkbox" data-week-visible="${w.i}" ${w.checked?'checked':''} ${w.checked&&activeIndices.length===1?'disabled':''}><span>vk ${w.number}</span></label>`).join('')}
+  </div>
+  <button type="button" class="week-reset" id="resetWeeks">Palauta 2 viikkoa</button>
+  <span class="week-count">${activeIndices.length} / 4 viikkoa näkyvissä</span>
+  <input type="date" id="rangePicker" class="range-picker" aria-label="Valitse kalenterijakson päivä">
+</div>
 <main class="days">${view==='week'?renderWeeks(begin,groups,today):renderList(visible,groups,today)}</main>
 <details class="unscheduled todo-list" data-task-list="todo" ${unscheduledOpen?'open':''}><summary>Tekemättömät tehtävät (${todoTasks.length})</summary>
 <p class="poolhelp">${pickedTaskId?'<span class="pool-active-help">Tehtävä valittu. Klikkaa haluamaasi kalenteripäivää.</span>':'Avaa tehtävä pienestä kolmiosta. Laajennetussa näkymässä voit kirjoittaa lisätietoja, merkitä tehtävän tehdyksi tai sijoittaa sen kalenteriin.'} Kalenteriin jo sijoitetut tehtävät pysyvät myös kalenterissa.</p>
@@ -502,11 +558,26 @@ if(quickFormEl)quickFormEl.onsubmit=ev=>{
  records.push({id:'mine-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:selectedDate,title,course:String(fd.get('course')||'').trim().slice(0,200)||'Oma merkintä',kind:fd.get('kind')==='lesson'?'lesson':'task',time:String(fd.get('time')||'').trim().slice(0,40),done:false,note:String(fd.get('note')||'').trim().slice(0,1000),url:'',custom:true});
  quickAddOpen=false;save();render();
 };
+host.querySelectorAll('[data-week-visible]').forEach(input=>input.onchange=()=>{
+ const index=Number(input.dataset.weekVisible);
+ if(!Number.isInteger(index)||index<0||index>3)return;
+ if(!input.checked&&weekVisibility.filter(Boolean).length===1){input.checked=true;return;}
+ weekVisibility[index]=input.checked;
+ saveWeekVisibility();
+ quickAddOpen=false;
+ render();
+});
+host.querySelector('#resetWeeks').onclick=()=>{
+ weekVisibility=[true,true,false,false];
+ saveWeekVisibility();
+ quickAddOpen=false;
+ render();
+};
 const periodButton=host.querySelector('#rangeSelect');
 const periodInput=host.querySelector('#rangePicker');
 periodButton.onclick=()=>{periodInput.value=selectedDate||dateStr(new Date());if(typeof periodInput.showPicker==='function')periodInput.showPicker();else periodInput.click()};
 periodButton.onkeydown=ev=>{if(ev.key==='ArrowLeft'||ev.key==='ArrowRight'){ev.preventDefault();offset+=ev.key==='ArrowLeft'?-1:1;quickAddOpen=false;render();host.querySelector('#rangeSelect')?.focus()}};
-periodInput.onchange=()=>{const target=periodInput.value;if(!target||dateStr(dateObj(target))!==target)return;const firstMonday=dayAdd(new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()),-((new Date().getDay()+6)%7));const chosen=dateObj(target);const days=Math.round((Date.UTC(chosen.getFullYear(),chosen.getMonth(),chosen.getDate())-Date.UTC(firstMonday.getFullYear(),firstMonday.getMonth(),firstMonday.getDate()))/86400000);offset=Math.floor(days/14);selectedDate=target;quickAddOpen=false;render()};
+periodInput.onchange=()=>{const target=periodInput.value;if(!target||dateStr(dateObj(target))!==target)return;const firstMonday=dayAdd(new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()),-((new Date().getDay()+6)%7));const chosen=dateObj(target);const days=Math.round((Date.UTC(chosen.getFullYear(),chosen.getMonth(),chosen.getDate())-Date.UTC(firstMonday.getFullYear(),firstMonday.getMonth(),firstMonday.getDate()))/86400000);offset=Math.floor(days/14);activateWeekForDate(anchorBegin(),target);selectedDate=target;quickAddOpen=false;render()};
 host.querySelector('#addBtn').onclick=()=>{formOpen=!formOpen;render()};host.querySelectorAll('[data-check]').forEach(x=>x.onclick=()=>{let e=records.find(t=>t.id===x.dataset.check);if(e){const oldDone=!!e.done;e.done=!e.done;if(!e.custom){if(e._local){if(e.done===e._originDone){delete e._local;delete e._originDone;}}else{e._local=true;e._originDone=oldDone;}}save();render()}});host.querySelectorAll('[data-unschedule]').forEach(x=>x.onclick=()=>moveTask(x.dataset.unschedule,''));
 host.querySelectorAll('[data-delete]').forEach(x=>x.onclick=()=>{if(!confirm('Poistetaanko tapahtumamerkintä kokonaan?'))return;records=records.filter(t=>t.id!==x.dataset.delete);save();render()});host.querySelector('#newForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),title=String(fd.get('title')||'').trim();if(!title)return;records.push({id:'mine-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:String(fd.get('date')||''),title,course:String(fd.get('course')||'Oma merkintä'),kind:String(fd.get('kind')||'task'),time:'',done:false,note:'',url:'',custom:true});formOpen=false;save();render()};
 }
