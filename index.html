@@ -236,7 +236,7 @@ function renderWeeks(begin,groups,today){
      const classes=entries.filter(x=>x.kind==='lesson').length;
      const ends=entries.filter(x=>x.kind==='end').length;
      const dayName=['Su','Ma','Ti','Ke','To','Pe','La'][d.getDay()];
-     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}${enc(x.title)}</span>`).join('');
+     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)};${x.kind==='task'?'background:var(--course-accent);color:var(--course-ink);border-left:0;':''}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}${enc(x.title)}</span>`).join('');
      const courses=[...new Set(entries.filter(x=>x.kind==='task').map(x=>x.course))];
      const courseMarks=courses.length?`<span class="coursemarks" aria-hidden="true">${courses.map(c=>`<span class="coursemark" style="${courseColorStyle(c)}" title="${enc(c)}"></span>`).join('')}</span>`:'';
      return `<button type="button" class="weekday ${key===selectedDate?'selected':''} ${key===todayStr?'todaymark':''} ${i>4?'weekend':''} ${pending?'has-pending':completed?'only-done':''}" data-day="${key}" aria-label="${enc(dateHead(d))}, ${entries.length} merkintää" aria-pressed="${key===selectedDate?'true':'false'}">
