@@ -62,14 +62,38 @@
       "custom": false
     },
     {
+      "id": "comm-tips-youth-work-20261016",
+      "date": "2026-10-16",
+      "title": "Communication Skills – lue Tips for online youth work",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Seuraavaksi luettava teksti kolmesta Homework for the next classes (26th Oct) -materiaalista. Riittää, että luet ja ymmärrät tekstin; valmistaudu keskustelemaan siitä seuraavalla oppitunnilla. Ei erillistä palautusta.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "comm-neutral-language-20261019",
+      "date": "2026-10-19",
+      "title": "Communication Skills – Neutral language, harjoitus 1",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Suunniteltu itsenäinen työskentely maanantaille 19.10.2026. Tee Neutral language -materiaalin harjoitus 1 omin tiedoin ilman tekoälyn apua ja palauta vastaus. Kokonaistehtävän määräaika 26.10. klo 12.00.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "homework",
       "date": "2026-10-26",
       "title": "Homework for the next classes",
       "course": "Communication Skills · 3 op",
       "kind": "task",
-      "time": "",
+      "time": "12.00",
       "done": false,
-      "note": "Valmiina viimeistään 26.10.",
+      "note": "Palautettava viimeistään 26.10.2026 klo 12.00 (sulkeutuu määräajan jälkeen). Tilanne 16.10.: Your Education -materiaalin harjoituksia tehty omaan tiedostoon, mutta palautusta ei vielä kuitattu. Seuraavaksi luetaan Tips for online youth work -teksti (vain lukeminen ja keskusteluun valmistautuminen, ei palautusta). Neutral language -materiaalin harjoitus 1 tehdään maanantaina 19.10. ja palautetaan. Tekoälyn käyttö on kielletty tämän tehtävän tuotoksessa.",
       "url": "",
       "custom": false
     },
