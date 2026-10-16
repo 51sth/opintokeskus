@@ -25,6 +25,18 @@
 .daydetails{background:white;border:1px solid #dce6f0;padding:12px;border-radius:14px;margin-top:15px}
 .daydetails header{font-size:15px;font-weight:800;color:#345878;margin:0 0 8px}
 .daydetails .item{margin:8px 0}
+.daydetails-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.daydetails-head header{margin:0}
+.day-add{border:1px solid #a9c5e3;background:#e8f3ff;color:#2d5b8d;border-radius:9px;padding:7px 11px;font-size:12px;font-weight:800}
+.day-add:hover{background:#d9ebff}
+.dayquick{background:#f7fbff;border:1px solid #cfe0f3;border-radius:12px;padding:12px;margin:10px 0 13px}
+.dayquick h3{font-size:13px;margin:0 0 10px;color:#365879}
+.dayquick-fields{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:9px}
+.dayquick .field.wide{grid-column:1/-1}
+.dayquick .field textarea{border:1px solid #d7e1ee;border-radius:9px;padding:9px;width:100%;background:white;color:#2d435b;resize:vertical;min-height:56px;font:inherit}
+.dayquick-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:7px;margin-top:10px}
+@media(max-width:620px){.dayquick-fields{grid-template-columns:1fr}.dayquick .field.wide{grid-column:auto}.daydetails-head{align-items:flex-start}}
+
 .nextthree{background:#f7fbff;border:1px solid #dbeaf8;border-radius:13px;padding:11px 13px;margin:10px 0}
 .nextthree strong{display:block;font-size:13px;color:#36577c;margin-bottom:6px}
 .nextthree .nextline{font-size:12px;line-height:1.5;color:#536c87;margin-top:4px}
@@ -55,7 +67,7 @@ const KEY='opintokeskus_pysyva_v2';let saved={};try{saved=JSON.parse(localStorag
 let records=Array.isArray(saved.records)?saved.records:START;
 let cloudStatus='Haetaan ajantasaisia tietoja GitHubista…';
 let lastCloudSync='';
-let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true;
+let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,quickAddOpen=false;
 const host=document.getElementById('app');
 function save(){try{localStorage.setItem(KEY,JSON.stringify({records}))}catch(e){}}
 async function syncFromCloud(){
@@ -147,6 +159,7 @@ function renderWeeks(begin,groups,today){
  const endStr=dateStr(dayAdd(begin,14));
  if(!selectedDate||selectedDate<startStr||selectedDate>=endStr){
    selectedDate=todayStr>=startStr&&todayStr<endStr?todayStr:startStr;
+   quickAddOpen=false;
  }
  const weekRows=[0,7].map(dayOffset=>{
    const start=dayAdd(begin,dayOffset);
@@ -169,7 +182,14 @@ function renderWeeks(begin,groups,today){
    return `<section class="weekgroup"><div class="weektitle">${formatDate(start)} – ${formatDate(finish)}</div><div class="weekgrid">${cells}</div></section>`;
  }).join('');
  const chosen=groups[selectedDate]||[];
- const detail=`<section class="daydetails"><header>${dateHead(dateObj(selectedDate))}</header>${chosen.length?chosen.map(item).join(''):'<div class="blank">Ei tapahtumia valittuna päivänä.</div>'}</section>`;
+ const quickForm=quickAddOpen?`<form class="dayquick" id="dayQuickForm"><h3>Uusi merkintä päivälle ${enc(formatDate(dateObj(selectedDate)))}</h3><div class="dayquick-fields">
+  <div class="field wide"><label for="dayNewTitle">Tehtävän tai tapahtuman nimi</label><input id="dayNewTitle" name="title" required maxlength="300" placeholder="Esim. luento tai palautettava tehtävä"></div>
+  <div class="field"><label for="dayNewKind">Tyyppi</label><select id="dayNewKind" name="kind"><option value="task">Tehtävä</option><option value="lesson">Opetus / tapahtuma</option></select></div>
+  <div class="field"><label for="dayNewTime">Kellonaika (valinnainen)</label><input id="dayNewTime" name="time" maxlength="40" placeholder="Esim. 9.00–10.30"></div>
+  <div class="field wide"><label for="dayNewCourse">Opintojakso / kurssi (valinnainen)</label><input id="dayNewCourse" name="course" maxlength="200" placeholder="Esim. Communication Skills"></div>
+  <div class="field wide"><label for="dayNewNote">Lisätiedot (valinnainen)</label><textarea id="dayNewNote" name="note" maxlength="1000" rows="2" placeholder="Omat muistiinpanot"></textarea></div>
+  </div><div class="dayquick-actions"><button type="button" class="btn" id="dayQuickCancel">Peruuta</button><button type="submit" class="btn primary">Tallenna päivälle</button></div></form>`:'';
+ const detail=`<section class="daydetails"><div class="daydetails-head"><header>${dateHead(dateObj(selectedDate))}</header><button type="button" class="day-add" id="dayAddBtn" aria-expanded="${quickAddOpen?'true':'false'}" aria-controls="dayQuickForm">${quickAddOpen?'− Sulje lisäys':'+ Lisää tähän päivään'}</button></div>${quickForm}${chosen.length?chosen.map(item).join(''):'<div class="blank">Ei tapahtumia valittuna päivänä.</div>'}</section>`;
  const upcoming=records.filter(e=>e.kind==='task'&&!e.done&&e.date&&e.date>=todayStr).sort(sort).slice(0,3);
  const future=`<div class="nextthree"><strong>Kolme seuraavaa avointa tehtävää</strong>${upcoming.length?upcoming.map(x=>`<div class="nextline">◯ ${formatDate(dateObj(x.date))} · ${enc(x.title)} <span class="muted">(${enc(x.course)})</span></div>`).join(''):'<div class="nextline">Ei päivättyjä avoimia tehtäviä.</div>'}</div>`;
  return future+weekRows+detail;
@@ -194,11 +214,24 @@ host.querySelectorAll('[data-drag-id]').forEach(el=>{
 });
 host.querySelectorAll('[data-assign-date]').forEach(el=>el.addEventListener('change',()=>{if(el.value)moveTask(el.dataset.assignDate,el.value)}));
 host.querySelectorAll('[data-day]').forEach(el=>{
- el.onclick=()=>{selectedDate=el.dataset.day;render()};
+ el.onclick=()=>{selectedDate=el.dataset.day;quickAddOpen=false;render()};
  el.addEventListener('dragover',ev=>{if(!ev.dataTransfer.types.includes('text/plain'))return;ev.preventDefault();ev.dataTransfer.dropEffect='move';el.classList.add('drop-ready')});
  el.addEventListener('dragleave',ev=>{if(!el.contains(ev.relatedTarget))el.classList.remove('drop-ready')});
  el.addEventListener('drop',ev=>{ev.preventDefault();el.classList.remove('drop-ready');const id=ev.dataTransfer.getData('text/plain');if(id)moveTask(id,el.dataset.day)});
-});host.querySelectorAll('[data-view]').forEach(el=>el.onclick=()=>{view=el.dataset.view;render()});
+});
+const dayAddBtn=host.querySelector('#dayAddBtn');
+if(dayAddBtn)dayAddBtn.onclick=()=>{quickAddOpen=!quickAddOpen;render();if(quickAddOpen)host.querySelector('#dayNewTitle')?.focus()};
+const cancelDay=host.querySelector('#dayQuickCancel');
+if(cancelDay)cancelDay.onclick=()=>{quickAddOpen=false;render()};
+const quickFormEl=host.querySelector('#dayQuickForm');
+if(quickFormEl)quickFormEl.onsubmit=ev=>{
+ ev.preventDefault();
+ const fd=new FormData(quickFormEl),title=String(fd.get('title')||'').trim().slice(0,300);
+ if(!title)return;
+ records.push({id:'mine-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:selectedDate,title,course:String(fd.get('course')||'').trim().slice(0,200)||'Oma merkintä',kind:fd.get('kind')==='lesson'?'lesson':'task',time:String(fd.get('time')||'').trim().slice(0,40),done:false,note:String(fd.get('note')||'').trim().slice(0,1000),url:'',custom:true});
+ quickAddOpen=false;save();render();
+};
+host.querySelectorAll('[data-view]').forEach(el=>el.onclick=()=>{view=el.dataset.view;quickAddOpen=false;render()});
 host.querySelector('#prev').onclick=()=>{offset--;render()};host.querySelector('#next').onclick=()=>{offset++;render()};host.querySelector('#today').onclick=()=>{offset=0;render()};host.querySelector('#addBtn').onclick=()=>{formOpen=!formOpen;render()};host.querySelector('#showDone').onchange=e=>{showDone=e.target.checked;render()};host.querySelectorAll('[data-filter]').forEach(x=>x.onclick=()=>{filter=x.dataset.filter;render()});host.querySelectorAll('[data-check]').forEach(x=>x.onclick=()=>{let e=records.find(t=>t.id===x.dataset.check);if(e){const oldDone=!!e.done;e.done=!e.done;if(!e.custom){if(e._local){if(e.done===e._originDone){delete e._local;delete e._originDone;}}else{e._local=true;e._originDone=oldDone;}}save();render()}});host.querySelectorAll('[data-unschedule]').forEach(x=>x.onclick=()=>moveTask(x.dataset.unschedule,''));
 host.querySelectorAll('[data-delete]').forEach(x=>x.onclick=()=>{if(!confirm('Poistetaanko tapahtumamerkintä kokonaan?'))return;records=records.filter(t=>t.id!==x.dataset.delete);save();render()});host.querySelector('#newForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),title=String(fd.get('title')||'').trim();if(!title)return;records.push({id:'mine-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:String(fd.get('date')||''),title,course:String(fd.get('course')||'Oma merkintä'),kind:String(fd.get('kind')||'task'),time:'',done:false,note:'',url:'',custom:true});formOpen=false;save();render()};
 }
