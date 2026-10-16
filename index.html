@@ -151,21 +151,43 @@ function formatDate(d){return new Intl.DateTimeFormat('fi-FI',{day:'numeric',mon
 function dateHead(d){return new Intl.DateTimeFormat('fi-FI',{weekday:'long',day:'numeric',month:'long'}).format(d)}
 function enc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function sort(a,b){return (a.date||'9999').localeCompare(b.date||'9999')||(a.time||'99').localeCompare(b.time||'99')||a.title.localeCompare(b.title,'fi')}
+// Yhteinen kurssivärikartta kaikille näkymille. Väri ei ilmaise tehtävän tilaa.
+const COURSE_COLOR_MAP={
+ 'communication skills':['#dbe7ff','#375fae'],
+ 'kielenhuolto ja kirjoittaminen':['#e8e1ff','#6953b4'],
+ 'kunnan nuorisotyö':['#d5f2e9','#127d6d'],
+ 'yhteisöpedagogiikan mahdollisuudet':['#f2e0f2','#984f94'],
+ 'yhteisöpedagogi kasvattajana':['#ffe4d7','#aa5c3c'],
+ 'pedagoginen ohjaus yhteisöpedagogeille':['#eadafb','#7d4ea5'],
+ 'oppimisen tuki yhteisöpedagogeille':['#dcefdc','#437e49'],
+ 'repetera svenska':['#ffe9c6','#986619'],
+ 'viestintä':['#ffe2de','#aa5355'],
+ 'movement and outdoor education':['#e5efce','#657d31'],
+ 'english for community educators':['#daf0fc','#25779f'],
+ 'orientaatio opiskeluun ja opiskelutaidot':['#e0eaf5','#4f6d91'],
+ 'taidelähtöiset menetelmät nuorisotyössä':['#fce1eb','#ae4c75'],
+ 'nuorisotyö koulussa':['#dceeed','#367e83'],
+ 'pedagoginen työelämäprojekti':['#ebe2d7','#85644d'],
+ 'projektit ja talous (humak)':['#fae8d0','#a26d25'],
+ 'oamk':['#deebfa','#496d9e'],
+ 'muut opintoasiat':['#e8eaf0','#636b80']
+};
+const COURSE_FALLBACK=[
+ ['#e3e9fa','#46629e'],['#f2e0e7','#9e546e'],
+ ['#e1f0ec','#307969'],['#f5e5cf','#98702d'],
+ ['#e8e4f6','#6856a1'],['#e0edf8','#427898'],
+ ['#eaf0da','#6c803c'],['#f4e4dd','#a06049']
+];
 function courseColorStyle(course){
- const palette=[
- ['#e7f0ff','#3f70b1'],['#e6f5e9','#3f8854'],['#fff0df','#aa6c29'],
- ['#f2e9fb','#7752aa'],['#e2f4f4','#2f858a'],['#ffe9f0','#ac5273'],
- ['#ecf2d8','#6e832c'],['#fff3d6','#987621'],['#eae9f8','#6159a4']
- ];
- let hash=0;
- for(const character of String(course||'Oma merkintä'))hash=(hash*31+character.codePointAt(0))>>>0;
- const [bg,accent]=palette[hash%palette.length];
- const rgb=[1,3,5].map(i=>parseInt(accent.slice(i,i+2),16)/255);
- const linear=rgb.map(v=>v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4));
- const luminance=0.2126*linear[0]+0.7152*linear[1]+0.0722*linear[2];
- const whiteContrast=1.05/(luminance+0.05);
- const ink=whiteContrast>=4.5?'#fff':'#000';
- return '--course-bg:'+bg+';--course-accent:'+accent+';--course-ink:'+ink;
+ const key=String(course||'Oma merkintä').normalize('NFKC')
+   .replace(/\s*·\s*\d+\s*op\s*$/i,'').trim().toLocaleLowerCase('fi-FI');
+ let c=COURSE_COLOR_MAP[key];
+ if(!c){
+   let hash=0;
+   for(const char of key)hash=(hash*31+char.codePointAt(0))>>>0;
+   c=COURSE_FALLBACK[hash%COURSE_FALLBACK.length];
+ }
+ return '--course-bg:'+c[0]+';--course-accent:'+c[1];
 }
 function deadlineInfo(e){
  const explicit=String(e.deadline||'');
@@ -186,7 +208,7 @@ function item(e,inPool=false){
 
  const remove=e.kind==='task'&&!inPool&&e.date?`<button type="button" class="remove-day" data-unschedule="${enc(e.id)}" title="Poista kalenterista ja palauta päiväämättömiin" aria-label="Palauta tehtävä ${enc(e.title)} päiväämättömiin">×</button>`:'';
  const deleteOther=e.custom&&e.kind!=='task'?`<button type="button" class="remove" data-delete="${enc(e.id)}" title="Poista oma tapahtumamerkintä">×</button>`:'';
- return `<article class="item ${klass} ${draggable?'drag-source':''}" style="${courseColorStyle(e.course)}" ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill">${enc(e.course)}</span><span class="pill">${kind}</span>${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
+ return `<article class="item ${klass} ${draggable?'drag-source':''}" style="${courseColorStyle(e.course)}" ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill course-pill">${enc(e.course)}</span>${e.kind==='task'?`<span class="pill status-pill ${e.done?'complete':'pending'}">${e.done?'✓ Valmis':'• Kesken'}</span>`:`<span class="pill">${kind}</span>`}${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
 }
 
 function moveTask(id,targetDate){
@@ -236,9 +258,9 @@ function renderWeeks(begin,groups,today){
      const classes=entries.filter(x=>x.kind==='lesson').length;
      const ends=entries.filter(x=>x.kind==='end').length;
      const dayName=['Su','Ma','Ti','Ke','To','Pe','La'][d.getDay()];
-     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)};${x.kind==='task'?'background:var(--course-accent);color:var(--course-ink);border-left:0;':''}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}${enc(x.title)}</span>`).join('');
-     const courses=[...new Set(entries.filter(x=>x.kind==='task').map(x=>x.course))];
-     const courseMarks=courses.length?`<span class="coursemarks" aria-hidden="true">${courses.map(c=>`<span class="coursemark" style="${courseColorStyle(c)}" title="${enc(c)}"></span>`).join('')}</span>`:'';
+     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}${enc(x.title)}</span>`).join('');
+     const shortTasks=entries.filter(x=>x.kind==='task').slice(0,5);
+     const courseMarks=shortTasks.length?`<span class="coursemarks" aria-hidden="true">${shortTasks.map(x=>`<span class="coursemark ${x.done?'is-done':'is-pending'}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}"></span>`).join('')}</span>`:'';
      return `<button type="button" class="weekday ${key===selectedDate?'selected':''} ${key===todayStr?'todaymark':''} ${i>4?'weekend':''} ${pending?'has-pending':completed?'only-done':''}" data-day="${key}" aria-label="${enc(dateHead(d))}, ${entries.length} merkintää" aria-pressed="${key===selectedDate?'true':'false'}">
        <span class="daylabel">${dayName}</span><span class="daynum">${d.getDate()}</span>
        <span class="daybadges">${pending?`<span class="daybadge">${pending}</span>`:''}${completed?`<span class="daybadge done">✓${completed}</span>`:''}${classes?`<span class="daybadge lesson">◉${classes}</span>`:''}${ends?`<span class="daybadge end">◈${ends}</span>`:''}</span>
