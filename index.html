@@ -182,6 +182,25 @@ body{background:var(--ui-canvas);color:var(--ui-text)}
  .weekday .coursemarks{gap:4px}
 }
 .hero h1.brand-art{margin:4px 0 8px;line-height:0;font-size:0}.hero h1.brand-art img{display:block;width:min(330px,100%);height:auto;mix-blend-mode:multiply;object-fit:contain}@media(max-width:620px){.hero h1.brand-art img{width:min(270px,100%)}}
+/* Päiväämättömien tehtävien tiivis avattava lista. */
+.unscheduledgrid{gap:7px}
+.unscheduled .pool-entry{min-width:0;overflow:hidden;background:var(--course-bg,#e9f0f8);border:1px solid var(--course-accent,#607a9c);border-left:5px solid var(--course-accent,#607a9c);border-radius:10px}
+.unscheduled .pool-summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:52px;padding:9px 12px;cursor:pointer}
+.unscheduled .pool-summary::-webkit-details-marker{display:none}
+.unscheduled .pool-summary:hover{background:#ffffff29}
+.unscheduled .pool-summary:focus-visible{outline:2px solid #3974b9;outline-offset:-3px;border-radius:8px}
+.unscheduled .pool-chevron{display:block;width:9px;height:9px;flex:none;border-right:2px solid #365473;border-bottom:2px solid #365473;transform:rotate(-45deg);transition:transform .15s ease}
+.unscheduled .pool-entry[open] .pool-chevron{transform:rotate(45deg)}
+.unscheduled .pool-summary-main{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;flex:1}
+.unscheduled .pool-summary-title{font-size:13px;line-height:1.3;font-weight:800;color:#23364f;overflow-wrap:anywhere}
+.unscheduled .pool-summary-course{max-width:100%;display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;line-height:1.4;font-weight:750;color:#36465e;background:#ffffffac;border-left:3px solid var(--course-accent,#607a9c);border-radius:4px;padding:2px 6px}
+.unscheduled .pool-detail .item,
+.unscheduled .pool-detail .item.task,
+.unscheduled .pool-detail .item.task.done{background:transparent!important;border:0!important;border-top:1px solid #25364b21!important;border-radius:0!important;padding:9px 12px;margin:0}
+.unscheduled .pool-detail .itemtitle,
+.unscheduled .pool-detail .meta .course-pill{display:none}
+.unscheduled .pool-detail .meta{margin-top:0}
+@media(prefers-reduced-motion:reduce){.unscheduled .pool-chevron{transition:none}}
 </style></head><body><div class="app" id="app"></div><script>
 (function(){
 'use strict';
@@ -191,6 +210,7 @@ let records=Array.isArray(saved.records)?saved.records:START;
 let cloudStatus='Haetaan ajantasaisia tietoja GitHubista…';
 let lastCloudSync='';
 let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,quickAddOpen=false,pickedTaskId='';
+const expandedPoolTasks=new Set();
 const host=document.getElementById('app');
 function save(){try{localStorage.setItem(KEY,JSON.stringify({records}))}catch(e){}}
 async function syncFromCloud(){
@@ -296,6 +316,21 @@ function item(e,inPool=false){
  return `<article class="item ${klass} ${draggable?'drag-source':''}" style="${courseColorStyle(e.course)}" ${draggable?`draggable="true" data-drag-id="${enc(e.id)}"`:''}>${dragSymbol}${check}<div class="itembody"><div class="itemtitle">${enc(e.title)}</div><div class="meta"><span class="pill course-pill">${enc(e.course)}</span>${e.kind==='task'?`<span class="pill status-pill ${e.done?'complete':'pending'}">${e.done?'✓ Valmis':'• Kesken'}</span>`:`<span class="pill">${kind}</span>`}${e.time?`<span class="pill">klo ${enc(e.time)}</span>`:''}${e.done?'<span class="pill">✓ Tehty</span>':''}</div>${e.note||link?`<div class="note">${enc(e.note)}${link}</div>`:''}${dueLine}${choose}</div>${remove}${deleteOther}</article>`;
 }
 
+function poolItem(e){
+ const color=courseColorStyle(e.course);
+ const id=String(e.id);
+ return `<details class="pool-entry" data-pool-entry="${enc(id)}" style="${color}" ${expandedPoolTasks.has(id)?'open':''}>
+   <summary class="pool-summary">
+     <span class="pool-chevron" aria-hidden="true"></span>
+     <span class="pool-summary-main">
+       <span class="pool-summary-title">${enc(e.title)}</span>
+       <span class="pool-summary-course">${enc(e.course)}</span>
+     </span>
+   </summary>
+   <div class="pool-detail">${item(e,true)}</div>
+ </details>`;
+}
+
 function moveTask(id,targetDate){
  const e=records.find(r=>r.id===id);
  if(!e||e.kind!=='task')return;
@@ -371,12 +406,20 @@ host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opin
 <div class="addpanel ${formOpen?'show':''}" id="addPanel"><form id="newForm"><div class="addgrid"><div class="field"><label for="newTitle">Tehtävän nimi</label><input id="newTitle" name="title" required placeholder="Esim. palautettava essee"></div><div class="field"><label for="newDate">Päivämäärä</label><input id="newDate" name="date" type="date"></div><div class="field"><label for="newCourse">Kurssi</label><input id="newCourse" name="course" placeholder="Valinnainen"></div><div class="field"><label for="newKind">Tyyppi</label><select id="newKind" name="kind"><option value="task">Tehtävä</option><option value="lesson">Opetus / tapahtuma</option><option value="end">Kurssin päättyminen</option></select></div></div><div class="submitrow"><button class="btn primary" type="submit">Tallenna merkintä</button></div></form></div>
 <div class="range-only"><button type="button" class="dates" id="rangeSelect" title="Valitse kalenterijakso" aria-label="Kalenterijakso ${formatDate(begin)} – ${formatDate(finish)}. Valitse toinen jakso.">${formatDate(begin)} – ${formatDate(finish)}</button><input type="date" id="rangePicker" class="range-picker" aria-label="Valitse kalenterijakson päivä"></div>
 <main class="days">${view==='week'?renderWeeks(begin,groups,today):renderList(visible,groups,today)}</main>
-<details class="unscheduled" ${unscheduledOpen?'open':''}><summary>Päiväämättömät tehtävät (${undated.length})</summary><p class="poolhelp">${pickedTaskId?'<span class="pool-active-help">Tehtävä valittu. Klikkaa haluamaasi kalenteripäivää.</span>':'Vedä tehtävä hiirellä kalenteripäivään tai napauta ”Valitse sijoitettavaksi” ja sen jälkeen viikonpäivää. Näytämme varmistamattomien määräaikojen sijasta kurssin päättymispäivän suuntaa-antavana tietona.'} Kalenterin ×-painike palauttaa tehtävän tähän listaan.</p><div class="unscheduledgrid">${undated.length?undated.map(e=>item(e,true)).join(''):'<p class="muted">Ei päiväämättömiä tehtäviä.</p>'}</div></details>
+<details class="unscheduled" ${unscheduledOpen?'open':''}><summary>Päiväämättömät tehtävät (${undated.length})</summary><p class="poolhelp">${pickedTaskId?'<span class="pool-active-help">Tehtävä valittu. Klikkaa haluamaasi kalenteripäivää.</span>':'Avaa tehtävä pienestä kolmiosta. Sen jälkeen voit vetää sen kalenteripäivään tai valita ”Valitse sijoitettavaksi” ja haluamasi viikonpäivän. Näytämme varmistamattomien määräaikojen sijasta kurssin päättymispäivän suuntaa-antavana tietona.'} Kalenterin ×-painike palauttaa tehtävän tähän listaan.</p><div class="unscheduledgrid">${undated.length?undated.map(poolItem).join(''):'<p class="muted">Ei päiväämättömiä tehtäviä.</p>'}</div></details>
 <p class="foot">Kurssien päättymispäivät eivät välttämättä ole tehtävien viimeisiä palautuspäiviä. Kielenhuollon tehtäväpäivät perustuvat aikaisempaan työskentelyaikatauluun. OAMKin heinäkuun 2027 loppupäivä on alustava. Ei muistutusilmoituksia eikä automaattista Google Kalenteri -synkronointia. Laitteella tekemäsi tehtäväkuittaukset tallentuvat kyseisen selaimen paikalliseen muistiin. Ne eivät vielä synkronoidu puhelimen ja tietokoneen välillä. Vie varmuuskopio ennen selaimen tietojen tyhjentämistä tai laitteenvaihtoa. Tämän julkisen sovelluksen yhteinen tehtävälista haetaan GitHubista. Sen tiedot ovat julkisesti luettavissa. Selaimessa tehtävät omat muutokset säilyvät tässä laitteessa, eivätkä siirry automaattisesti GitHubiin.</p>`;
 host.querySelector('#importBtn').onclick=()=>host.querySelector('#importFile').click();
 host.querySelector('#importFile').onchange=async(ev)=>{const file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>2000000){alert('Tiedosto on liian suuri (enintään 2 Mt).');return;}try{const input=JSON.parse(await file.text());const rr=Array.isArray(input)?input:input.records;if(!Array.isArray(rr)||rr.length>1000)throw new Error('Tiedoston muoto ei kelpaa.');const safe=rr.map((x,i)=>{if(!x||typeof x!=='object'||typeof x.title!=='string')throw new Error('Virheellinen tehtävä.');const kind=['task','lesson','end'].includes(x.kind)?x.kind:'task';const date=typeof x.date==='string'&&(/^\d{4}-\d{2}-\d{2}$/.test(x.date)||x.date==='')?x.date:'';return {id:String(x.id||('import-'+i)).slice(0,100),date,title:x.title.slice(0,300),course:String(x.course||'Oma merkintä').slice(0,200),kind,time:String(x.time||'').slice(0,40),done:!!x.done,note:String(x.note||'').slice(0,1000),url:typeof x.url==='string'&&/^https:\/\//.test(x.url)?x.url:'',custom:!!x.custom}});if(records.length&&!confirm('Korvataanko nykyiset merkinnät tuoduilla tiedoilla?'))return;records=safe;save();offset=0;render();alert('Opintotiedot tuotu onnistuneesti ('+records.length+' merkintää).');}catch(ex){alert('Tuonti epäonnistui: '+ex.message)}};
 host.querySelector('#exportBtn').onclick=()=>{const payload=JSON.stringify({format:'opintokeskus-1',records},null,2);const blob=new Blob([payload],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='opintokeskus-varmuuskopio.json';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1500)};
-host.querySelector('.unscheduled').addEventListener('toggle',e=>{unscheduledOpen=e.target.open});
+host.querySelector('.unscheduled').addEventListener('toggle',e=>{if(e.target===e.currentTarget)unscheduledOpen=e.target.open});
+host.querySelectorAll('.pool-entry > summary').forEach(summary=>{
+ summary.addEventListener('click',()=>{
+   const entry=summary.parentElement;
+   const id=entry.dataset.poolEntry;
+   if(entry.open)expandedPoolTasks.delete(id);
+   else expandedPoolTasks.add(id);
+ });
+});
 host.querySelectorAll('[data-drag-id]').forEach(el=>{
  el.addEventListener('dragstart',ev=>{ev.dataTransfer.setData('text/plain',el.dataset.dragId);ev.dataTransfer.effectAllowed='move';el.classList.add('dragging')});
  el.addEventListener('dragend',()=>{el.classList.remove('dragging');host.querySelectorAll('.drop-ready').forEach(d=>d.classList.remove('drop-ready'))});
