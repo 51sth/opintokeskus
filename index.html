@@ -141,6 +141,9 @@ body{background:var(--ui-canvas);color:var(--ui-text)}
 .daypreview .preview-state.state-done{
  background:var(--task-done);border-color:#82c593;color:var(--task-done-text)
 }
+.daypreview .preview-title{
+ flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
 /* Tiiviissä mobiilinäkymässä kurssipisteiden reunat näyttävät tilan. */
 .coursemarks{gap:6px}
 .coursemark{width:10px;height:10px;flex-basis:10px;border:2px solid white;
@@ -334,7 +337,7 @@ function renderWeeks(begin,groups,today){
      const classes=entries.filter(x=>x.kind==='lesson').length;
      const ends=entries.filter(x=>x.kind==='end').length;
      const dayName=['Su','Ma','Ti','Ke','To','Pe','La'][d.getDay()];
-     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}${enc(x.title)}</span>`).join('');
+     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}<span class="preview-title">${enc(x.title)}</span></span>`).join('');
      const shortTasks=entries.filter(x=>x.kind==='task').slice(0,5);
      const courseMarks=shortTasks.length?`<span class="coursemarks" aria-hidden="true">${shortTasks.map(x=>`<span class="coursemark ${x.done?'is-done':'is-pending'}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}"></span>`).join('')}</span>`:'';
      return `<button type="button" class="weekday ${key===selectedDate?'selected':''} ${key===todayStr?'todaymark':''} ${i>4?'weekend':''} ${pending?'has-pending':completed?'only-done':''}" data-day="${key}" aria-label="${enc(dateHead(d))}, ${entries.length} merkintää" aria-pressed="${key===selectedDate?'true':'false'}">
