@@ -8,7 +8,7 @@ import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmai
 import {getFirestore,doc,getDoc,setDoc} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 const cfg={apiKey:'',authDomain:'',projectId:'',appId:''};
 const msg=document.getElementById('authmsg'),box=document.getElementById('authview'),privateView=document.getElementById('privateview');
-if(!cfg.apiKey){msg.textContent='Firebase-projekti on vielä määritettävä ennen kirjautumista.'}
+if(!cfg.apiKey){box.hidden=true;privateView.hidden=false;document.getElementById('syncmsg').textContent=' Paikallinen tallennus käytössä – Firebase-yhteys ei vielä valmis.';privateView.querySelector('button').hidden=true}
 else {
 const app=initializeApp(cfg),a=getAuth(app),fs=getFirestore(app),sync=document.getElementById('syncmsg');
 let active=false,job=Promise.resolve(),timer=null;
