@@ -6,7 +6,7 @@ const KEY='budget-51sth-v1';let year=new Date().getFullYear();let db={};try{db=J
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendEmailVerification,sendPasswordResetEmail,reload,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 import {getFirestore,doc,getDoc,setDoc} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-const cfg={apiKey:'',authDomain:'',projectId:'',appId:''};
+const cfg={apiKey:'AIzaSyAo9Pw-CixeN-hGCQUvFyu6V9i1gKmQlRE',authDomain:'budjetti-f96d2.firebaseapp.com',projectId:'budjetti-f96d2',storageBucket:'budjetti-f96d2.firebasestorage.app',messagingSenderId:'592770531015',appId:'1:592770531015:web:6c0fb091da814e870888e2'};
 const msg=document.getElementById('authmsg'),box=document.getElementById('authview'),privateView=document.getElementById('privateview');
 if(!cfg.apiKey){box.hidden=true;privateView.hidden=false;document.getElementById('syncmsg').textContent=' Paikallinen tallennus käytössä – Firebase-yhteys ei vielä valmis.';privateView.querySelector('button').hidden=true}
 else {
