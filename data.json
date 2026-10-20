@@ -2,6 +2,18 @@
   "format": "opintokeskus-live-1",
   "records": [
     {
+      "id": "humak-projektit-zoom-20260921",
+      "date": "2026-09-21",
+      "title": "Projektit ja talous – Zoom-verkkotyöpaja",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "lesson",
+      "time": "13.00–15.30",
+      "done": false,
+      "note": "Vapaaehtoinen vaihtoehto neljästä työpajasta. Työpajojen sisältö määräytyy osallistujien työskentelyn mukaan; suositellaan ennakkotentin jälkeen. Ei tallenneta.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "oamk",
       "date": "2026-10-14",
       "title": "OAMKin tunnusten käyttöönotto",
@@ -70,6 +82,18 @@
       "time": "",
       "done": false,
       "note": "Opettaja Jenny Jansson. Käydään läpi opintojakson rakenne ja aloitusmateriaaleja, erityisesti substantiivien ja verbien kielioppia. Kellonaikaa ei ilmoitettu 13.10.2026 viestissä; varmista se Itslearningistä. Zoom-linkki löytyy Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-zoom-20261019",
+      "date": "2026-10-19",
+      "title": "Projektit ja talous – Zoom-verkkotyöpaja",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "lesson",
+      "time": "13.00–15.30",
+      "done": false,
+      "note": "Vapaaehtoinen vaihtoehto neljästä työpajasta. Ei tallennetta; suositellaan ennakkotentin jälkeen.",
       "url": "",
       "custom": false
     },
@@ -410,6 +434,54 @@
       "custom": false
     },
     {
+      "id": "taide-verkkotunti-20270118-12",
+      "date": "2027-01-18",
+      "title": "Taidelähtöiset menetelmät – verkkotunti 1",
+      "course": "Taidelähtöiset menetelmät nuorisotyössä · 5 op",
+      "kind": "lesson",
+      "time": "12.00–14.00",
+      "done": false,
+      "note": "Opetus verkossa PDF:n ilmoittamana ajankohtana. Tarkempi aihe Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "taide-verkkotunti-20270118-14",
+      "date": "2027-01-18",
+      "title": "Taidelähtöiset menetelmät – verkkotunti 2",
+      "course": "Taidelähtöiset menetelmät nuorisotyössä · 5 op",
+      "kind": "lesson",
+      "time": "14.00–16.00",
+      "done": false,
+      "note": "Opetus verkossa PDF:n ilmoittamana ajankohtana. Tarkempi aihe Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "taide-verkkotunti-20270119-14",
+      "date": "2027-01-19",
+      "title": "Taidelähtöiset menetelmät – musiikki (verkkotunti)",
+      "course": "Taidelähtöiset menetelmät nuorisotyössä · 5 op",
+      "kind": "lesson",
+      "time": "14.00–16.00",
+      "done": false,
+      "note": "Musiikki-aiheinen verkkotunti PDF:n mukaan.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-zoom-20270125",
+      "date": "2027-01-25",
+      "title": "Projektit ja talous – Zoom-verkkotyöpaja",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "lesson",
+      "time": "13.00–15.30",
+      "done": false,
+      "note": "Vapaaehtoinen vaihtoehto neljästä työpajasta. Ei tallenneta.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "kunnan2lesson",
       "date": "2027-02-01",
       "title": "Etäopetus: nuorisolaki, Ohjaamo ja etsivä nuorisotyö",
@@ -430,6 +502,18 @@
       "time": "12.00–16.00",
       "done": false,
       "note": "Tehtävät 4–5. Tunti tallennetaan.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-zoom-20270315",
+      "date": "2027-03-15",
+      "title": "Projektit ja talous – Zoom-verkkotyöpaja",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "lesson",
+      "time": "13.00–15.30",
+      "done": false,
+      "note": "Vapaaehtoinen vaihtoehto neljästä työpajasta. Ei tallenneta.",
       "url": "",
       "custom": false
     },
@@ -466,6 +550,18 @@
       "time": "",
       "done": false,
       "note": "",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-zoom-info-20270601",
+      "date": "2027-06-01",
+      "title": "Projektit ja talous – kesäopiskelun Zoom-info",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "lesson",
+      "time": "9.00–10.00",
+      "done": false,
+      "note": "Kesällä kurssia suorittaville infotilaisuus, mahdollisuus kysymyksiin.",
       "url": "",
       "custom": false
     },
@@ -566,6 +662,18 @@
       "custom": false
     },
     {
+      "id": "english-educators-essay",
+      "date": "",
+      "title": "Essay – essee",
+      "course": "English for Community Educators · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF: yksi arvioitavista tehtävätyypeistä; tarkka aihe ja palautuspäivä Itslearningissä.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "taimi-ry-jooga-viikoittain",
       "date": "",
       "title": "Jooga – Taimi ry",
@@ -592,6 +700,18 @@
       "time": "",
       "done": false,
       "note": "",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-opiskelusuunnitelma",
+      "date": "",
+      "title": "Laadi oma opiskelusuunnitelma ja aikataulu",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF: opiskelija laatii kurssin alussa oman opiskelusuunnitelman ja aikataulun.",
       "url": "",
       "custom": false
     },
@@ -665,6 +785,90 @@
       "done": false,
       "note": "Valitse yksi: A) oman käyttöteorian essee, vähintään 7–8 sivua (1–2 ohjauksen teoriaa, ihmiskäsitys, toimijuus ja osallisuus, case); TAI B) noin 15 min nauhoitettu ohjauskeskustelu ja 4–5 sivun analyysiraportti, vähintään 3 lähdettä. Huomioi arviointikriteerit ja lähdeviitteet. Palautus: tallenna työ pilveen, jaa katseluoikeus vastuuopettaja Esa Virkkulalle, tee 'Pedagoginen ohjaus 3 op' -osaamismerkkihakemus Open Badge Passportissa ja lisää siihen pilvilinkki (https://openbadgefactory.com/c/earnablebadge/TE78UOa5CR0a2WJ/apply). Arviointi hyväksytty / täydennettävä / hylätty. PDF ei sisällä virallista palautuspäivää.",
       "url": "https://drive.google.com/file/d/17GnszsiTfANV3e0bC-DErQmDGm-O5Dg1/view?usp=drive_link",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-pikkutentti-1",
+      "date": "",
+      "title": "Pikkutentti 1/5",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan kurssilla on viisi pientä tenttiä, auki koko opintojakson. Tenteissä on uusintamahdollisuus. Kurssilla on myös ennakkotentti, jonka numerointia PDF ei täsmennä. Tarkista sisältö Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-pikkutentti-2",
+      "date": "",
+      "title": "Pikkutentti 2/5",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan kurssilla on viisi pientä tenttiä, auki koko opintojakson. Tenteissä on uusintamahdollisuus. Kurssilla on myös ennakkotentti, jonka numerointia PDF ei täsmennä. Tarkista sisältö Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-pikkutentti-3",
+      "date": "",
+      "title": "Pikkutentti 3/5",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan kurssilla on viisi pientä tenttiä, auki koko opintojakson. Tenteissä on uusintamahdollisuus. Kurssilla on myös ennakkotentti, jonka numerointia PDF ei täsmennä. Tarkista sisältö Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-pikkutentti-4",
+      "date": "",
+      "title": "Pikkutentti 4/5",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan kurssilla on viisi pientä tenttiä, auki koko opintojakson. Tenteissä on uusintamahdollisuus. Kurssilla on myös ennakkotentti, jonka numerointia PDF ei täsmennä. Tarkista sisältö Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-pikkutentti-5",
+      "date": "",
+      "title": "Pikkutentti 5/5",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan kurssilla on viisi pientä tenttiä, auki koko opintojakson. Tenteissä on uusintamahdollisuus. Kurssilla on myös ennakkotentti, jonka numerointia PDF ei täsmennä. Tarkista sisältö Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "english-educators-oral",
+      "date": "",
+      "title": "Professional oral presentation – suullinen esitys",
+      "course": "English for Community Educators · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF: ammatillisen aiheen suullinen esitys; toteutustapa ja määräaika tarkistettava.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "humak-projektit-verkkooppimistehtavat",
+      "date": "",
+      "title": "Projektien verkko-oppimistehtävät ja vertaispalaute",
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan kurssi sisältää itsenäisiä soveltavia verkko-oppimistehtäviä sekä vertaispalautteen antamista. Tarkka tehtävälista ja palautuspäivät ovat verkkoalustalla.",
+      "url": "",
       "custom": false
     },
     {
@@ -776,6 +980,30 @@
       "custom": false
     },
     {
+      "id": "english-educators-exam",
+      "date": "",
+      "title": "Valvottu verkkotentti (aika sovitaan)",
+      "course": "English for Community Educators · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan opintojaksolla järjestetään valvottu verkkotentti. Ajankohta sovitaan ryhmän kanssa; älä pidä kurssin loppua tenttipäivänä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "comm-skills-exam",
+      "date": "",
+      "title": "Valvottu verkkotentti (aika sovitaan)",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF:n mukaan valvottu verkkotentti järjestetään sovittuna ajankohtana. Päivämäärä vielä vahvistamatta.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "viestinta-hk00ax79-3002-videoesitys",
       "date": "",
       "title": "Videotehtävä: ammatillinen puhe-esitys",
@@ -786,7 +1014,171 @@
       "note": "Puheviestintä. Ammatillisen puhe-esityksen videotehtävä; arviointi 0–5. Tarkka palautuspäivä tarkistettava Itslearningistä.",
       "url": "",
       "custom": false
+    },
+    {
+      "id": "english-educators-writing",
+      "date": "",
+      "title": "Writing assignment – kirjoitustehtävä",
+      "course": "English for Community Educators · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "PDF: yksi arvioitavista tehtävätyypeistä; tarkka aihe ja palautuspäivä Itslearningissä.",
+      "url": "",
+      "custom": false
     }
   ],
-  "updated": "2026-10-16"
+  "updated": "2026-10-16",
+  "courses": [
+    {
+      "course": "Yhteisöpedagogi kasvattajana · 5 op",
+      "code": "KN00AO84-3013",
+      "start": "2026-08-24",
+      "end": "2026-12-31",
+      "teachers": "Mari Murto; Sari Järvenpää",
+      "mode": "Verkossa",
+      "description": "Kehityspsykologia, lasten ja nuorten erityinen tuki, mielenterveystaidot, perheiden kasvatustyön tuki. Reaaliaikaiseen opetukseen voi osallistua, mutta opintojakson voi suorittaa myös itsenäisesti.",
+      "estimated": false
+    },
+    {
+      "course": "Nuorisotyö koulussa · 5 op",
+      "code": "KN00AO85-3011",
+      "start": "2027-01-04",
+      "end": "2027-07-31",
+      "teachers": "Sanna-Kaisa Karvonen",
+      "mode": "Verkossa",
+      "description": "Koulu- ja nuorisotyön yhteistyö, yhteisölliset työtavat, lainsäädäntö, digitaaliset menetelmät. PDF ei luettele yksittäisiä palautettavia tehtäviä tai opetuskertoja.",
+      "estimated": false
+    },
+    {
+      "course": "Kunnan nuorisotyö · 5 op",
+      "code": "KN00AO86-3011",
+      "start": "2026-09-01",
+      "end": "2027-05-31",
+      "teachers": "Maria Känsäkoski",
+      "mode": "Verkossa",
+      "description": "PDF:n yleinen ajoitus alkaa 1.9.2026 ja opetusryhmän toteutus alkaa 31.8.2026. Opintojaksolla suositeltuja mutta ei pakollisia tallennettavia opetuskertoja, tehtävät voi tehdä omaan tahtiin. Apuohjaus/vierailu tai tehtävävaihtoehto tarkistettava Itslearningistä.",
+      "estimated": false
+    },
+    {
+      "course": "Kielenhuolto ja kirjoittaminen · 3 op",
+      "code": "YY00AP90-3028",
+      "start": "2026-09-25",
+      "end": "2026-12-31",
+      "teachers": "Katriina Veikkolainen",
+      "mode": "Verkossa, itsenäinen",
+      "description": "Ei reaaliaikaisia opetuskertoja. Pakolliset viikkotehtävät; osa keskustelualueen ryhmätehtäviä. Aiemmin suunnitellut viikkotehtävät säilytetty. PDF kieltää tekoälyn käytön tehtävien tekemiseen, tekstien tuottamiseen ja kielentarkastukseen.",
+      "estimated": false
+    },
+    {
+      "course": "Orientaatio opiskeluun ja opiskelutaidot · 2 op",
+      "code": "YY00AS13-3139",
+      "start": "2026-08-24",
+      "end": "2027-07-31",
+      "teachers": "Mari Murto; Emilia Teerikangas",
+      "mode": "Orientaatiot, HOPS, materiaalit",
+      "description": "Orientaatiopäivät, opettaja- ja opiskelijatutoreiden tunnit, verkkomateriaali ja HOPS-keskustelut. PDF ei erittele lähetettäviä tehtäviä tai etäopetusajoituksia.",
+      "estimated": false
+    },
+    {
+      "course": "Projektit ja talous (Humak) · 5 op",
+      "code": "C-02631-KATU2-3008",
+      "start": "2026-08-17",
+      "end": "2027-07-31",
+      "teachers": "Erja Anttonen; Kirsi Arolainen",
+      "mode": "Verkkomateriaalit ja Zoom-työpajat",
+      "description": "Itsenäinen opiskelu, viisi pientä tenttiä, tehtäviä, vertaispalautteita ja oma opiskelusuunnitelma. Neljä vaihtoehtoista Zoom-työpajaa; suositellaan osallistumista yhteen ennakkotentin jälkeen. Työpajoja ei tallenneta. Kesän infossa voi kysyä kurssista. Arviointi hyväksytty/hylätty.",
+      "estimated": false
+    },
+    {
+      "course": "Viestintä · 3 op",
+      "code": "HK00AX79-3002",
+      "start": "2026-10-20",
+      "end": "2027-03-31",
+      "teachers": "Hanna-Riina Aho",
+      "mode": "Lähiopetus: etämahdollisuus varmistettava",
+      "description": "Kirjallinen, puhe-, työyhteisö- ja ryhmäviestintä. Kuusi arvioitavaa tehtävää jo kirjattu. Ei tenttiä. PDF:n toteutustavaksi on ilmoitettu lähiopetus; mahdolliset etätunnit tarkistettava Itslearningistä tai Lukkarikoneesta. PDF kieltää tekoälyn käytön tehtävätekstien tuottamisessa ja kielentarkastuksessa.",
+      "estimated": false
+    },
+    {
+      "course": "Taidelähtöiset menetelmät nuorisotyössä · 5 op",
+      "code": "HK00AX80-3002",
+      "start": "2027-01-04",
+      "end": "2027-07-31",
+      "teachers": "Mari Murto; Annika Yliniemi; Samuli Seppänen",
+      "mode": "Verkossa",
+      "description": "Taidelähtöiset ja luovat menetelmät, toiminnan suunnittelu ja arviointi, turvallinen ryhmä, inklusiivisuus. Kolme 18.–19.1.2027 verkkotuntia kirjattu.",
+      "estimated": false
+    },
+    {
+      "course": "Movement and Outdoor Education · 5 op",
+      "code": "HK00AX81-3001",
+      "start": "2026-08-01",
+      "end": "2026-12-31",
+      "teachers": "Mari Murto",
+      "mode": "Lähiopetus",
+      "description": "Liikunta- ja luontolähtöisten toimintojen ohjaus, turvallinen retki- ja leiritoiminta, kestävän kehityksen näkökulmat ja partiokasvatus. Kurssi on aiemmin merkitty suoritetuksi.",
+      "estimated": false
+    },
+    {
+      "course": "Pedagoginen työelämäprojekti · 5 op",
+      "code": "HK00AX93-3002",
+      "start": "2027-01-04",
+      "end": "2027-07-31",
+      "teachers": "Sanna-Kaisa Karvonen; Mari Murto",
+      "mode": "Lähiopetus: etämahdollisuus varmistettava",
+      "description": "Projektinhallinnan perusteet, pedagogisten menetelmien soveltaminen, yhteisöllinen kehittäminen ja työelämäkumppanuudet. PDF ei nimeä tarkkoja palautettavia tehtäviä tai etäopetuskertoja.",
+      "estimated": false
+    },
+    {
+      "course": "Yhteisöpedagogiikan mahdollisuudet · 2 op",
+      "code": "HK00AX94-3002",
+      "start": "2026-08-24",
+      "end": "2027-07-31",
+      "teachers": "Sari Virkkala; Mari Murto",
+      "mode": "Lähiopetus, aiemmat etäjärjestelyt säilytetty",
+      "description": "Johdatus yhteisöpedagogiikkaan, kompetenssit, toimintakentät ja oman asiantuntijuuden rakentaminen. Jo aiemmin sovitut etävalmistelut säilyvät kalenterissa.",
+      "estimated": false
+    },
+    {
+      "course": "English for Community Educators · 3 op",
+      "code": "KN00AN54-3014",
+      "start": "2027-01-07",
+      "end": "2027-05-16",
+      "teachers": "Ulla Orjala",
+      "mode": "Verkossa",
+      "description": "Ammatillinen englanti: kirjoitustehtävä, essee, suullinen esitys ja valvottu verkkotentti. Tentin aika sovitaan ryhmän kanssa. Poissaolon korvaavissa tehtävissä voi olla suullisia paritehtäviä.",
+      "estimated": false
+    },
+    {
+      "course": "Communication Skills · 3 op",
+      "code": "KN00AN55-3013",
+      "start": "2026-09-01",
+      "end": "2026-12-31",
+      "teachers": "Ulla Orjala",
+      "mode": "Virtuaali- ja lähiopetus",
+      "description": "Suullinen ja kirjallinen ammatillinen englanti, pari- ja ryhmätehtävät, valvottu verkkotentti sovittuna aikana. Jo sovitut paritehtävät ja läksyt säilyvät kalenterissa.",
+      "estimated": false
+    },
+    {
+      "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
+      "code": "",
+      "start": "",
+      "end": "2027-07-31",
+      "teachers": "",
+      "mode": "OAMK avoin AMK",
+      "description": "Toteutuksen alku- ja päättymispäivät vahvistettava OAMKin ajantasaisista ohjeista. Kalenterissa oleva 31.7.2027 on aiempi arvio.",
+      "estimated": true
+    },
+    {
+      "course": "Pedagoginen ohjaus yhteisöpedagogeille · 3 op",
+      "code": "",
+      "start": "",
+      "end": "2027-07-31",
+      "teachers": "Esa Virkkula",
+      "mode": "OAMK avoin AMK",
+      "description": "Toteutuksen alku- ja päättymispäivät vahvistettava OAMKin ajantasaisista ohjeista. Kalenterissa oleva 31.7.2027 on aiempi arvio.",
+      "estimated": true
+    }
+  ]
 }
