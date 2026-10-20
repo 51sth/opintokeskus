@@ -272,6 +272,34 @@ body{background:var(--ui-canvas);color:var(--ui-text)}
 .item.activity .symbol{color:#328065}
 .daybadge.activity{background:#d8f1e2;color:#28644d}
 .daypreview.kind-activity{border-color:var(--course-accent,#328065)}
+
+/* Välilehdet ja päättymispäivän mukaan järjestetty opintojaksotaulukko */
+.view-panel[hidden]{display:none!important}
+.top-tabs{display:flex;align-items:flex-end;gap:8px;margin:20px 0 13px;border-bottom:1px solid #d4e0ef;padding:0 3px}
+.top-tab{font-weight:800;font-size:14px;letter-spacing:.05px;color:#496484;background:transparent;border:0;border-bottom:3px solid transparent;padding:12px 21px;margin-bottom:-1px;border-radius:9px 9px 0 0;transition:background-color .12s,color .12s}
+.top-tab:hover{background:#ebf2fc}
+.top-tab.is-active{color:#214b87;background:#e8f1fe;border-bottom-color:#3568ab}
+.top-tab:focus-visible{outline:3px solid #5f9bdf;outline-offset:-3px}
+.courses-panel{border:1px solid #dce5ef;border-radius:16px;background:#fff;padding:19px 18px 22px;margin:16px 0;box-shadow:0 3px 12px #152c4810}
+.courses-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:10px 16px;flex-wrap:wrap;margin-bottom:18px}
+.courses-heading h2{font-size:20px;line-height:1.25;margin:0 0 6px;font-weight:850;color:#233b5b}
+.courses-heading p{margin:0;color:#657993;font-size:12px}
+.course-count{color:#3b648f;border-radius:50px;background:#e8f1fc;padding:6px 10px;font-size:12px;font-weight:850;white-space:nowrap}
+.course-table-scroll{width:100%;overflow-x:auto;border:1px solid #e0e8f2;border-radius:12px}
+.course-table{width:100%;border-collapse:collapse;text-align:left;min-width:580px;font-size:13px}
+.course-table th{padding:12px 13px;font-size:11px;color:#526882;letter-spacing:.45px;text-transform:uppercase;background:#eef4fb;white-space:nowrap}
+.course-table td{padding:12px 13px;border-top:1px solid #e9eef5;vertical-align:middle}
+.course-table tbody tr:nth-child(even){background:#f9fbfe}
+.course-table tbody tr:hover{background:#f1f6fd}
+.course-name-cell{border-left:4px solid var(--course-accent,#6a85a7);font-weight:750;color:#2b3c55}
+.course-name-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.course-done{display:inline-flex;background:#d9f2e2;color:#226341;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:800}
+.course-credits{font-weight:800;white-space:nowrap;color:#4d6080}
+.course-enddate{white-space:nowrap;color:#334b69;font-variant-numeric:tabular-nums}
+.course-estimate{display:inline-flex;background:#fff0d9;color:#916019;padding:3px 6px;border-radius:5px;font-size:10px;font-weight:800;margin-left:7px}
+.course-progress{white-space:nowrap;color:#405a7d;font-variant-numeric:tabular-nums}
+.course-disclaimer{font-size:12px;line-height:1.5;margin:14px 0 0;color:#687d95}
+@media(max-width:620px){.top-tab{font-size:13px;padding:11px 17px}.courses-panel{padding:15px 12px}.course-table{font-size:12px}.course-table td{padding:10px}.course-table th{padding:10px}}
 </style></head><body><div class="app" id="app"></div><script>
 (function(){
 'use strict';
@@ -282,6 +310,14 @@ let cloudStatus='Haetaan ajantasaisia tietoja GitHubista…';
 let lastCloudSync='';
 let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,completedOpen=false,quickAddOpen=false,pickedTaskId='';
 const expandedPoolTasks=new Set();
+const TAB_STORE_KEY='opintokeskus_aktiivinen_valilehti_v1';
+let activeTab='calendar';
+try{if(localStorage.getItem(TAB_STORE_KEY)==='courses')activeTab='courses'}catch(e){}
+function chooseTab(tab){
+ activeTab=tab==='courses'?'courses':'calendar';
+ try{localStorage.setItem(TAB_STORE_KEY,activeTab)}catch(e){}
+ render();
+}
 // Viikkonäkymän valinnat ovat vain tämän selaimen asetuksia, eivät opintotietoja.
 const WEEK_VIS_KEY='opintokeskus_nakyvat_viikot_v1';
 let weekVisibility=[true,true,false,false];
@@ -553,6 +589,46 @@ function expandCalendarEntries(begin,activeIndices){
  }
  return expanded.sort(sort);
 }
+
+function renderCourseTable(){
+ const rows=records.filter(e=>e.kind==='end'&&e.course
+   &&!String(e.course).toLocaleLowerCase('fi-FI').includes('repetera svenska'));
+ // Yksi rivi/opintojakso, toteutuksen kalenteriin kirjattu päättymispäivä.
+ const courses=new Map();
+ rows.forEach(e=>{
+   const label=String(e.course||'');
+   const existing=courses.get(label);
+   if(!existing||(e.date||'9999-99-99')<(existing.date||'9999-99-99'))
+     courses.set(label,e);
+ });
+ const items=[...courses.values()].sort((a,b)=>
+   (a.date||'9999-99-99').localeCompare(b.date||'9999-99-99')
+   ||a.course.localeCompare(b.course,'fi'));
+ const tr=items.map(e=>{
+   const raw=String(e.course),match=raw.match(/^(.*?)\\s*[·•]\\s*(\\d+(?:[,.]\\d+)?)\\s*op\\s*$/i);
+   const courseName=match?match[1].trim():raw;
+   const credits=match?match[2]:'—';
+   const approximate=/arvio|alustav/i.test(e.title+' '+(e.kind==='end'&&/arvio/i.test(e.title)?'arvio':''));
+   const done=/suoritettu/i.test(e.title);
+   const tasks=records.filter(r=>r.kind==='task'&&r.course===e.course);
+   const completed=tasks.filter(r=>r.done).length;
+   return `<tr style="${courseColorStyle(e.course)}">
+     <td class="course-name-cell"><span class="course-name-wrap">${enc(courseName)}${done?'<span class="course-done">Suoritettu</span>':''}</span></td>
+     <td class="course-credits">${enc(credits)}</td>
+     <td class="course-enddate"><span>${e.date?formatDate(dateObj(e.date)):'Ei tiedossa'}</span>${approximate?'<span class="course-estimate">arvio</span>':''}</td>
+     <td class="course-progress">${tasks.length?`${completed} / ${tasks.length}`:'—'}</td>
+   </tr>`;
+ }).join('');
+ return `<section class="courses-panel" aria-label="Opintojaksot">
+   <div class="courses-heading"><div><h2>Opintojaksot</h2><p>Opintojaksojen päättymispäivät ja kirjattujen tehtävien tilanne.</p></div>
+   <span class="course-count">${items.length} opintojaksoa</span></div>
+   <div class="course-table-scroll"><table class="course-table">
+     <thead><tr><th scope="col">Opintojakso</th><th scope="col">Op</th><th scope="col">Päättymispäivä</th><th scope="col">Tehtäviä tehty</th></tr></thead>
+     <tbody>${tr||'<tr><td colspan="4">Opintojaksoja ei ole vielä kirjattu.</td></tr>'}</tbody>
+   </table></div>
+   <p class="course-disclaimer">Päättymispäivä tarkoittaa opintojakson toteutuksen loppua, ei välttämättä tehtävien palautuspäivää. Arvioksi merkityt päivämäärät pitää vahvistaa. Tehtävien määrä kuvaa vain Opintokeskukseen kirjattuja tehtäviä.</p>
+ </section>`;
+}
 function render(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),begin=anchorBegin();
 const activeIndices=[0,1,2,3].filter(i=>weekVisibility[i]);
 const firstVisibleDay=dayAdd(begin,activeIndices[0]*7),finish=dayAdd(begin,(activeIndices[activeIndices.length-1]+1)*7);
@@ -563,7 +639,12 @@ const selectedWeeks=Array.from({length:4},(_,i)=>({
 }));
 const todoTasks=records.filter(e=>e.kind==='task'&&!e.done).sort((a,b)=>Number(!!a.date)-Number(!!b.date)||(a.date||deadlineInfo(a).date||'9999-99-99').localeCompare(b.date||deadlineInfo(b).date||'9999-99-99')||a.title.localeCompare(b.title,'fi'));
 const doneTasks=records.filter(e=>e.kind==='task'&&e.done).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||a.title.localeCompare(b.title,'fi'));
-host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opintojen hallinta</p><h1>Opintokeskus</h1><p>Seuraavan kahden viikon tehtävät, etäopetukset ja kurssien päättymiset yhdessä näkymässä.</p><div class="header-actions"><button class="btn primary" id="addBtn">+ Lisää tehtävä</button><button class="btn" id="importBtn">Tuo varmuuskopio</button><button class="btn" id="exportBtn">Vie varmuuskopio</button><input type="file" id="importFile" accept=".json,application/json" style="display:none"></div><p class="syncState" style="font-size:12px;margin-top:10px">${enc(cloudStatus)}${lastCloudSync?' · päivitetty klo '+enc(lastCloudSync):''}</p></header>
+host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opintojen hallinta</p><h1>Opintokeskus</h1><p>Tehtävät, etäopetukset ja kurssien aikataulut yhdessä paikassa.</p><div class="header-actions"><button class="btn primary" id="addBtn">+ Lisää tehtävä</button><button class="btn" id="importBtn">Tuo varmuuskopio</button><button class="btn" id="exportBtn">Vie varmuuskopio</button><input type="file" id="importFile" accept=".json,application/json" style="display:none"></div><p class="syncState" style="font-size:12px;margin-top:10px">${enc(cloudStatus)}${lastCloudSync?' · päivitetty klo '+enc(lastCloudSync):''}</p></header>
+<nav class="top-tabs" aria-label="Opintokeskuksen välilehdet" role="tablist">
+ <button type="button" id="tab-calendar" class="top-tab ${activeTab==='calendar'?'is-active':''}" data-top-tab="calendar" role="tab" aria-selected="${activeTab==='calendar'}" aria-controls="panel-calendar">Kalenteri</button>
+ <button type="button" id="tab-courses" class="top-tab ${activeTab==='courses'?'is-active':''}" data-top-tab="courses" role="tab" aria-selected="${activeTab==='courses'}" aria-controls="panel-courses">Kurssit</button>
+</nav>
+<div id="panel-calendar" class="view-panel" role="tabpanel" aria-labelledby="tab-calendar" ${activeTab==='courses'?'hidden':''}>
 <div class="addpanel ${formOpen?'show':''}" id="addPanel"><form id="newForm"><div class="addgrid"><div class="field"><label for="newTitle">Tehtävän nimi</label><input id="newTitle" name="title" required placeholder="Esim. palautettava essee"></div><div class="field"><label for="newDate">Päivämäärä</label><input id="newDate" name="date" type="date"></div><div class="field"><label for="newCourse">Kurssi</label><input id="newCourse" name="course" placeholder="Valinnainen"></div><div class="field"><label for="newKind">Tyyppi</label><select id="newKind" name="kind"><option value="task">Tehtävä</option><option value="lesson">Opetus / tapahtuma</option><option value="activity">Harrastus / oma meno</option><option value="end">Kurssin päättyminen</option></select></div></div><div class="submitrow"><button class="btn primary" type="submit">Tallenna merkintä</button></div></form></div>
 <div class="range-only">
   <button type="button" class="dates" id="rangeSelect" title="Valitse kalenterijakso" aria-label="Kalenterijakso ${formatDate(firstVisibleDay)} – ${formatDate(finish)}. Valitse toinen jakso.">${formatDate(firstVisibleDay)} – ${formatDate(finish)}</button>
@@ -581,7 +662,16 @@ host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opin
 <details class="unscheduled completed-list" data-task-list="done" ${completedOpen?'open':''}><summary>Tehdyt tehtävät (${doneTasks.length})</summary>
 <p class="poolhelp">Valmiit tehtävät säilyvät kalenterissa alkuperäisillä päivillään. Voit avata tehtävän lisätiedot kolmiosta tai palauttaa sen tekemättömäksi.</p>
 <div class="unscheduledgrid">${doneTasks.length?doneTasks.map(poolItem).join(''):'<p class="muted">Ei vielä tehtyjä tehtäviä.</p>'}</div></details>
+</div>
+<div id="panel-courses" class="view-panel" role="tabpanel" aria-labelledby="tab-courses" ${activeTab==='calendar'?'hidden':''}>${renderCourseTable()}</div>
 <p class="foot">Kurssien päättymispäivät eivät välttämättä ole tehtävien viimeisiä palautuspäiviä. Kielenhuollon tehtäväpäivät perustuvat aikaisempaan työskentelyaikatauluun. OAMKin heinäkuun 2027 loppupäivä on alustava. Ei muistutusilmoituksia eikä automaattista Google Kalenteri -synkronointia. Laitteella tekemäsi tehtäväkuittaukset tallentuvat kyseisen selaimen paikalliseen muistiin. Ne eivät vielä synkronoidu puhelimen ja tietokoneen välillä. Vie varmuuskopio ennen selaimen tietojen tyhjentämistä tai laitteenvaihtoa. Tämän julkisen sovelluksen yhteinen tehtävälista haetaan GitHubista. Sen tiedot ovat julkisesti luettavissa. Selaimessa tehtävät omat muutokset säilyvät tässä laitteessa, eivätkä siirry automaattisesti GitHubiin.</p>`;
+host.querySelectorAll('[data-top-tab]').forEach(button=>button.onclick=()=>chooseTab(button.dataset.topTab));
+host.querySelectorAll('[data-top-tab]').forEach(button=>button.onkeydown=event=>{
+ if(event.key!=='ArrowRight'&&event.key!=='ArrowLeft')return;
+ event.preventDefault();
+ const next=button.dataset.topTab==='calendar'?'courses':'calendar';
+ chooseTab(next);host.querySelector('[data-top-tab="'+next+'"]')?.focus();
+});
 host.querySelector('#importBtn').onclick=()=>host.querySelector('#importFile').click();
 host.querySelector('#importFile').onchange=async(ev)=>{const file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>2000000){alert('Tiedosto on liian suuri (enintään 2 Mt).');return;}try{const input=JSON.parse(await file.text());const rr=Array.isArray(input)?input:input.records;if(!Array.isArray(rr)||rr.length>1000)throw new Error('Tiedoston muoto ei kelpaa.');const safe=rr.map((x,i)=>{if(!x||typeof x!=='object'||typeof x.title!=='string')throw new Error('Virheellinen tehtävä.');const kind=['task','lesson','activity','end'].includes(x.kind)?x.kind:'task';const date=typeof x.date==='string'&&(/^\d{4}-\d{2}-\d{2}$/.test(x.date)||x.date==='')?x.date:'';return {id:String(x.id||('import-'+i)).slice(0,100),date,title:x.title.slice(0,300),course:String(x.course||'Oma merkintä').slice(0,200),kind,time:String(x.time||'').slice(0,40),done:!!x.done,note:String(x.note||'').slice(0,2000),url:typeof x.url==='string'&&/^https:\/\//.test(x.url)?x.url:'',custom:!!x.custom,_localNote:!!x._localNote,recurrence:x.recurrence?.frequency==='weekly'&&Number.isInteger(x.recurrence.weekday)&&x.recurrence.weekday>=0&&x.recurrence.weekday<=6&&/^\d{4}-\d{2}-\d{2}$/.test(x.recurrence.start||'')?{frequency:'weekly',weekday:x.recurrence.weekday,start:x.recurrence.start,until:/^\d{4}-\d{2}-\d{2}$/.test(x.recurrence.until||'')?x.recurrence.until:''}:null}});if(records.length&&!confirm('Korvataanko nykyiset merkinnät tuoduilla tiedoilla?'))return;records=safe;save();offset=0;render();alert('Opintotiedot tuotu onnistuneesti ('+records.length+' merkintää).');}catch(ex){alert('Tuonti epäonnistui: '+ex.message)}};
 host.querySelector('#exportBtn').onclick=()=>{const payload=JSON.stringify({format:'opintokeskus-1',records},null,2);const blob=new Blob([payload],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='opintokeskus-varmuuskopio.json';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1500)};
@@ -667,7 +757,7 @@ const periodInput=host.querySelector('#rangePicker');
 periodButton.onclick=()=>{periodInput.value=selectedDate||dateStr(new Date());if(typeof periodInput.showPicker==='function')periodInput.showPicker();else periodInput.click()};
 periodButton.onkeydown=ev=>{if(ev.key==='ArrowLeft'||ev.key==='ArrowRight'){ev.preventDefault();offset+=ev.key==='ArrowLeft'?-1:1;quickAddOpen=false;render();host.querySelector('#rangeSelect')?.focus()}};
 periodInput.onchange=()=>{const target=periodInput.value;if(!target||dateStr(dateObj(target))!==target)return;const firstMonday=dayAdd(new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()),-((new Date().getDay()+6)%7));const chosen=dateObj(target);const days=Math.round((Date.UTC(chosen.getFullYear(),chosen.getMonth(),chosen.getDate())-Date.UTC(firstMonday.getFullYear(),firstMonday.getMonth(),firstMonday.getDate()))/86400000);offset=Math.floor(days/14);activateWeekForDate(anchorBegin(),target);selectedDate=target;quickAddOpen=false;render()};
-host.querySelector('#addBtn').onclick=()=>{formOpen=!formOpen;render()};host.querySelectorAll('[data-check]').forEach(x=>x.onclick=()=>{let e=records.find(t=>t.id===x.dataset.check);if(e){const oldDone=!!e.done;e.done=!e.done;if(!e.custom){if(e._local){if(e.done===e._originDone){delete e._local;delete e._originDone;}}else{e._local=true;e._originDone=oldDone;}}save();render()}});host.querySelectorAll('[data-unschedule]').forEach(x=>x.onclick=()=>moveTask(x.dataset.unschedule,''));
+host.querySelector('#addBtn').onclick=()=>{formOpen=!formOpen;if(formOpen){activeTab='calendar';try{localStorage.setItem(TAB_STORE_KEY,activeTab)}catch(e){}}render()};host.querySelectorAll('[data-check]').forEach(x=>x.onclick=()=>{let e=records.find(t=>t.id===x.dataset.check);if(e){const oldDone=!!e.done;e.done=!e.done;if(!e.custom){if(e._local){if(e.done===e._originDone){delete e._local;delete e._originDone;}}else{e._local=true;e._originDone=oldDone;}}save();render()}});host.querySelectorAll('[data-unschedule]').forEach(x=>x.onclick=()=>moveTask(x.dataset.unschedule,''));
 host.querySelectorAll('[data-delete]').forEach(x=>x.onclick=()=>{if(!confirm('Poistetaanko tapahtumamerkintä kokonaan?'))return;records=records.filter(t=>t.id!==x.dataset.delete);save();render()});host.querySelector('#newForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),title=String(fd.get('title')||'').trim();if(!title)return;records.push({id:'mine-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:String(fd.get('date')||''),title,course:String(fd.get('course')||'Oma merkintä'),kind:String(fd.get('kind')||'task'),time:'',done:false,note:'',url:'',custom:true});formOpen=false;save();render()};
 }
 // Sivun tyhjää aluetta tai muuta sisältöä klikkaamalla kalenteripäivän valinta poistuu.
