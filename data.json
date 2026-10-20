@@ -441,7 +441,7 @@
       "kind": "end",
       "time": "",
       "done": false,
-      "note": "",
+      "note": "Viestintä HK00AX79-3002 · 3 op · 20.10.2026–31.3.2027. Opettaja Hanna-Riina Aho. Teemat: kirjallinen, puhe-, työyhteisö- ja ryhmäviestintä. Arvioitavat tehtävät: raportti 0–5, kolme testiä hyv/hyl, puhe-esityksen aihe- ja sisältöehdotus hyv/hyl sekä ammatillinen videopuhe-esitys 0–5. Kirjallisen viestinnän arvosanaa painotetaan. Ei tenttiä. PDF:n mukaan lähiopetustoteutus; tarkat opetuspäivät ja -tavat sekä tehtävien palautuspäivät tarkistettava Itslearningistä / Lukkarikoneesta. Kurssin ohjeen mukaan tekoälyä ei saa käyttää tehtävätekstien tuottamiseen eikä kielentarkastukseen.",
       "url": "",
       "custom": false
     },
@@ -566,6 +566,24 @@
       "custom": false
     },
     {
+      "id": "taimi-ry-jooga-viikoittain",
+      "date": "",
+      "title": "Jooga – Taimi ry",
+      "course": "Taimi ry",
+      "kind": "activity",
+      "time": "",
+      "done": false,
+      "note": "Toistuva jooga torstaisin, kunnes toisin sovitaan. Kellonaikaa ei ole vielä merkitty.",
+      "url": "",
+      "custom": false,
+      "recurrence": {
+        "frequency": "weekly",
+        "weekday": 4,
+        "start": "2026-10-22",
+        "until": ""
+      }
+    },
+    {
       "id": "kuntask2",
       "date": "",
       "title": "Kunnallisen työn esittely (tehtävä 2)",
@@ -650,6 +668,30 @@
       "custom": false
     },
     {
+      "id": "viestinta-hk00ax79-3002-aihe-ehdotus",
+      "date": "",
+      "title": "Puhe-esityksen aihe- ja sisältöehdotus",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Puheviestintä. Puhe-esityksen aihe- ja sisältöehdotus; arviointi hyväksytty/hylätty. Tarkka palautuspäivä tarkistettava Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "viestinta-hk00ax79-3002-raportti",
+      "date": "",
+      "title": "Raporttitehtävä",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Kirjallinen viestintä. Arviointi 0–5. Opintojakson kokonaisarvosanassa kirjallisen viestinnän tehtävää painotetaan. Palautusaikaa ei ilmoitettu toteutussuunnitelmassa.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "kh7",
       "date": "",
       "title": "Tarkista tehtävän 7 tila",
@@ -686,6 +728,42 @@
       "custom": false
     },
     {
+      "id": "viestinta-hk00ax79-3002-testi-ohje",
+      "date": "",
+      "title": "Testi opinnäytetyöohjeesta",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Kirjallinen viestintä. Testi opinnäytetyöohjeesta; arviointi hyväksytty/hylätty. Tarkka palautuspäivä tarkistettava Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "viestinta-hk00ax79-3002-testi-lahdeviitteet",
+      "date": "",
+      "title": "Testi: lähdeviitteiden merkintä tekstiin",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Kirjallinen viestintä. Tekstiviitteiden merkintöjen testi; arviointi hyväksytty/hylätty. Tarkka palautuspäivä tarkistettava Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "viestinta-hk00ax79-3002-testi-lahdeluettelo",
+      "date": "",
+      "title": "Testi: lähteiden merkintä lähdeluetteloon",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Kirjallinen viestintä. Lähdeluettelomerkintöjen testi; arviointi hyväksytty/hylätty. Tarkka palautuspäivä tarkistettava Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "kuntask4",
       "date": "",
       "title": "Vaikuttaminen (tehtävä 4)",
@@ -698,22 +776,16 @@
       "custom": false
     },
     {
-      "id": "taimi-ry-jooga-viikoittain",
+      "id": "viestinta-hk00ax79-3002-videoesitys",
       "date": "",
-      "title": "Jooga – Taimi ry",
-      "course": "Taimi ry",
-      "kind": "activity",
+      "title": "Videotehtävä: ammatillinen puhe-esitys",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
       "time": "",
       "done": false,
-      "note": "Toistuva jooga torstaisin, kunnes toisin sovitaan. Kellonaikaa ei ole vielä merkitty.",
+      "note": "Puheviestintä. Ammatillisen puhe-esityksen videotehtävä; arviointi 0–5. Tarkka palautuspäivä tarkistettava Itslearningistä.",
       "url": "",
-      "custom": false,
-      "recurrence": {
-        "frequency": "weekly",
-        "weekday": 4,
-        "start": "2026-10-22",
-        "until": ""
-      }
+      "custom": false
     }
   ],
   "updated": "2026-10-16"
