@@ -300,16 +300,50 @@ body{background:var(--ui-canvas);color:var(--ui-text)}
 .course-progress{white-space:nowrap;color:#405a7d;font-variant-numeric:tabular-nums}
 .course-disclaimer{font-size:12px;line-height:1.5;margin:14px 0 0;color:#687d95}
 @media(max-width:620px){.top-tab{font-size:13px;padding:11px 17px}.courses-panel{padding:15px 12px}.course-table{font-size:12px}.course-table td{padding:10px}.course-table th{padding:10px}}
+
+.course-table{min-width:730px}
+.course-main-row.course-finished{background:#e8f7ed!important}
+.course-expand-button{display:flex;align-items:center;gap:7px;width:100%;text-align:left;background:none;border:0;padding:0;font:inherit;font-weight:800;color:#274462;cursor:pointer}
+.course-expand-button:hover{text-decoration:underline}
+.course-expand-button:focus-visible,.course-done-toggle:focus-visible{outline:2px solid #366ca9;outline-offset:3px}
+.course-angle{width:16px;flex:none;font-size:16px;color:#386eab}
+.course-start{white-space:nowrap;color:#3b5a7d;font-variant-numeric:tabular-nums}
+.course-done-toggle{border:1px solid #c5d6e6;border-radius:7px;padding:6px 9px;background:#f7faff;color:#58708e;white-space:nowrap;font-size:11px;font-weight:800}
+.course-done-toggle.is-done{background:#d9f2e3;color:#1f6b45;border-color:#90c6a6}
+.course-expanded-row[hidden]{display:none!important}
+.course-expanded-row>td{background:#f6f9fe;padding:0!important}
+.course-extra{padding:16px 18px 20px;border-left:4px solid #9abce3}
+.course-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px 14px;margin-bottom:14px}
+.course-facts>div{display:flex;flex-direction:column;gap:4px}
+.course-facts span{font-size:10px;font-weight:800;text-transform:uppercase;color:#71849a}
+.course-facts strong{font-size:12px;color:#304b6a;line-height:1.4;overflow-wrap:anywhere}
+.course-summary-text{padding:10px 12px;border-radius:8px;border:1px solid #e0e9f3;background:#fff;color:#4c647f;font-size:12px;line-height:1.5;margin:0 0 12px}
+.course-extra h3{font-size:13px;color:#293e59;margin:16px 0 9px}
+.course-task-list,.course-session-list{display:flex;flex-direction:column;gap:7px}
+.course-task{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid #dbe7f3;border-left:4px solid #8eb4df;border-radius:9px;background:#fff}
+.course-task.is-done{background:#edf8ef;border-left-color:#68b388}
+.course-task-info{flex:1;min-width:0}
+.course-task-name{font-size:12px;font-weight:800}
+.course-task-sub{font-size:10px;margin-top:4px;color:#68809a}
+.course-task-note{font-size:11px;margin-top:7px;color:#536c89;white-space:pre-wrap;line-height:1.4}
+.course-session{background:#fff;border:1px solid #deeaf5;border-radius:9px;padding:10px;display:flex;flex-direction:column;gap:4px;font-size:12px}
+.course-session-date{font-size:11px;font-weight:850;color:#3069a2}
+.course-session small{font-size:11px;color:#617b96;line-height:1.4}
+.course-empty,.course-fine-print{font-size:11px;line-height:1.5;color:#657e98}
+.daypreview.kind-end.entry-done{background:#d8f1e2;border-left-color:#3ea569;color:#226c41;font-weight:800}
+@media(max-width:640px){.course-table{min-width:705px}.course-extra{padding:12px}}
 </style></head><body><div class="app" id="app"></div><script>
 (function(){
 'use strict';
 const START=[];
 const KEY='opintokeskus_pysyva_v2';let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
 let records=Array.isArray(saved.records)?saved.records:START;
+let courseCatalog=Array.isArray(saved.courses)?saved.courses:[];
 let cloudStatus='Haetaan ajantasaisia tietoja GitHubista…';
 let lastCloudSync='';
 let offset=0,filter='all',showDone=true,formOpen=false,view='week',selectedDate='',unscheduledOpen=true,completedOpen=false,quickAddOpen=false,pickedTaskId='';
 const expandedPoolTasks=new Set();
+const expandedCourses=new Set();
 const TAB_STORE_KEY='opintokeskus_aktiivinen_valilehti_v1';
 let activeTab='calendar';
 try{if(localStorage.getItem(TAB_STORE_KEY)==='courses')activeTab='courses'}catch(e){}
@@ -330,13 +364,14 @@ try{
 function saveWeekVisibility(){try{localStorage.setItem(WEEK_VIS_KEY,JSON.stringify(weekVisibility))}catch(e){}}
 
 const host=document.getElementById('app');
-function save(){try{localStorage.setItem(KEY,JSON.stringify({records}))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({records,courses:courseCatalog}))}catch(e){}}
 async function syncFromCloud(){
   try{
     const res=await fetch('./data.json?v='+Date.now(),{cache:'no-store'});
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     if(!data||!Array.isArray(data.records)||data.records.length>1000)throw new Error('Virheellinen tietomuoto');
+    if(Array.isArray(data.courses)&&data.courses.length<=100)courseCatalog=data.courses.filter(c=>c&&typeof c.course==='string');
     const old=new Map(records.map(x=>[String(x.id),x]));
     const ids=new Set();
     const next=data.records.map((entry,i)=>{
@@ -449,8 +484,8 @@ function deadlineInfo(e){
 }
 function item(e,inPool=false){
  const klass=e.done?'done':e.kind;
- const kind=e.kind==='task'?'Tehtävä':e.kind==='lesson'?'Opetus / tapahtuma':e.kind==='activity'?'Harrastus · viikoittain':'Kurssi päättyy';
- const check=e.kind==='task'?`<button type="button" class="check ${e.done?'checked':''}" data-check="${enc(e.id)}" aria-label="Merkitse ${e.done?'tekemättömäksi':'tehdyksi'}">${e.done?'✓':''}</button>`:`<span class="symbol">${e.kind==='activity'?'✿':e.kind==='lesson'?'▣':'◈'}</span>`;
+ const kind=e.kind==='task'?'Tehtävä':e.kind==='lesson'?'Opetus / tapahtuma':e.kind==='activity'?'Harrastus · viikoittain':e.done?'Kurssi suoritettu':'Kurssi päättyy';
+ const check=(e.kind==='task'||e.kind==='end')?`<button type="button" class="check ${e.done?'checked':''}" data-check="${enc(e.id)}" aria-label="Merkitse ${e.done?'tekemättömäksi':'tehdyksi'}">${e.done?'✓':''}</button>`:`<span class="symbol">${e.kind==='activity'?'✿':e.kind==='lesson'?'▣':'◈'}</span>`;
  const link=e.url?` <a href="${enc(e.url)}" target="_blank" rel="noopener noreferrer">Avaa ohje</a>`:'';
  const draggable=inPool&&e.kind==='task'&&!e.date;
  const dragSymbol=draggable?'<span class="draghandle" aria-hidden="true" title="Vedä tehtävä kalenteriin">⠿</span>':'';
@@ -548,7 +583,7 @@ function renderWeeks(begin,groups,today){
      const activities=entries.filter(x=>x.kind==='activity').length;
      const ends=entries.filter(x=>x.kind==='end').length;
      const dayName=['Su','Ma','Ti','Ke','To','Pe','La'][d.getDay()];
-     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}<span class="preview-title">${enc(x.title)}</span></span>`).join('');
+     const previews=entries.slice(0,3).map(x=>`<span class="daypreview ${x.kind==='task'?(x.done?'task-done':'task-pending'):'kind-'+enc(x.kind)+(x.done?' entry-done':'')}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}: ${enc(x.title)}">${x.kind==='task'?`<span class="preview-state ${x.done?'state-done':'state-pending'}" aria-hidden="true">${x.done?'✓':'○'}</span>`:''}<span class="preview-title">${enc(x.title)}</span></span>`).join('');
      const shortTasks=entries.filter(x=>x.kind==='task').slice(0,5);
      const courseMarks=shortTasks.length?`<span class="coursemarks" aria-hidden="true">${shortTasks.map(x=>`<span class="coursemark ${x.done?'is-done':'is-pending'}" style="${courseColorStyle(x.course)}" title="${enc(x.course)}"></span>`).join('')}</span>`:'';
      return `<button type="button" class="weekday ${key===selectedDate?'selected':''} ${key===todayStr?'todaymark':''} ${i>4?'weekend':''} ${pending?'has-pending':completed?'only-done':''}" data-day="${key}" aria-label="${enc(dateHead(d))}, ${entries.length} merkintää" aria-pressed="${key===selectedDate?'true':'false'}">
@@ -590,44 +625,52 @@ function expandCalendarEntries(begin,activeIndices){
  return expanded.sort(sort);
 }
 
+
 function renderCourseTable(){
- const rows=records.filter(e=>e.kind==='end'&&e.course
-   &&!String(e.course).toLocaleLowerCase('fi-FI').includes('repetera svenska'));
- // Yksi rivi/opintojakso, toteutuksen kalenteriin kirjattu päättymispäivä.
- const courses=new Map();
- rows.forEach(e=>{
-   const label=String(e.course||'');
-   const existing=courses.get(label);
-   if(!existing||(e.date||'9999-99-99')<(existing.date||'9999-99-99'))
-     courses.set(label,e);
- });
- const items=[...courses.values()].sort((a,b)=>
-   (a.date||'9999-99-99').localeCompare(b.date||'9999-99-99')
-   ||a.course.localeCompare(b.course,'fi'));
- const tr=items.map(e=>{
-   const raw=String(e.course),match=raw.match(/^(.*?)\s*[·•]\s*(\d+(?:[,.]\d+)?)\s*op\s*$/i);
-   const courseName=match?match[1].trim():raw;
-   const credits=match?match[2]:'—';
-   const approximate=/arvio|alustav/i.test(e.title+' '+(e.kind==='end'&&/arvio/i.test(e.title)?'arvio':''));
-   const done=/suoritettu/i.test(e.title);
-   const tasks=records.filter(r=>r.kind==='task'&&r.course===e.course);
-   const completed=tasks.filter(r=>r.done).length;
-   return `<tr style="${courseColorStyle(e.course)}">
-     <td class="course-name-cell"><span class="course-name-wrap">${enc(courseName)}${done?'<span class="course-done">Suoritettu</span>':''}</span></td>
-     <td class="course-credits">${enc(credits)}</td>
-     <td class="course-enddate"><span>${e.date?formatDate(dateObj(e.date)):'Ei tiedossa'}</span>${approximate?'<span class="course-estimate">arvio</span>':''}</td>
-     <td class="course-progress">${tasks.length?`${completed} / ${tasks.length}`:'—'}</td>
-   </tr>`;
- }).join('');
- return `<section class="courses-panel" aria-label="Opintojaksot">
-   <div class="courses-heading"><div><h2>Opintojaksot</h2><p>Opintojaksojen päättymispäivät ja kirjattujen tehtävien tilanne.</p></div>
-   <span class="course-count">${items.length} opintojaksoa</span></div>
-   <div class="course-table-scroll"><table class="course-table">
-     <thead><tr><th scope="col">Opintojakso</th><th scope="col">Op</th><th scope="col">Päättymispäivä</th><th scope="col">Tehtäviä tehty</th></tr></thead>
-     <tbody>${tr||'<tr><td colspan="4">Opintojaksoja ei ole vielä kirjattu.</td></tr>'}</tbody>
-   </table></div>
-   <p class="course-disclaimer">Päättymispäivä tarkoittaa opintojakson toteutuksen loppua, ei välttämättä tehtävien palautuspäivää. Arvioksi merkityt päivämäärät pitää vahvistaa. Tehtävien määrä kuvaa vain Opintokeskukseen kirjattuja tehtäviä.</p>
- </section>`;
+ const ends=records.filter(r=>r.kind==='end'&&r.course&&!r.course.toLocaleLowerCase('fi-FI').includes('repetera svenska'));
+ const unique=new Map();
+ ends.forEach(r=>{if(!unique.has(r.course))unique.set(r.course,r)});
+ const courses=[...unique.values()].sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999')||a.course.localeCompare(b.course,'fi'));
+ let body='';
+ for(const entry of courses){
+   const key=entry.course,meta=courseCatalog.find(c=>c.course===key)||{};
+   const match=key.match(/^(.*?)\s*[·•]\s*(\d+(?:[,.]\d+)?)\s*op\s*$/i);
+   const name=match?match[1].trim():key,credit=match?match[2]:'—';
+   const start=meta.start||'',finish=meta.end||entry.date||'',estimate=!!meta.estimated||/arvio|alustav/i.test(entry.title),done=!!entry.done,open=expandedCourses.has(key);
+   const tasks=records.filter(t=>t.kind==='task'&&t.course===key).sort(sort),sessions=records.filter(t=>t.kind==='lesson'&&t.course===key).sort(sort);
+   const completed=tasks.filter(t=>t.done).length;
+   const fdate=x=>x?formatDate(dateObj(x)):'Ei vahvistettu';
+   body+='<tr class="course-main-row '+(done?'course-finished':'')+'" style="'+courseColorStyle(key)+'">';
+   body+='<td class="course-name-cell"><button type="button" class="course-expand-button" data-course-expand="'+enc(key)+'" aria-expanded="'+open+'"><span class="course-angle">'+(open?'▾':'▸')+'</span>'+enc(name)+'</button></td>';
+   body+='<td class="course-credits">'+enc(credit)+'</td><td class="course-start">'+fdate(start)+'</td>';
+   body+='<td class="course-enddate">'+fdate(finish)+(estimate?'<span class="course-estimate">arvio</span>':'')+'</td>';
+   body+='<td class="course-progress">'+(tasks.length?completed+' / '+tasks.length:'—')+'</td>';
+   body+='<td><button type="button" class="course-done-toggle '+(done?'is-done':'')+'" data-check="'+enc(entry.id)+'" aria-pressed="'+done+'" aria-label="'+(done?'Merkitse keskeneräiseksi: ':'Merkitse tehdyksi: ')+enc(name)+'">'+(done?'✓ Tehty':'○ Kesken')+'</button></td></tr>';
+   body+='<tr class="course-expanded-row" '+(open?'':'hidden')+'><td colspan="6"><div class="course-extra"><div class="course-facts">';
+   for(const [label,value] of [['Toteutustunnus',meta.code||'Ei ilmoitettu'],['Alkamispäivä',fdate(start)],['Päättymispäivä',fdate(finish)+(estimate?' (arvio)':'')],['Opetustapa',meta.mode||'Ei vahvistettu'],['Opettajat',meta.teachers||'Ei ilmoitettu']])body+='<div><span>'+enc(label)+'</span><strong>'+enc(value)+'</strong></div>';
+   body+='</div>';
+   if(meta.description)body+='<p class="course-summary-text">'+enc(meta.description)+'</p>';
+   body+='<h3>Tehtävät ('+completed+' / '+tasks.length+' tehty)</h3><div class="course-task-list">';
+   if(!tasks.length)body+='<p class="course-empty">Ei vielä yksilöityjä tehtäviä. Tarkista tehtävät Itslearningistä.</p>';
+   for(const t of tasks){
+     body+='<div class="course-task '+(t.done?'is-done':'')+'"><button type="button" class="check '+(t.done?'checked':'')+'" data-check="'+enc(t.id)+'" aria-label="'+(t.done?'Palauta tekemättömäksi: ':'Merkitse tehdyksi: ')+enc(t.title)+'">'+(t.done?'✓':'')+'</button><div class="course-task-info">';
+     body+='<div class="course-task-name">'+enc(t.title)+'</div><div class="course-task-sub">'+(t.date?'Kalenterissa '+fdate(t.date):'Ei vahvistettua tehtäväpäivää')+(t.deadline?' · Deadline '+fdate(t.deadline):'')+'</div>';
+     if(t.note)body+='<div class="course-task-note">'+enc(t.note)+'</div>';
+     body+='</div></div>';
+   }
+   body+='</div>';
+   if(sessions.length){
+     body+='<h3>Etäopetus ja muut opetuskerrat ('+sessions.length+')</h3><div class="course-session-list">';
+     for(const t of sessions){
+       body+='<div class="course-session"><span class="course-session-date">'+fdate(t.date)+(t.time?' · klo '+enc(t.time):'')+'</span><span>'+enc(t.title)+'</span>';
+       if(t.note)body+='<small>'+enc(t.note)+'</small>';
+       body+='</div>';
+     }
+     body+='</div>';
+   }
+   body+='<p class="course-fine-print">Tehtävät päivittyvät samaan kalenteriin ja tehtävälistoihin. Kurssin tehdyksi merkintä ei automaattisesti kuittaa tehtäviä eikä ole virallinen arviointi.</p></div></td></tr>';
+ }
+ return '<section class="courses-panel" aria-label="Opintojaksot"><div class="courses-heading"><div><h2>Opintojaksot</h2><p>Avaa kurssin tiedot sen nimestä. Merkitse kurssi tai yksittäiset tehtävät tehdyiksi.</p></div><span class="course-count">'+courses.length+' opintojaksoa</span></div><div class="course-table-scroll"><table class="course-table"><thead><tr><th>Opintojakso</th><th>Op</th><th>Alkaa</th><th>Päättyy</th><th>Tehtävät</th><th>Tila</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="course-disclaimer">Kurssin päättymispäivä ei välttämättä ole palautuspäivä. Arvioidut päivät vahvistettava. Kurssin suoritusmerkintä ei kuittaa yksittäisiä tehtäviä.</p></section>';
 }
 function render(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),begin=anchorBegin();
 const activeIndices=[0,1,2,3].filter(i=>weekVisibility[i]);
@@ -665,6 +708,11 @@ host.innerHTML=`<header class="hero"><p class="eyebrow">Yhteisöpedagogi · opin
 </div>
 <div id="panel-courses" class="view-panel" role="tabpanel" aria-labelledby="tab-courses" ${activeTab==='calendar'?'hidden':''}>${renderCourseTable()}</div>
 <p class="foot">Kurssien päättymispäivät eivät välttämättä ole tehtävien viimeisiä palautuspäiviä. Kielenhuollon tehtäväpäivät perustuvat aikaisempaan työskentelyaikatauluun. OAMKin heinäkuun 2027 loppupäivä on alustava. Ei muistutusilmoituksia eikä automaattista Google Kalenteri -synkronointia. Laitteella tekemäsi tehtäväkuittaukset tallentuvat kyseisen selaimen paikalliseen muistiin. Ne eivät vielä synkronoidu puhelimen ja tietokoneen välillä. Vie varmuuskopio ennen selaimen tietojen tyhjentämistä tai laitteenvaihtoa. Tämän julkisen sovelluksen yhteinen tehtävälista haetaan GitHubista. Sen tiedot ovat julkisesti luettavissa. Selaimessa tehtävät omat muutokset säilyvät tässä laitteessa, eivätkä siirry automaattisesti GitHubiin.</p>`;
+host.querySelectorAll('[data-course-expand]').forEach(button=>button.onclick=()=>{
+ const key=button.dataset.courseExpand;
+ if(expandedCourses.has(key))expandedCourses.delete(key);else expandedCourses.add(key);
+ render();
+});
 host.querySelectorAll('[data-top-tab]').forEach(button=>button.onclick=()=>chooseTab(button.dataset.topTab));
 host.querySelectorAll('[data-top-tab]').forEach(button=>button.onkeydown=event=>{
  if(event.key!=='ArrowRight'&&event.key!=='ArrowLeft')return;
