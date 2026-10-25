@@ -384,10 +384,11 @@ async function syncFromCloud(){
         x._local=true;
         x._originDone=previous._originDone;
       }
-      if(previous&&previous._localDate===true&&previous._originDate===String(entry.date||'')){
+      if(previous&&previous._localDate===true){
+        // Säilytä itse kalenteriin valittu päivä myös kun yhteiseen tietoon lisätään määräaika.
         x.date=previous.date||'';
         x._localDate=true;
-        x._originDate=previous._originDate;
+        x._originDate=String(entry.date||'');
       }
       // Omia muistiinpanoja ei korvata GitHubin minuutin välein päivittyvillä tiedoilla.
       if(previous&&previous._localNote===true){
@@ -647,7 +648,7 @@ function renderCourseTable(){
    body+='<td class="course-progress">'+(tasks.length?completed+' / '+tasks.length:'—')+'</td>';
    body+='<td><button type="button" class="course-done-toggle '+(done?'is-done':'')+'" data-check="'+enc(entry.id)+'" aria-pressed="'+done+'" aria-label="'+(done?'Merkitse keskeneräiseksi: ':'Merkitse tehdyksi: ')+enc(name)+'">'+(done?'✓ Tehty':'○ Kesken')+'</button></td></tr>';
    body+='<tr class="course-expanded-row" '+(open?'':'hidden')+'><td colspan="6"><div class="course-extra"><div class="course-facts">';
-   for(const [label,value] of [['Toteutustunnus',meta.code||'Ei ilmoitettu'],['Alkamispäivä',fdate(start)],['Päättymispäivä',fdate(finish)+(estimate?' (arvio)':'')],['Opetustapa',meta.mode||'Ei vahvistettu'],['Opettajat',meta.teachers||'Ei ilmoitettu']])body+='<div><span>'+enc(label)+'</span><strong>'+enc(value)+'</strong></div>';
+   for(const [label,value] of [['Toteutustunnus',meta.code||'Ei ilmoitettu'],['Alkamispäivä',fdate(start)],['Päättymispäivä',fdate(finish)+(estimate?' (arvio)':'')],['Täydentämisen viimeinen päivä',meta.supplementUntil?fdate(meta.supplementUntil):'Ei ilmoitettu'],['Opetustapa',meta.mode||'Ei vahvistettu'],['Opettajat',meta.teachers||'Ei ilmoitettu']])body+='<div><span>'+enc(label)+'</span><strong>'+enc(value)+'</strong></div>';
    body+='</div>';
    if(meta.description)body+='<p class="course-summary-text">'+enc(meta.description)+'</p>';
    body+='<h3>Tehtävät ('+completed+' / '+tasks.length+' tehty)</h3><div class="course-task-list">';
@@ -664,6 +665,15 @@ function renderCourseTable(){
      for(const t of sessions){
        body+='<div class="course-session"><span class="course-session-date">'+fdate(t.date)+(t.time?' · klo '+enc(t.time):'')+'</span><span>'+enc(t.title)+'</span>';
        if(t.note)body+='<small>'+enc(t.note)+'</small>';
+       body+='</div>';
+     }
+     body+='</div>';
+   }
+   if(Array.isArray(meta.meetings)&&meta.meetings.length){
+     body+='<h3>Opetuksen aikataulu ('+meta.meetings.length+' ohjelmaosuutta)</h3><p class="course-fine-print">Opetuksen etäyhteyttä ei ole vahvistettu. Näitä ei ole kirjattu automaattisesti etätunneiksi kalenteriin.</p><div class="course-session-list">';
+     for(const meeting of meta.meetings){
+       body+='<div class="course-session"><span class="course-session-date">'+fdate(meeting.date)+(meeting.time?' · klo '+enc(meeting.time):'')+'</span><span>'+enc(meeting.topic||'Opetuskerta')+'</span>';
+       if(meeting.mode)body+='<small>'+enc(meeting.mode)+'</small>';
        body+='</div>';
      }
      body+='</div>';
