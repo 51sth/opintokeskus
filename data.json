@@ -525,7 +525,7 @@
       "kind": "end",
       "time": "",
       "done": false,
-      "note": "Viestintä HK00AX79-3002 · 3 op · 20.10.2026–31.3.2027. Opettaja Hanna-Riina Aho. Teemat: kirjallinen, puhe-, työyhteisö- ja ryhmäviestintä. Arvioitavat tehtävät: raportti 0–5, kolme testiä hyv/hyl, puhe-esityksen aihe- ja sisältöehdotus hyv/hyl sekä ammatillinen videopuhe-esitys 0–5. Kirjallisen viestinnän arvosanaa painotetaan. Ei tenttiä. PDF:n mukaan lähiopetustoteutus; tarkat opetuspäivät ja -tavat sekä tehtävien palautuspäivät tarkistettava Itslearningistä / Lukkarikoneesta. Kurssin ohjeen mukaan tekoälyä ei saa käyttää tehtävätekstien tuottamiseen eikä kielentarkastukseen.",
+      "note": "Toteutus 20.10.2026–31.3.2027 (3 op), opettaja Hanna-Riina Aho. Opettajan 23.10.2026 viestin mukaan tehtäviä voi täydentää 31.5.2027 asti; tämä EI muuta varsinaista päättymispäivää. Tapaamiset: 26.10. klo 10–12; 16.11. klo 8.15–10 ja 10–12; 1.2.2027 klo 14–16. Etäosallistumista ei ole vahvistettu. Raportin palautus 12.12.2026, puhe-esityksen aihe-ehdotus 31.1.2027. Videotehtävän sähköpostissa ilmoitettu 20.2.2026 on ristiriitainen, varmista vuosi opettajalta. Lisäksi kolme hyväksytty/hylätty-testiä. Itsenäinen suorittaminen mahdollista.",
       "url": "",
       "custom": false
     },
@@ -873,27 +873,29 @@
     },
     {
       "id": "viestinta-hk00ax79-3002-aihe-ehdotus",
-      "date": "",
+      "date": "2027-01-31",
       "title": "Puhe-esityksen aihe- ja sisältöehdotus",
       "course": "Viestintä · 3 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Puheviestintä. Puhe-esityksen aihe- ja sisältöehdotus; arviointi hyväksytty/hylätty. Tarkka palautuspäivä tarkistettava Itslearningistä.",
+      "note": "Puheviestinnän ennakkotehtävä, arviointi hyväksytty/hylätty. Opettajan 23.10.2026 viestin mukainen esitelmän aihe-ehdotuksen palautuspäivä 31.1.2027.",
       "url": "",
-      "custom": false
+      "custom": false,
+      "deadline": "2027-01-31"
     },
     {
       "id": "viestinta-hk00ax79-3002-raportti",
-      "date": "",
+      "date": "2026-12-12",
       "title": "Raporttitehtävä",
       "course": "Viestintä · 3 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Kirjallinen viestintä. Arviointi 0–5. Opintojakson kokonaisarvosanassa kirjallisen viestinnän tehtävää painotetaan. Palautusaikaa ei ilmoitettu toteutussuunnitelmassa.",
+      "note": "Kirjallinen viestintä, arviointi 0–5. Opettajan 23.10.2026 viestin mukainen raportin palautuspäivä 12.12.2026. Arvosanassa painotetaan raportin kirjallista osuutta.",
       "url": "",
-      "custom": false
+      "custom": false,
+      "deadline": "2026-12-12"
     },
     {
       "id": "kh7",
@@ -1011,9 +1013,10 @@
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Puheviestintä. Ammatillisen puhe-esityksen videotehtävä; arviointi 0–5. Tarkka palautuspäivä tarkistettava Itslearningistä.",
+      "note": "Puheviestinnän videoitu ammatillinen puhe-esitys, arviointi 0–5. Opettajan 23.10.2026 sähköpostissa palautuspäiväksi on kirjoitettu 20.2.2026, mutta opetus jatkuu 1.2.2027 saakka. Vuosiluku on ristiriitainen – vahvista määräaika opettajalta. Ei vielä vahvistettua deadlinea.",
       "url": "",
-      "custom": false
+      "custom": false,
+      "deadline": ""
     },
     {
       "id": "english-educators-writing",
@@ -1097,8 +1100,35 @@
       "end": "2027-03-31",
       "teachers": "Hanna-Riina Aho",
       "mode": "Lähiopetus: etämahdollisuus varmistettava",
-      "description": "Kirjallinen, puhe-, työyhteisö- ja ryhmäviestintä. Kuusi arvioitavaa tehtävää jo kirjattu. Ei tenttiä. PDF:n toteutustavaksi on ilmoitettu lähiopetus; mahdolliset etätunnit tarkistettava Itslearningistä tai Lukkarikoneesta. PDF kieltää tekoälyn käytön tehtävätekstien tuottamisessa ja kielentarkastuksessa.",
-      "estimated": false
+      "description": "Viestintä HK00AX79-3002. Opintojakso alkoi 20.10.2026 ja päättyy 31.3.2027. Opettajan 23.10.2026 sähköpostin mukaan täydentäminen on mahdollista 31.5.2027 asti. Tapaamisia on kolme eri päivänä (neljä aikatauluriviä, joista kaksi 16.11.). Opetuksen etäosallistumista ei ole vahvistettu, joten tapaamiset on merkitty kurssin tietoihin eikä kalenteriin etätunneiksi. Pakolliset suoritukset: raportti, kolme testiä, videoitu suullinen puhe-esitys ja sen ennakkotehtävä. Itsenäinen suorittaminen on mahdollista; tapaamisiin osallistumattomille ei opettajan mukaan tule erillisiä korvaavia tehtäviä. Luennoissa käytettävä opintomateriaali on Itslearningissä. Tekoälyn käyttö tehtävätekstien tuottamiseen tai kielentarkastukseen on kielletty. Sähköpostissa puhe-esityksen palautuspäiväksi on kirjoitettu 20.2.2026, mutta vuoden 2027 opetuskerran jälkeen; tarkista vuosi opettajalta.",
+      "estimated": false,
+      "meetings": [
+        {
+          "date": "2026-10-26",
+          "time": "10.00–12.00",
+          "topic": "Opintojaksoperehdytys, johdatus aiheeseen, opiskelutekstit ja tekstilajit",
+          "mode": "Etäyhteyttä ei vahvistettu"
+        },
+        {
+          "date": "2026-11-16",
+          "time": "08.15–10.00",
+          "topic": "Hyvä tieteellinen käytäntö (HTK), lähteiden käyttö ja referointi",
+          "mode": "Etäyhteyttä ei vahvistettu"
+        },
+        {
+          "date": "2026-11-16",
+          "time": "10.00–12.00",
+          "topic": "Raportin tarkistuslista ja johdanto puheviestintään",
+          "mode": "Etäyhteyttä ei vahvistettu"
+        },
+        {
+          "date": "2027-02-01",
+          "time": "14.00–16.00",
+          "topic": "Esiintyminen, esitysgrafiikka ja puhe-esityksen tarkistuslista",
+          "mode": "Etäyhteyttä ei vahvistettu"
+        }
+      ],
+      "supplementUntil": "2027-05-31"
     },
     {
       "course": "Taidelähtöiset menetelmät nuorisotyössä · 5 op",
