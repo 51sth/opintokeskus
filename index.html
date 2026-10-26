@@ -648,9 +648,21 @@ function renderCourseTable(){
    body+='<td class="course-progress">'+(tasks.length?completed+' / '+tasks.length:'—')+'</td>';
    body+='<td><button type="button" class="course-done-toggle '+(done?'is-done':'')+'" data-check="'+enc(entry.id)+'" aria-pressed="'+done+'" aria-label="'+(done?'Merkitse keskeneräiseksi: ':'Merkitse tehdyksi: ')+enc(name)+'">'+(done?'✓ Tehty':'○ Kesken')+'</button></td></tr>';
    body+='<tr class="course-expanded-row" '+(open?'':'hidden')+'><td colspan="6"><div class="course-extra"><div class="course-facts">';
-   for(const [label,value] of [['Toteutustunnus',meta.code||'Ei ilmoitettu'],['Alkamispäivä',fdate(start)],['Päättymispäivä',fdate(finish)+(estimate?' (arvio)':'')],['Täydentämisen viimeinen päivä',meta.supplementUntil?fdate(meta.supplementUntil):'Ei ilmoitettu'],['Opetustapa',meta.mode||'Ei vahvistettu'],['Opettajat',meta.teachers||'Ei ilmoitettu']])body+='<div><span>'+enc(label)+'</span><strong>'+enc(value)+'</strong></div>';
+   for(const [label,value] of [['Toteutustunnus',meta.code||'Ei ilmoitettu'],['Alkamispäivä',fdate(start)],['Päättymispäivä',fdate(finish)+(estimate?' (arvio)':'')],['Arviointi viimeistään Pepissä',meta.peppiAssessmentBy?fdate(meta.peppiAssessmentBy):'Ei ilmoitettu'],['Täydentämisen viimeinen päivä',meta.supplementUntil?fdate(meta.supplementUntil):'Ei ilmoitettu'],['Opetustapa',meta.mode||'Ei vahvistettu'],['Opettajat',meta.teachers||'Ei ilmoitettu']])body+='<div><span>'+enc(label)+'</span><strong>'+enc(value)+'</strong></div>';
    body+='</div>';
    if(meta.description)body+='<p class="course-summary-text">'+enc(meta.description)+'</p>';
+   if(meta.workload){
+     const work=meta.workload;
+     body+='<h3>Opiskelun arvioitu työmäärä ('+enc(work.totalHours||'—')+' h)</h3><div class="course-facts course-workload">';
+     for(const [label,value] of [
+       ['Opetus',work.teachingHours],
+       ['Opetusmateriaalit',work.learningMaterialsHours],
+       ['Keskustelu- ja pohdintatehtävät',work.discussionHours],
+       ['Testit',work.testsHours],
+       ['Arvioitavat tehtävät',work.gradedAssignmentsHours]
+     ])if(value)body+='<div><span>'+enc(label)+'</span><strong>'+enc(value)+' h</strong></div>';
+     body+='</div>';
+   }
    body+='<h3>Tehtävät ('+completed+' / '+tasks.length+' tehty)</h3><div class="course-task-list">';
    if(!tasks.length)body+='<p class="course-empty">Ei vielä yksilöityjä tehtäviä. Tarkista tehtävät Itslearningistä.</p>';
    for(const t of tasks){
