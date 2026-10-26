@@ -110,6 +110,18 @@
       "custom": false
     },
     {
+      "id": "comm-skills-online-20261026",
+      "date": "2026-10-26",
+      "title": "Communication Skills – online lesson: Education, digital youth work, Finland & work",
+      "course": "Communication Skills · 3 op",
+      "kind": "lesson",
+      "time": "",
+      "done": false,
+      "note": "Kurssin opetussuunnitelman mukaan ma 26.10.2026: Education & studying, Digital youth work, Finland, work. Verkossa (Zoom). Kellonaikaa ei ilmoitettu; tarkista Itslearningistä. Zoom-linkki kurssialustalla.",
+      "url": "",
+      "custom": false
+    },
+    {
       "id": "kirjoitustyopaja-teams-20261026",
       "date": "2026-10-26",
       "title": "Kirjoitustyöpaja – Teams-etäohjaus",
@@ -214,6 +226,18 @@
       "time": "12.00–14.00",
       "done": false,
       "note": "Valinnainen etäseuranta.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "comm-skills-online-20261116",
+      "date": "2026-11-16",
+      "title": "Communication Skills – online lesson: Applying for a job & workplace communication",
+      "course": "Communication Skills · 3 op",
+      "kind": "lesson",
+      "time": "",
+      "done": false,
+      "note": "Kurssin opetussuunnitelman mukaan ma 16.11.2026: work & applying for a job; workplace communication. Verkossa (Zoom). Kellonaikaa ei ilmoitettu; tarkista Itslearningistä. Zoom-linkki kurssialustalla.",
       "url": "",
       "custom": false
     },
@@ -362,6 +386,19 @@
       "custom": false
     },
     {
+      "id": "viestinta-hk00ax79-3002-raportti",
+      "date": "2026-12-12",
+      "title": "Raporttitehtävä",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Kirjallinen viestintä, arviointi 0–5. Opettajan 23.10.2026 viestin mukainen raportin palautuspäivä 12.12.2026. Arvosanassa painotetaan raportin kirjallista osuutta.",
+      "url": "",
+      "custom": false,
+      "deadline": "2026-12-12"
+    },
+    {
       "id": "kirjoitustyopaja-teams-20261214",
       "date": "2026-12-14",
       "title": "Kirjoitustyöpaja – Teams-etäohjaus",
@@ -480,6 +517,19 @@
       "note": "Vapaaehtoinen vaihtoehto neljästä työpajasta. Ei tallenneta.",
       "url": "",
       "custom": false
+    },
+    {
+      "id": "viestinta-hk00ax79-3002-aihe-ehdotus",
+      "date": "2027-01-31",
+      "title": "Puhe-esityksen aihe- ja sisältöehdotus",
+      "course": "Viestintä · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Puheviestinnän ennakkotehtävä, arviointi hyväksytty/hylätty. Opettajan 23.10.2026 viestin mukainen esitelmän aihe-ehdotuksen palautuspäivä 31.1.2027.",
+      "url": "",
+      "custom": false,
+      "deadline": "2027-01-31"
     },
     {
       "id": "kunnan2lesson",
@@ -672,6 +722,34 @@
       "note": "PDF: yksi arvioitavista tehtävätyypeistä; tarkka aihe ja palautuspäivä Itslearningissä.",
       "url": "",
       "custom": false
+    },
+    {
+      "id": "comm-skills-essay",
+      "date": "",
+      "title": "Essay task – essee",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Suunniteltu suoritusjakso: loka–marraskuu 2026. Arviointi 0–5. Palautuspäivä ja varsinainen tehtävänanto vahvistettava Itslearningistä.",
+      "url": "",
+      "custom": false,
+      "plannedWindow": "Loka–marraskuu 2026",
+      "assessment": "0–5"
+    },
+    {
+      "id": "comm-skills-introduction-video",
+      "date": "",
+      "title": "Introduction video",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Suunniteltu suoritusjakso: syys–lokakuu 2026. Esittelyvideo. Arviointi hyväksytty/hylätty. Ei tarkkaa palautuspäivää kurssin alustavassa aikataulussa.",
+      "url": "",
+      "custom": false,
+      "plannedWindow": "Syys–lokakuu 2026",
+      "assessment": "Hyväksytty / hylätty"
     },
     {
       "id": "taimi-ry-jooga-viikoittain",
@@ -872,30 +950,32 @@
       "custom": false
     },
     {
-      "id": "viestinta-hk00ax79-3002-aihe-ehdotus",
-      "date": "2027-01-31",
-      "title": "Puhe-esityksen aihe- ja sisältöehdotus",
-      "course": "Viestintä · 3 op",
+      "id": "comm-skills-speaking-task",
+      "date": "",
+      "title": "Speaking task – pareittain tai kolmen ryhmissä",
+      "course": "Communication Skills · 3 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Puheviestinnän ennakkotehtävä, arviointi hyväksytty/hylätty. Opettajan 23.10.2026 viestin mukainen esitelmän aihe-ehdotuksen palautuspäivä 31.1.2027.",
+      "note": "Suunniteltu suoritusjakso: marras–joulukuu 2026. Suullinen tehtävä pareittain tai kolmen hengen ryhmässä. Arviointi 0–5. Sovitaan ryhmän ja opettajan ohjeiden mukaan.",
       "url": "",
       "custom": false,
-      "deadline": "2027-01-31"
+      "plannedWindow": "Marras–joulukuu 2026",
+      "assessment": "0–5"
     },
     {
-      "id": "viestinta-hk00ax79-3002-raportti",
-      "date": "2026-12-12",
-      "title": "Raporttitehtävä",
-      "course": "Viestintä · 3 op",
+      "id": "comm-skills-exam",
+      "date": "",
+      "title": "Supervised online exam – valvottu verkkotentti",
+      "course": "Communication Skills · 3 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Kirjallinen viestintä, arviointi 0–5. Opettajan 23.10.2026 viestin mukainen raportin palautuspäivä 12.12.2026. Arvosanassa painotetaan raportin kirjallista osuutta.",
+      "note": "Kurssin alustavan tehtäväaikataulun mukaan tentti on marras–joulukuussa 2026. Valvottu verkkotentti (supervised online exam). Tarkka päivä sovitaan erikseen ryhmän kanssa. Arviointi 0–5. Ei vahvistettua tenttipäivää; sitä ei ole sijoitettu kalenteriin.",
       "url": "",
       "custom": false,
-      "deadline": "2026-12-12"
+      "plannedWindow": "Marras–joulukuu 2026 (alustava)",
+      "assessment": "0–5"
     },
     {
       "id": "kh7",
@@ -994,16 +1074,18 @@
       "custom": false
     },
     {
-      "id": "comm-skills-exam",
+      "id": "comm-skills-video-cv",
       "date": "",
-      "title": "Valvottu verkkotentti (aika sovitaan)",
+      "title": "Video CV",
       "course": "Communication Skills · 3 op",
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "PDF:n mukaan valvottu verkkotentti järjestetään sovittuna ajankohtana. Päivämäärä vielä vahvistamatta.",
+      "note": "Suunniteltu suoritusjakso: marraskuu 2026. Arviointi hyväksytty/hylätty. Tarkka palautuspäivä vahvistettava Itslearningistä.",
       "url": "",
-      "custom": false
+      "custom": false,
+      "plannedWindow": "Marraskuu 2026",
+      "assessment": "Hyväksytty / hylätty"
     },
     {
       "id": "viestinta-hk00ax79-3002-videoesitys",
@@ -1029,6 +1111,20 @@
       "note": "PDF: yksi arvioitavista tehtävätyypeistä; tarkka aihe ja palautuspäivä Itslearningissä.",
       "url": "",
       "custom": false
+    },
+    {
+      "id": "comm-skills-i-as-english-learner",
+      "date": "",
+      "title": "Writing task – I as an English learner",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Suunniteltu suoritusjakso: syys–lokakuu 2026. Arviointi hyväksytty/hylätty. Ei tarkkaa palautuspäivää kurssin alustavassa aikataulussa.",
+      "url": "",
+      "custom": false,
+      "plannedWindow": "Syys–lokakuu 2026",
+      "assessment": "Hyväksytty / hylätty"
     }
   ],
   "updated": "2026-10-16",
@@ -1196,8 +1292,9 @@
       "end": "2026-12-31",
       "teachers": "Ulla Orjala",
       "mode": "Virtuaali- ja lähiopetus",
-      "description": "Suullinen ja kirjallinen ammatillinen englanti, pari- ja ryhmätehtävät, valvottu verkkotentti sovittuna aikana. Jo sovitut paritehtävät ja läksyt säilyvät kalenterissa.",
-      "estimated": false
+      "description": "Communication Skills KN00AN55-3013. Virallinen toteutusaika 1.9.–31.12.2026; opetuksen ensimmäinen tapaaminen oli ma 28.9.2026 luokassa (ei lisätty etäkalenteriin). Verkkotunnit ma 26.10.2026 (Education & studying, Digital youth work, Finland, work) ja ma 16.11.2026 (work & applying for a job, workplace communication). Näiden kellonaikoja ei ilmoitettu. Zoom-linkki Itslearningissä. Tehtävien suunnitellut suoritusjaksot ovat suuntaa-antavia, eivät vahvistettuja palautuspäiviä. Arvioitavat tehtävät: I as an English learner (hyv/hyl), introduction video (hyv/hyl), essay (0–5), video CV (hyv/hyl), speaking task pareittain/kolmen ryhmissä (0–5), valvottu verkkotentti (0–5, aika sovitaan).",
+      "estimated": false,
+      "teachingStart": "2026-09-28"
     },
     {
       "course": "Oppimisen tuki yhteisöpedagogeille · 3 op",
