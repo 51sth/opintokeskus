@@ -525,7 +525,7 @@
       "kind": "end",
       "time": "",
       "done": false,
-      "note": "Toteutus 20.10.2026–31.3.2027 (3 op), opettaja Hanna-Riina Aho. Opettajan 23.10.2026 viestin mukaan tehtäviä voi täydentää 31.5.2027 asti; tämä EI muuta varsinaista päättymispäivää. Tapaamiset: 26.10. klo 10–12; 16.11. klo 8.15–10 ja 10–12; 1.2.2027 klo 14–16. Etäosallistumista ei ole vahvistettu. Raportin palautus 12.12.2026, puhe-esityksen aihe-ehdotus 31.1.2027. Videotehtävän sähköpostissa ilmoitettu 20.2.2026 on ristiriitainen, varmista vuosi opettajalta. Lisäksi kolme hyväksytty/hylätty-testiä. Itsenäinen suorittaminen mahdollista.",
+      "note": "Itslearningin mukaan Viestintä HK00AX79-3002 (3 op) toteutuu 21.10.2026–31.3.2027. Aiemmassa PDF:ssä aloituspäivä on 20.10.2026; uudemman kurssialustan tieto on 21.10.2026. Peppi-arviointi viimeistään 30.4.2027. Opettajan sähköpostin mukaan täydentämistä voi jatkaa 31.5.2027 asti; tämä ei muuta kurssin päättymispäivää. Opetuksen ohjelma: 26.10. klo 10–12; 16.11. klo 8.15–9.45 ja 10–12; 1.2.2027 klo 14–16. Etäosallistuminen vahvistamatta. Raportin palautus 12.12.2026, puhe-esityksen aihe-ehdotus 31.1.2027. Puhe-esityksen palautukselle on merkitty ristiriitainen 20.2.2026 – tarkista vuosiluku. Työmäärä noin 80 tuntia.",
       "url": "",
       "custom": false
     },
@@ -1013,7 +1013,7 @@
       "kind": "task",
       "time": "",
       "done": false,
-      "note": "Puheviestinnän videoitu ammatillinen puhe-esitys, arviointi 0–5. Opettajan 23.10.2026 sähköpostissa palautuspäiväksi on kirjoitettu 20.2.2026, mutta opetus jatkuu 1.2.2027 saakka. Vuosiluku on ristiriitainen – vahvista määräaika opettajalta. Ei vielä vahvistettua deadlinea.",
+      "note": "Videoitu ammatillinen puhe-esitys (arviointi 0–5). Sekä opettajan 23.10. sähköpostin että Itslearningin kurssitaulukon mukaan palautus olisi 20.2.2026. Vuosi 2026 on ristiriitainen, koska viimeinen opetus on 1.2.2027; mahdollinen 20.2.2027 on vahvistamatta. Älä merkitse tehtävää virheelliselle palautuspäivälle.",
       "url": "",
       "custom": false,
       "deadline": ""
@@ -1096,11 +1096,11 @@
     {
       "course": "Viestintä · 3 op",
       "code": "HK00AX79-3002",
-      "start": "2026-10-20",
+      "start": "2026-10-21",
       "end": "2027-03-31",
       "teachers": "Hanna-Riina Aho",
       "mode": "Lähiopetus: etämahdollisuus varmistettava",
-      "description": "Viestintä HK00AX79-3002. Opintojakso alkoi 20.10.2026 ja päättyy 31.3.2027. Opettajan 23.10.2026 sähköpostin mukaan täydentäminen on mahdollista 31.5.2027 asti. Tapaamisia on kolme eri päivänä (neljä aikatauluriviä, joista kaksi 16.11.). Opetuksen etäosallistumista ei ole vahvistettu, joten tapaamiset on merkitty kurssin tietoihin eikä kalenteriin etätunneiksi. Pakolliset suoritukset: raportti, kolme testiä, videoitu suullinen puhe-esitys ja sen ennakkotehtävä. Itsenäinen suorittaminen on mahdollista; tapaamisiin osallistumattomille ei opettajan mukaan tule erillisiä korvaavia tehtäviä. Luennoissa käytettävä opintomateriaali on Itslearningissä. Tekoälyn käyttö tehtävätekstien tuottamiseen tai kielentarkastukseen on kielletty. Sähköpostissa puhe-esityksen palautuspäiväksi on kirjoitettu 20.2.2026, mutta vuoden 2027 opetuskerran jälkeen; tarkista vuosi opettajalta.",
+      "description": "Itslearningin (26.10.2026) opintojaksotiedoissa toteutusaika on 21.10.2026–31.3.2027, 3 op, noin 80 tuntia opiskelutyötä. Aiemmassa Centrian PDF-toteutustiedossa alkamisajaksi ilmoitettiin 20.10.2026; tässä käytetään uudemman kurssialustan 21.10. päivämäärää. Opetus 8–12 h; opetusmateriaalit 23–27 h; keskustelu- ja pohdintatehtävät noin 5 h; testit noin 10 h; arvosanalla arvioitavat tehtävät noin 30 h. Arviointi Pepissä viimeistään 30.4.2027 (yleinen 30 päivän arviointiaika ei koske uudelleenpalautuksia). Opettajan sähköpostin mukaan puuttuvia tehtäviä voi täydentää 31.5.2027 asti; se ei muuta varsinaista päättymispäivää. Opetuskertoja on kolmella eri päivällä, ja kaksi 16.11.2026. Kurssin voi suorittaa itsenäisesti, eikä opettaja vaadi korvaavia tehtäviä tapaamisten poisjäänneistä. Etäosallistumista ei ole vahvistettu (kurssilla on Zoom-osio, mutta siitä ei ilmene näiden opetuskertojen toteutustapa). Kirjallinen raportti palautetaan 12.12.2026, aihe-ehdotus 31.1.2027. Puhe-esityksen palautuspäiväksi sekä opettajan viestissä että Itslearningin taulukossa on merkitty ristiriitaisesti 20.2.2026: vuosi on varmistettava ennen deadline-merkintää. Tehtävätekstien tuottaminen tai kielentarkastus tekoälyllä on kielletty.",
       "estimated": false,
       "meetings": [
         {
@@ -1111,8 +1111,8 @@
         },
         {
           "date": "2026-11-16",
-          "time": "08.15–10.00",
-          "topic": "Hyvä tieteellinen käytäntö (HTK), lähteiden käyttö ja referointi",
+          "time": "08.15–09.45",
+          "topic": "HTK, lähteiden käyttö ja referointi",
           "mode": "Etäyhteyttä ei vahvistettu"
         },
         {
@@ -1128,7 +1128,16 @@
           "mode": "Etäyhteyttä ei vahvistettu"
         }
       ],
-      "supplementUntil": "2027-05-31"
+      "supplementUntil": "2027-05-31",
+      "peppiAssessmentBy": "2027-04-30",
+      "workload": {
+        "totalHours": 80,
+        "teachingHours": "8–12",
+        "learningMaterialsHours": "23–27",
+        "discussionHours": "noin 5",
+        "testsHours": "noin 10",
+        "gradedAssignmentsHours": "noin 30"
+      }
     },
     {
       "course": "Taidelähtöiset menetelmät nuorisotyössä · 5 op",
