@@ -725,17 +725,18 @@
     },
     {
       "id": "comm-skills-essay",
-      "date": "",
-      "title": "Essay task – essee",
+      "date": "2026-11-30",
+      "title": "Essay: Communicating with Finns",
       "course": "Communication Skills · 3 op",
       "kind": "task",
-      "time": "",
+      "time": "23.59",
       "done": false,
-      "note": "Suunniteltu suoritusjakso: loka–marraskuu 2026. Arviointi 0–5. Palautuspäivä ja varsinainen tehtävänanto vahvistettava Itslearningistä.",
+      "note": "Vahvistettu palautuksen määräaika: maanantai 30.11.2026 klo 23.59 (Itslearningin Essay Communicating with Finns -tehtävänanto ja opettajan 26.10. ilmoitus). Tutustu video-ohjeisiin ja liitteenä olevaan 'Tehtävä Essay task.pdf' -ohjeeseen, käytä esseepohjaa ja merkitse lähteet tekstiin. Tekoälyn, käännöstyökalujen ja oikolukuohjelmien käyttö on tässä palautettavassa tehtävässä kielletty. Arviointi enintään 5 pistettä.",
       "url": "",
       "custom": false,
       "plannedWindow": "Loka–marraskuu 2026",
-      "assessment": "0–5"
+      "assessment": "0–5",
+      "deadline": "2026-11-30"
     },
     {
       "id": "comm-skills-introduction-video",
