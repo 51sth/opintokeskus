@@ -237,7 +237,7 @@
       "kind": "lesson",
       "time": "",
       "done": false,
-      "note": "Kurssin opetussuunnitelman mukaan ma 16.11.2026: work & applying for a job; workplace communication. Verkossa (Zoom). Kellonaikaa ei ilmoitettu; tarkista Itslearningistä. Zoom-linkki kurssialustalla.",
+      "note": "Kurssin opetussuunnitelman mukaan ma 16.11.2026: work & applying for a job; workplace communication. Verkossa (Zoom). Kellonaikaa ei ilmoitettu; tarkista Itslearningistä. Zoom-linkki kurssialustalla. Kotitehtävien palautuslaatikko sulkeutuu seuraavan tunnin alkaessa. Edeltävät kotitehtävät: pelaaminen nuorisotyössä -artikkeli, Facts about Finland ja sanasto sekä työhaastatteluvideo ja videokysymykset. Tarkista oppitunnin aloitusaika Itslearningistä.",
       "url": "",
       "custom": false
     },
@@ -1125,6 +1125,45 @@
       "custom": false,
       "plannedWindow": "Syys–lokakuu 2026",
       "assessment": "Hyväksytty / hylätty"
+    },
+    {
+      "id": "comm-gaming-youth-work-reading-20261116",
+      "date": "2026-11-16",
+      "deadline": "2026-11-16",
+      "title": "Lue artikkeli: pelaaminen nuorisotyössä",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Communication Skills -kotitehtävä 28.10.: Lue artikkeli siitä, miten pelejä käytetään nuorisotyössä. Seuraava kurssin kalenteriin merkitty oppitunti on 16.11.2026. Kotitehtävien palautuslaatikko sulkeutuu oppitunnin alkaessa; tarkka kellonaika tulee tarkistaa Itslearningistä. Artikkelin lukemista ei ole erikseen ohjeistettu palautettavaksi.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "comm-facts-about-finland-20261116",
+      "date": "2026-11-16",
+      "deadline": "2026-11-16",
+      "title": "Lue Facts about Finland + tee sanastotehtävä",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Communication Skills -kotitehtävä 28.10.: Lue lyhyt Facts about Finland -teksti ja tee siihen liittyvä sanastotehtävä. Seuraava kalenteriin merkitty oppitunti on 16.11.2026. Kotitehtävien palautuslaatikko sulkeutuu oppitunnin alkaessa; tarkka kellonaika Itslearningistä.",
+      "url": "",
+      "custom": false
+    },
+    {
+      "id": "comm-job-interview-video-questions-20261116",
+      "date": "2026-11-16",
+      "deadline": "2026-11-16",
+      "title": "Katso työhaastatteluvideo ja vastaa kysymyksiin",
+      "course": "Communication Skills · 3 op",
+      "kind": "task",
+      "time": "",
+      "done": false,
+      "note": "Communication Skills -kotitehtävä 28.10.: Katso työhaastatteluun liittyvä video, vastaa videota koskeviin kysymyksiin ja palauta vastaukset Itslearningin kotitehtävälaatikkoon ennen seuraavan oppitunnin alkua (opintokeskuksen mukaan 16.11.2026, kellonaika tarkistettava).",
+      "url": "",
+      "custom": false
     }
   ],
   "updated": "2026-10-16",
