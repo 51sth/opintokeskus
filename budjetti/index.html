@@ -6,6 +6,62 @@ if(!confirm('Päivitetään lokakuun kuntoutusraha 606,94 € (29.10.2026) ja ma
 const items=[{y:2026,m:9,name:'Kuntoutusraha',amount:606.94,date:'29.10.2026'},{y:2026,m:10,name:'Asumistuki',amount:299.25,date:'02.11.2026'}];
 for(const v of items){const rows=month(v.y,v.m).income;let row=rows.find(x=>x.name.toLocaleLowerCase('fi-FI')===v.name.toLocaleLowerCase('fi-FI'));if(!row){row={name:v.name};rows.push(row)}row.amount=v.amount;row.paymentDate=v.date;row.approx=false}
 save();alert('Kelan maksettavat määrät päivitetty. Muut budjettitiedot säilyivät.');}
+
+// Kertaluonteinen, idempotentti 31.10.2026 toimitettujen erätietojen tuonti.
+// Yksittäinen Elisa-rivi ja laite-erät eivät saa tulla laskettua kahteen kertaan.
+const DEVICE_PLAN_VERSION='elisa-autolaina-20261031-v1';
+function addMonths(y,m,n){let z=y*12+m+n;return [Math.floor(z/12),z%12]}
+function planExpense(y,m,name,amount,recurringId,paid=false){
+  const rows=month(y,m).expense;
+  let r=rows.find(x=>x.planKey===recurringId);
+  if(!r)r=rows.find(x=>x.name===name && Math.abs(num(x.amount)-amount)<0.011);
+  if(!r){r={name,amount,paid,approx:false,recurring:true,recurringId,planKey:recurringId};rows.push(r)}
+  else {r.planKey=recurringId;r.recurringId=recurringId;r.recurring=true}
+}
+function applyDeviceLoanPlan(){
+ if(db._migrationElisaAutolaina===DEVICE_PLAN_VERSION)return false;
+ const plans=[
+  {name:'Elisa – Honor Magic6 Lite (laite-erä)',monthly:8.30,remaining:66.40},
+  {name:'Elisa – AOC CQ32G4VE -näyttö (laite-erä)',monthly:6.90,remaining:89.70},
+  {name:'Elisa – PlayStation 5 Slim (laite-erä)',monthly:16.62,remaining:315.78},
+  {name:'Elisa – Stadler Form Roger Big (laite-erä)',monthly:11.07,remaining:232.47},
+  {name:'Elisa – Kingston XS1000 2 Tt (laite-erä)',monthly:7.18,remaining:208.22}
+ ];
+ // Erääntymisajankohtia ei näy laskukuvissa: aloitetaan marraskuusta 2026.
+ // Ei muuteta lokakuun 2026 laskua eikä jo maksettuja eriä.
+ plans.forEach((p,idx)=>{
+   let cents=Math.round(p.remaining*100),step=Math.round(p.monthly*100),n=0;
+   while(cents>0&&n<120){
+     const [y,m]=addMonths(2026,10,n),take=Math.min(cents,step)/100;
+     planExpense(y,m,p.name,take,'device-20261031-'+idx+'-'+n);
+     cents-=Math.round(take*100);n++;
+   }
+ });
+ // Kuvassa oleva 62,25 € Elisa sisälsi 50,07 € laite-eriä.
+ // Puhelinliittymäosuuden arvio on siten 12,18 €.
+ // Korvataan vain vanha 62,25 euron laskurivi tulevilla kuukausilla.
+ for(let n=0;n<29;n++){
+   const [y,m]=addMonths(2026,10,n),rows=month(y,m).expense;
+   const existing=rows.find(x=>/^Elisa$/i.test((x.name||'').trim())&&Math.abs(num(x.amount)-62.25)<0.011&&!x.paid);
+   if(existing){existing.name='Elisa – puhelinliittymä (arvio)';existing.amount=12.18;existing.approx=true;}
+   else if(!rows.some(x=>/Elisa.*(puhelinliittymä|liittymä)/i.test(x.name||''))){
+     // Lisää liittymäarvio, jos kuukaudessa ei ole Elisa-riviä ennestään.
+     if(!rows.some(x=>/^Elisa$/i.test((x.name||'').trim())))planExpense(y,m,'Elisa – puhelinliittymä (arvio)',12.18,'phone-estimate-'+y+'-'+m);
+   }
+ }
+ // Autolainasta marraskuun 2026 erä on jo maksettu: 540 € alkaa joulukuusta.
+ let balance=54000,n=0;
+ while(balance>0&&n<100){
+   const [y,m]=addMonths(2026,11,n),cents=Math.min(balance,3500);
+   const rows=month(y,m).expense;
+   const old=rows.find(x=>/^Autolaina$/i.test((x.name||'').trim())&&num(x.amount)===0);
+   if(old){old.amount=cents/100;old.paid=false;old.approx=false;old.recurring=true;old.planKey='car-20261031-'+n;old.recurringId=old.planKey}
+   else planExpense(y,m,'Autolaina',cents/100,'car-20261031-'+n);
+   balance-=cents;n++;
+ }
+ db._migrationElisaAutolaina=DEVICE_PLAN_VERSION;
+ return true;
+}
 function changeYear(d){year+=d;render()}function total(rows){return rows.reduce((s,r)=>s+num(r.amount),0)}function starting(y,m){return 0}function dueDay(r){let d=String(r.due||'').trim();if(!d)return 99;let n=Number(d.slice(0,2));if(/^\d{4}-\d{2}-\d{2}$/.test(d))n=Number(d.slice(8,10));return n>=1&&n<=31?n:99}
 function sortedRows(rows,type){return rows.map((r,i)=>({r,i})).sort((a,b)=>type==='income'?0:Number(!!b.r.recurring)-Number(!!a.r.recurring)||dueDay(a.r)-dueDay(b.r)||a.i-b.i)}
 function copyRecurring(y,m,entry,unique){let base=y*12+m;for(let step=1;step<=24;step++){let n=base+step,yy=Math.floor(n/12),mm=n%12,target=month(yy,mm);if(!target.expense.some(x=>x.recurringId===unique)){target.expense.push({...entry,recurringId:unique,paid:false,due:entry.due?String(Math.min(dueDay(entry),new Date(yy,mm+1,0).getDate())).padStart(2,'0')+'.'+String(mm+1).padStart(2,'0')+'.'+yy:''})}}}
@@ -23,7 +79,7 @@ if(!cfg.apiKey){msg.textContent='Firebase-asetukset puuttuvat. Kirjautuminen ei 
 else {
 const app=initializeApp(cfg),a=getAuth(app),fs=getFirestore(app),sync=document.getElementById('syncmsg');
 let active=false,job=Promise.resolve(),timer=null;
-async function enter(u){active=false;privateView.hidden=true;box.hidden=false;if(!u){msg.textContent='Kirjaudu tai rekisteröidy.';return}await reload(u);if(!u.emailVerified){msg.textContent='Vahvista sähköpostisi ja valitse Tarkista vahvistus.';return}try{const snapshot=await getDoc(doc(fs,'budgets',u.uid));if(snapshot.exists()){db=snapshot.data().months||{}}else{const old=JSON.parse(localStorage.getItem(KEY)||'{}');db=Object.keys(old).length&&confirm('Tuodaanko tämän selaimen budjettitiedot käyttäjätilillesi?')?old:{};await setDoc(doc(fs,'budgets',u.uid),{months:db})}localStorage.setItem(KEY,JSON.stringify(db));active=true;privateView.hidden=false;box.hidden=true;sync.textContent=' Kirjautuneena: '+u.email+' · Pilvitallennus käytössä';render()}catch(e){msg.textContent='Tietoja ei voitu ladata: '+e.message}}
+async function enter(u){active=false;privateView.hidden=true;box.hidden=false;if(!u){msg.textContent='Kirjaudu tai rekisteröidy.';return}await reload(u);if(!u.emailVerified){msg.textContent='Vahvista sähköpostisi ja valitse Tarkista vahvistus.';return}try{const snapshot=await getDoc(doc(fs,'budgets',u.uid));if(snapshot.exists()){db=snapshot.data().months||{}}else{const old=JSON.parse(localStorage.getItem(KEY)||'{}');db=Object.keys(old).length&&confirm('Tuodaanko tämän selaimen budjettitiedot käyttäjätilillesi?')?old:{};await setDoc(doc(fs,'budgets',u.uid),{months:db})}const appliedPlan=applyDeviceLoanPlan();localStorage.setItem(KEY,JSON.stringify(db));active=true;privateView.hidden=false;box.hidden=true;sync.textContent=' Kirjautuneena: '+u.email+' · Pilvitallennus käytössä';render();if(appliedPlan)window.cloudSave?.()}catch(e){msg.textContent='Tietoja ei voitu ladata: '+e.message}}
 window.cloudSave=()=>{if(!active||!a.currentUser)return;clearTimeout(timer);const copy=JSON.parse(JSON.stringify(db)),uid=a.currentUser.uid;sync.textContent=' Tallennetaan…';timer=setTimeout(()=>{job=job.catch(()=>{}).then(()=>setDoc(doc(fs,'budgets',uid),{months:copy})).then(()=>sync.textContent=' Tallennettu').catch(e=>sync.textContent=' Virhe: '+e.message)},500)};
 window.authAct=async type=>{const email=document.getElementById('aemail').value.trim(),pass=document.getElementById('apass').value;try{if(type==='register'){const r=await createUserWithEmailAndPassword(a,email,pass);await sendEmailVerification(r.user);msg.textContent='Vahvistusviesti lähetetty.'}else if(type==='login')await signInWithEmailAndPassword(a,email,pass);else if(type==='reset'){await sendPasswordResetEmail(a,email);msg.textContent='Palautusviesti lähetetty.'}else if(type==='resend'){await sendEmailVerification(a.currentUser);msg.textContent='Vahvistusviesti lähetetty.'}else if(type==='check')await enter(a.currentUser);else if(type==='logout'){clearTimeout(timer);await job.catch(()=>{});await signOut(a);db={};render()}}catch(e){msg.textContent='Virhe: '+(e.code||e.message)}};
 onAuthStateChanged(a,u=>enter(u).catch(e=>msg.textContent=e.message));
