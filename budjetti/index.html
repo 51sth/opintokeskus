@@ -77,6 +77,43 @@ function setElisaDueDates(){
  }
  return changed;
 }
+// Klarna: 1 805 € alkaen 2.12.2026, 77 €/kk ja lopuksi 34 €.
+// Korvaa saman kuukauden vanhat Klarna-merkinnät, älä koske aiempiin kuukausiin.
+const KLARNA_PLAN_VERSION='klarna-20261031-1805-v1';
+function applyKlarnaPlan(){
+ if(db._migrationKlarna===KLARNA_PLAN_VERSION)return false;
+ let remaining=180500,step=0;
+ while(remaining>0&&step<40){
+  const [y,m]=addMonths(2026,11,step);
+  const cents=Math.min(remaining,7700);
+  const rows=month(y,m).expense;
+  const matches=rows.map((r,i)=>({r,i})).filter(({r})=>/^Klarna(?:\\b|\\s|\\s*[–-])/i.test((r.name||'').trim()));
+  const existing=matches[0]?.r;
+  if(existing){
+   existing.name='Klarna';
+   existing.amount=cents/100;
+   existing.due='02.'+String(m+1).padStart(2,'0')+'.'+y;
+   existing.approx=false;existing.recurring=true;
+   existing.recurringId='klarna-plan-'+step;
+   existing.planKey=existing.recurringId;
+   // Säilytä jo maksetuksi merkityn erän tieto.
+   for(let i=matches.length-1;i>=1;i--)rows.splice(matches[i].i,1);
+  }else{
+   rows.push({name:'Klarna',amount:cents/100,paid:false,approx:false,recurring:true,
+    due:'02.'+String(m+1).padStart(2,'0')+'.'+y,
+    recurringId:'klarna-plan-'+step,planKey:'klarna-plan-'+step});
+  }
+  remaining-=cents;step++;
+ }
+ // Poista mahdolliset vanhat ylimääräiset Klarna-ennusteet maksusuunnitelman päätyttyä.
+ for(let n=step;n<60;n++){
+  const [y,m]=addMonths(2026,11,n);
+  const k=id(y,m);if(!db[k])continue;
+  db[k].expense=db[k].expense.filter(r=>!/^Klarna(?:\\b|\\s|\\s*[–-])/i.test((r.name||'').trim())||r.paid);
+ }
+ db._migrationKlarna=KLARNA_PLAN_VERSION;
+ return true;
+}
 function changeYear(d){year+=d;render()}function total(rows){return rows.reduce((s,r)=>s+num(r.amount),0)}function starting(y,m){return 0}function dueDay(r){let d=String(r.due||'').trim();if(!d)return 99;let n=Number(d.slice(0,2));if(/^\d{4}-\d{2}-\d{2}$/.test(d))n=Number(d.slice(8,10));return n>=1&&n<=31?n:99}
 function sortedRows(rows,type){return rows.map((r,i)=>({r,i})).sort((a,b)=>type==='income'?0:Number(!!b.r.recurring)-Number(!!a.r.recurring)||dueDay(a.r)-dueDay(b.r)||a.i-b.i)}
 function copyRecurring(y,m,entry,unique){let base=y*12+m;for(let step=1;step<=24;step++){let n=base+step,yy=Math.floor(n/12),mm=n%12,target=month(yy,mm);if(!target.expense.some(x=>x.recurringId===unique)){target.expense.push({...entry,recurringId:unique,paid:false,due:entry.due?String(Math.min(dueDay(entry),new Date(yy,mm+1,0).getDate())).padStart(2,'0')+'.'+String(mm+1).padStart(2,'0')+'.'+yy:''})}}}
@@ -103,7 +140,7 @@ if(!cfg.apiKey){msg.textContent='Firebase-asetukset puuttuvat. Kirjautuminen ei 
 else {
 const app=initializeApp(cfg),a=getAuth(app),fs=getFirestore(app),sync=document.getElementById('syncmsg');
 let active=false,job=Promise.resolve(),timer=null;
-async function enter(u){active=false;privateView.hidden=true;box.hidden=false;if(!u){msg.textContent='Kirjaudu tai rekisteröidy.';return}await reload(u);if(!u.emailVerified){msg.textContent='Vahvista sähköpostisi ja valitse Tarkista vahvistus.';return}try{const snapshot=await getDoc(doc(fs,'budgets',u.uid));if(snapshot.exists()){db=snapshot.data().months||{}}else{const old=JSON.parse(localStorage.getItem(KEY)||'{}');db=Object.keys(old).length&&confirm('Tuodaanko tämän selaimen budjettitiedot käyttäjätilillesi?')?old:{};await setDoc(doc(fs,'budgets',u.uid),{months:db})}const appliedPlan=applyDeviceLoanPlan();const updatedDueDates=setElisaDueDates();localStorage.setItem(KEY,JSON.stringify(db));active=true;privateView.hidden=false;box.hidden=true;sync.textContent=' Kirjautuneena: '+u.email+' · Pilvitallennus käytössä';render();if(appliedPlan||updatedDueDates)window.cloudSave?.()}catch(e){msg.textContent='Tietoja ei voitu ladata: '+e.message}}
+async function enter(u){active=false;privateView.hidden=true;box.hidden=false;if(!u){msg.textContent='Kirjaudu tai rekisteröidy.';return}await reload(u);if(!u.emailVerified){msg.textContent='Vahvista sähköpostisi ja valitse Tarkista vahvistus.';return}try{const snapshot=await getDoc(doc(fs,'budgets',u.uid));if(snapshot.exists()){db=snapshot.data().months||{}}else{const old=JSON.parse(localStorage.getItem(KEY)||'{}');db=Object.keys(old).length&&confirm('Tuodaanko tämän selaimen budjettitiedot käyttäjätilillesi?')?old:{};await setDoc(doc(fs,'budgets',u.uid),{months:db})}const appliedPlan=applyDeviceLoanPlan();const updatedDueDates=setElisaDueDates();const addedKlarna=applyKlarnaPlan();localStorage.setItem(KEY,JSON.stringify(db));active=true;privateView.hidden=false;box.hidden=true;sync.textContent=' Kirjautuneena: '+u.email+' · Pilvitallennus käytössä';render();if(appliedPlan||updatedDueDates||addedKlarna)window.cloudSave?.()}catch(e){msg.textContent='Tietoja ei voitu ladata: '+e.message}}
 window.cloudSave=()=>{if(!active||!a.currentUser)return;clearTimeout(timer);const copy=JSON.parse(JSON.stringify(db)),uid=a.currentUser.uid;sync.textContent=' Tallennetaan…';timer=setTimeout(()=>{job=job.catch(()=>{}).then(()=>setDoc(doc(fs,'budgets',uid),{months:copy})).then(()=>sync.textContent=' Tallennettu').catch(e=>sync.textContent=' Virhe: '+e.message)},500)};
 window.authAct=async type=>{const email=document.getElementById('aemail').value.trim(),pass=document.getElementById('apass').value;try{if(type==='register'){const r=await createUserWithEmailAndPassword(a,email,pass);await sendEmailVerification(r.user);msg.textContent='Vahvistusviesti lähetetty.'}else if(type==='login')await signInWithEmailAndPassword(a,email,pass);else if(type==='reset'){await sendPasswordResetEmail(a,email);msg.textContent='Palautusviesti lähetetty.'}else if(type==='resend'){await sendEmailVerification(a.currentUser);msg.textContent='Vahvistusviesti lähetetty.'}else if(type==='check')await enter(a.currentUser);else if(type==='logout'){clearTimeout(timer);await job.catch(()=>{});await signOut(a);db={};render()}}catch(e){msg.textContent='Virhe: '+(e.code||e.message)}};
 onAuthStateChanged(a,u=>enter(u).catch(e=>msg.textContent=e.message));
