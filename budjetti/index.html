@@ -65,6 +65,11 @@ function applyDeviceLoanPlan(){
 // Näytä Elisa yhtenä laskuna, mutta pidä erittely ja maksettu-merkinnät tallessa.
 let elisaExpanded={};
 function toggleElisaDetails(k){elisaExpanded[k]=!elisaExpanded[k];render()}
+function toggleElisaPaid(y,m,checked){
+ const entries=month(y,m).expense.filter(isElisaRow);
+ for(const r of entries)r.paid=checked;
+ save();
+}
 function isElisaRow(r){return /^Elisa(?:\s|$|\s*[–-])/i.test((r.name||'').trim())}
 function setElisaDueDates(){
  let changed=false;
@@ -125,7 +130,8 @@ const entries=sortedRows(rows,type);
 const elisaEntries=isIn?[]:entries.filter(({r})=>isElisaRow(r));
 if(elisaEntries.length>1){
  const k=id(year,m),expanded=!!elisaExpanded[k],sum=elisaEntries.reduce((a,{r})=>a+num(r.amount),0);
- html+='<div class="item"><div class="rowtext"><button class="mini" aria-expanded="'+expanded+'" onclick="toggleElisaDetails(\''+k+'\')">'+(expanded?'▾':'▸')+'</button><strong>Elisa</strong><span class="small">Eräpäivä 19.'+String(m+1).padStart(2,'0')+'.'+year+'</span></div><div class="right"><strong>'+eur(sum)+'</strong></div></div>';
+ const allPaid=elisaEntries.every(({r})=>!!r.paid);
+ html+='<div class="item"><div class="rowtext"><input class="check" aria-label="Elisa maksettu" type="checkbox" '+(allPaid?'checked':'')+' onchange="toggleElisaPaid('+year+','+m+',this.checked)"><button class="mini" aria-label="Näytä tai piilota Elisan erittely" aria-expanded="'+expanded+'" onclick="toggleElisaDetails(\''+k+'\')">'+(expanded?'▾':'▸')+'</button><strong class="'+(allPaid?'paid':'')+'">Elisa</strong><span class="small">Eräpäivä 19.'+String(m+1).padStart(2,'0')+'.'+year+'</span></div><div class="right"><strong>'+eur(sum)+'</strong></div></div>';
  if(expanded)elisaEntries.forEach(e=>draw(e,true));
 }
 entries.forEach(e=>{if(elisaEntries.length>1&&isElisaRow(e.r))return;draw(e)});
