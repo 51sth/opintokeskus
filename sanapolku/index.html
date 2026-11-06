@@ -66,7 +66,10 @@ function nextReview(grade,p,now=Date.now()){
 }
 function initialDifficulty(g){return clamp(WEIGHTS[4]-Math.exp(WEIGHTS[5]*(g-1))+1,1,10)}
 function render(){
- const scoped=scope(),dueCount=scoped.filter(isDue).length,has=order.length>0;
+ const scoped=scope();
+ // Defensive validation: never show a card from another topic, even after UI state changes.
+ if(order.some(i=>!scoped.includes(i))){order=scope().filter(i=>allMode||isDue(i));index=0;flipped=false;}
+ const dueCount=scoped.filter(isDue).length,has=order.length>0;
  $('group').value=group;
  document.querySelectorAll('[data-topic]').forEach(b=>{b.classList.toggle('selected',b.dataset.topic===group);b.setAttribute('aria-pressed',String(b.dataset.topic===group))});
  $('allMode').textContent=allMode?'✓ Kaikki kortit · päällä':'Näytä kaikki kortit';
@@ -82,7 +85,7 @@ function render(){
  $('rated').textContent=lastNotice;
  if(!has){persist();return}
  const c=cards[order[index]],front=direction==='sv',isSv=flipped?!front:front;
- $('lang').textContent=(isSv?'🇸🇪 RUOTSI':'🇫🇮 SUOMI')+' · '+(flipped?'Vastaus':'Kysymys');
+ $('lang').textContent=(isSv?'🇸🇪 RUOTSI':'🇫🇮 SUOMI')+' · '+(flipped?'Vastaus':'Kysymys')+' · '+c.group;
  $('word').textContent=isSv?c.sv:c.fi;
  $('forms').classList.toggle('hidden',!c.forms||(!isSv&&!flipped));
  $('forms').innerHTML=c.forms?c.forms.map((f,i)=>`<div class="form"><small>${names[i]}</small><strong>${escapeHtml(f[isSv?0:1])}</strong></div>`).join(''):'';
